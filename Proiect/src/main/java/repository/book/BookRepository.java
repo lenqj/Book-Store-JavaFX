@@ -1,18 +1,14 @@
 package repository.book;
 
-import model.Book;
+import model.book.BookInterface;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BookRepository {
-
-    List<Book> findAll();
-
-    Optional<Book> findById(Long id);
-
-    boolean save(Book book);
-    boolean badSave(Book book);
-
+    List<BookInterface> findAll();
+    Optional<BookInterface> findById(Long id);
+    boolean save(BookInterface book);
+    boolean badSave(BookInterface book);
     void removeAll();
 }

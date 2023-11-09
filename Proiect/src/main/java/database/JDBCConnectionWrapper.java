@@ -11,21 +11,21 @@ public class JDBCConnectionWrapper {
     private static final String USER = "root";
     private static final String PASSWORD = "admin";
     private static final int TIMEOUT = 5;
-
     private Connection connection;
 
     public JDBCConnectionWrapper(String schema){
         try {
             Class.forName(JDBC_DRIVER);
             connection = DriverManager.getConnection(DB_URL + schema +  "?allowMultiQueries=true", USER, PASSWORD);
-            createTables();
-
+            createBookTables();
+            createAudioBookTables();
+            createEBookTables();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void createTables() throws SQLException{
+    private void createBookTables() throws SQLException{
         Statement statement = connection.createStatement();
         String sql = "CREATE TABLE IF NOT EXISTS book(" +
                 "id bigint NOT NULL AUTO_INCREMENT, " +
@@ -35,9 +35,37 @@ public class JDBCConnectionWrapper {
                 "PRIMARY KEY(id), " +
                 "UNIQUE KEY id_UNIQUE(id)" +
                 ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
-
         statement.execute(sql);
     }
+
+    private void createAudioBookTables() throws SQLException{
+        Statement statement = connection.createStatement();
+        String sql = "CREATE TABLE IF NOT EXISTS audiobook(" +
+                "id bigint NOT NULL AUTO_INCREMENT, " +
+                "author varchar(500) NOT NULL, " +
+                "title varchar(500) NOT NULL, " +
+                "publishedDate datetime DEFAULT NULL, " +
+                "runTime bigint DEFAULT 0, " +
+                "PRIMARY KEY(id), " +
+                "UNIQUE KEY id_UNIQUE(id)" +
+                ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
+        statement.execute(sql);
+    }
+
+    private void createEBookTables() throws SQLException{
+        Statement statement = connection.createStatement();
+        String sql = "CREATE TABLE IF NOT EXISTS ebook(" +
+                "id bigint NOT NULL AUTO_INCREMENT, " +
+                "author varchar(500) NOT NULL, " +
+                "title varchar(500) NOT NULL, " +
+                "publishedDate datetime DEFAULT NULL, " +
+                "format varchar(500) DEFAULT NULL, " +
+                "PRIMARY KEY(id), " +
+                "UNIQUE KEY id_UNIQUE(id)" +
+                ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
+        statement.execute(sql);
+    }
+
     public boolean testConnection() throws SQLException{
 
         return connection.isValid(TIMEOUT);

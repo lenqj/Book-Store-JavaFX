@@ -1,31 +1,31 @@
 package repository.book;
 
-import model.Book;
+import model.book.BookInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class BookRepositoryMock implements BookRepository{
-    private final List<Book> books;
+    private final List<BookInterface> books;
 
     public BookRepositoryMock(){
         books = new ArrayList<>();
     }
-    public List<Book> findAll() {
+    public List<BookInterface> findAll() {
         return books;
     }
 
     @Override
-    public Optional<Book> findById(Long findID) {
+    public Optional<BookInterface> findById(Long findID) {
         return books.parallelStream().filter(it -> it.getId().equals(findID)).findFirst();
     }
 
     @Override
-    public boolean save(Book book) {
+    public boolean save(BookInterface book) {
         return books.add(book);
     }
-    public boolean badSave(Book book) {
+    public boolean badSave(BookInterface book) {
         return books.add(book);
     }
 

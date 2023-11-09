@@ -1,4 +1,5 @@
-import model.Book;
+import model.book.Book;
+import model.book.BookInterface;
 import model.builder.BookBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class jUnitMock {
@@ -68,14 +70,14 @@ public class jUnitMock {
     }
     @Test
     void testFindById() {
-        Optional<Book> newBook = bookRepository.findById(3L);
+        Optional<BookInterface> newBook = bookRepository.findById(3L);
         assertEquals("Optional[#3 - Book author: AUTOR3 | title: TITLU3 | Published Date: 2010-06-02.]", newBook.toString(), "Findbyid work");
     }
 
     @Test
     void testFindAll() {
-        List<Book> allBooks = bookRepository.findAll();
-        
+        List<BookInterface> allBooks = bookRepository.findAll();
+
         //assert(allBooks)
     }
 }

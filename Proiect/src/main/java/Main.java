@@ -1,13 +1,18 @@
+import database.DatabaseConnectionFactory;
 import database.JDBCConnectionWrapper;
-import model.Book;
+import model.book.audiobook.AudioBook;
+import model.book.Book;
+import model.book.BookInterface;
+import model.book.ebook.EBook;
+import model.builder.AudioBookBuilder;
 import model.builder.BookBuilder;
+import model.builder.EBookBuilder;
+import repository.Cache;
 import repository.book.BookRepository;
-import repository.book.BookRepositoryMock;
-import repository.book.BookRepositoryMySQL;
+import repository.book.cache.BookRepositoryCacheDecorator;
+import repository.book.sql.BookRepositoryMySQL;
 
-import java.sql.SQLOutput;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,23 +29,35 @@ public class Main {
                 .setAuthor("Cezar Petrescu")
                 .setPublishedDate(LocalDate.of(2010, 6, 2))
                 .build();
-        JDBCConnectionWrapper connectionWrapper = new JDBCConnectionWrapper("test_library");
-        BookRepository bookRepository = new BookRepositoryMySQL(connectionWrapper.getConnection());
-        bookRepository.save(book);
-        bookRepository.save(book);
-        bookRepository.save(book);
-        bookRepository.save(book);
 
-        System.out.println(bookRepository.findAll());
-        System.out.println(bookRepository.findById(3L));
+        AudioBook audioBook = new AudioBookBuilder()
+                .setTitle("Fram Ursul Polar AUDIO")
+                .setAuthor("Cezar Petrescu")
+                .setPublishedDate(LocalDate.of(2010, 6, 2))
+                .setRunTime(10)
+                .build();
+        EBook ebook = new EBookBuilder()
+                .setTitle("Fram Ursul Polar PDF")
+                .setAuthor("Cezar Petrescu")
+                .setPublishedDate(LocalDate.of(2010, 6, 2))
+                .setFormat("PDF")
+                .build();
 
-        System.out.println("-----------------------");
-        bookRepository.save(badBook);
-        System.out.println(bookRepository.findAll());
+        JDBCConnectionWrapper connectionWrapper = DatabaseConnectionFactory.getConnectionWrapper(true);
+        BookRepository bookRepository = new BookRepositoryCacheDecorator(
+                new BookRepositoryMySQL(connectionWrapper.getConnection()),
+                new Cache<>()
+        );
 
-        System.out.println("-----------------------");
-        //bookRepository.badSave(badBook);
-        System.out.println(bookRepository.findAll());
+        //bookRepository.removeAll();
+
+        bookRepository.save(book);
+        bookRepository.save(audioBook);
+        bookRepository.save(ebook);
+
+        for(BookInterface bookPrint: bookRepository.findAll()){
+            System.out.println(bookPrint);
+        }
 
     }
 }
