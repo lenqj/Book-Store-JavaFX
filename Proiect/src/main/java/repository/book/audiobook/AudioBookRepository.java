@@ -1,23 +1,25 @@
-package repository.book;
+package repository.book.audiobook;
 
 import model.book.audiobook.AudioBook;
 import model.book.Book;
 import model.book.BookInterface;
+import model.book.audiobook.AudioBookInterface;
 import model.builder.AudioBookBuilder;
+import repository.book.BookRepository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-class AudioBookRepository implements BookRepository {
+class AudioBookRepository implements BookRepository<AudioBookInterface> {
     private final Connection connection;
     public AudioBookRepository(Connection connection){
         this.connection = connection;
     }
-    public List<BookInterface> findAll() {
+    public List<AudioBookInterface> findAll() {
         String sql = "SELECT * FROM audiobook;";
-        List<BookInterface> books = new ArrayList<>();
+        List<AudioBookInterface> books = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -29,13 +31,13 @@ class AudioBookRepository implements BookRepository {
         }
         return books;
     }
-    public Optional<BookInterface> findById(Long bookID) {
+    public Optional<AudioBookInterface> findById(Long bookID) {
         String sql = "SELECT * from audiobook where id=?;";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, bookID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            BookInterface returnBook = new Book();
+            AudioBookInterface returnBook = new AudioBook();
             while (resultSet.next()) {
                 returnBook = getBookFromResultSet(resultSet);
             }
@@ -46,7 +48,7 @@ class AudioBookRepository implements BookRepository {
             return Optional.empty();
         }
     }
-    public boolean save(BookInterface book) {
+    public boolean save(AudioBookInterface book) {
         String sql = "INSERT INTO audiobook VALUES(null, ?, ?, ?, ?);";
 
         try{
@@ -54,7 +56,7 @@ class AudioBookRepository implements BookRepository {
             preparedStatement.setString(1, book.getAuthor());
             preparedStatement.setString(2, book.getTitle());
             preparedStatement.setDate(3, Date.valueOf(book.getPublishedDate()));
-            //preparedStatement.setInt(4, book.getRunTime());
+            preparedStatement.setInt(4, book.getRunTime());
             int rowsInserted = preparedStatement.executeUpdate();
 
             return rowsInserted == 1;
@@ -63,7 +65,7 @@ class AudioBookRepository implements BookRepository {
             return false;
         }
     }
-    public boolean badSave(BookInterface book) {
+    public boolean badSave(AudioBookInterface book) {
         String authorSave = book.getAuthor();
         String titleSave = book.getTitle();
         Date dateSave = Date.valueOf(book.getPublishedDate());
@@ -90,7 +92,7 @@ class AudioBookRepository implements BookRepository {
         }
 
     }
-    private AudioBook getBookFromResultSet(ResultSet resultSet) throws SQLException {
+    private AudioBookInterface getBookFromResultSet(ResultSet resultSet) throws SQLException {
         return new AudioBookBuilder()
                 .setId(resultSet.getLong("id"))
                 .setTitle(resultSet.getString("title"))

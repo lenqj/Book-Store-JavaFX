@@ -44,7 +44,7 @@ public class Main {
                 .build();
 
         JDBCConnectionWrapper connectionWrapper = DatabaseConnectionFactory.getConnectionWrapper(true);
-        BookRepository bookRepository = new BookRepositoryCacheDecorator(
+        BookRepository<BookInterface> bookRepository = new BookRepositoryCacheDecorator<>(
                 new BookRepositoryMySQL(connectionWrapper.getConnection()),
                 new Cache<>()
         );

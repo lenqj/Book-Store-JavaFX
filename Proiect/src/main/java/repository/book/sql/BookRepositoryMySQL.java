@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class BookRepositoryMySQL implements BookRepository {
+public class BookRepositoryMySQL implements BookRepository<BookInterface> {
     private final Connection connection;
     public BookRepositoryMySQL(Connection connection){
         this.connection = connection;

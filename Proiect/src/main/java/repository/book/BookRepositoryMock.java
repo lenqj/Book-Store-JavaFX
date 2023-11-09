@@ -1,12 +1,13 @@
 package repository.book;
 
+import model.book.Book;
 import model.book.BookInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class BookRepositoryMock implements BookRepository{
+public class BookRepositoryMock implements BookRepository<BookInterface>{
     private final List<BookInterface> books;
 
     public BookRepositoryMock(){

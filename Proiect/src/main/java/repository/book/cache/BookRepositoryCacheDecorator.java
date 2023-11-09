@@ -7,33 +7,33 @@ import repository.book.BookRepository;
 import java.util.List;
 import java.util.Optional;
 
-public class BookRepositoryCacheDecorator extends BookRepositoryDecorator {
-    private Cache<BookInterface> cache;
+public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> {
+    private Cache<T> cache;
 
-    public BookRepositoryCacheDecorator(BookRepository bookRepository, Cache<BookInterface> cache){
+    public BookRepositoryCacheDecorator(BookRepository<T> bookRepository, Cache<T> cache){
         super(bookRepository);
         this.cache = cache;
     }
-    public List<BookInterface> findAll() {
+    public List<T> findAll() {
         if(cache.hasResult()){
             return cache.load();
         }
-        List<BookInterface> books = decoratedRepository.findAll();
+        List<T> books = decoratedRepository.findAll();
         cache.save(books);
         return books;
     }
 
-    public Optional<BookInterface> findById(Long id) {
+    public Optional<T> findById(Long id) {
         return decoratedRepository.findById(id);
     }
 
-    public boolean save(BookInterface book) {
+    public boolean save(T book) {
         cache.invalidateCache();
         return decoratedRepository.save(book);
     }
 
     @Override
-    public boolean badSave(BookInterface book) {
+    public boolean badSave(T book) {
         return false;
     }
 
