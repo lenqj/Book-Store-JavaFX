@@ -1,9 +1,9 @@
 package repository.book.sql;
 
+import repository.book.BookRepository;
 import model.book.Book;
 import model.book.BookInterface;
 import model.builder.BookBuilder;
-import repository.book.BookRepository;
 
 import java.sql.*;
 import java.util.ArrayList;

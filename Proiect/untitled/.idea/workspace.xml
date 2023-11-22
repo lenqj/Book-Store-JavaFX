@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5f044691-7411-416f-a840-898bc7fff4df" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../src/main/java/controller/LoginController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/database/Bootstrap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/database/Constants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/database/SQLTableCreationFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/model/Right.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/model/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/model/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/model/builder/UserBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/model/validator/UserValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/repository/security/RightsRolesRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/repository/security/RightsRolesRepositoryMySQL.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/repository/user/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/repository/user/UserRepositoryMySQL.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/service/user/AuthenticationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/service/user/AuthenticationServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/view/LoginView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/repository/book/ebook/EBookRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/repository/book/ebook/EBookRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/service/BookService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/service/book/BookService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/service/BookServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/java/service/book/BookServiceImpl.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2YSWEsk6WIPGPnosnipP9N9YYMZ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "lab6",
+    "last_opened_file_path": "D:/AN3/IS/ProiectIS",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5f044691-7411-416f-a840-898bc7fff4df" name="Changes" comment="" />
+      <created>1700519352664</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1700519352664</updated>
+      <workItem from="1700519353790" duration="10000" />
+      <workItem from="1700658537836" duration="33000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

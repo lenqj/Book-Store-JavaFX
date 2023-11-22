@@ -1,22 +1,23 @@
-import database.DatabaseConnectionFactory;
+import controller.LoginController;
 import database.JDBCConnectionWrapper;
-import model.book.audiobook.AudioBook;
-import model.book.Book;
-import model.book.BookInterface;
-import model.book.ebook.EBook;
-import model.builder.AudioBookBuilder;
-import model.builder.BookBuilder;
-import model.builder.EBookBuilder;
-import repository.Cache;
-import repository.book.BookRepository;
-import repository.book.cache.BookRepositoryCacheDecorator;
-import repository.book.sql.BookRepositoryMySQL;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import model.validator.UserValidator;
+import repository.security.RightsRolesRepository;
+import repository.security.RightsRolesRepositoryMySQL;
+import repository.user.UserRepository;
+import repository.user.UserRepositoryMySQL;
+import service.user.AuthenticationService;
+import service.user.AuthenticationServiceImpl;
+import view.LoginView;
 
-import java.time.LocalDate;
+import java.sql.Connection;
 
-public class Main {
+import static database.Constants.Schemas.PRODUCTION;
+
+public class Main extends Application {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        /*System.out.println("Hello world!");
 
         Book badBook = new BookBuilder()
                 .setTitle("Fram Ursul Polar")
@@ -49,15 +50,33 @@ public class Main {
                 new Cache<>()
         );
 
-        //bookRepository.removeAll();
+        bookRepository.removeAll();
 
         bookRepository.save(book);
-        bookRepository.save(audioBook);
-        bookRepository.save(ebook);
+        //bookRepository.save(audioBook);
+        //bookRepository.save(ebook);
 
         for(BookInterface bookPrint: bookRepository.findAll()){
             System.out.println(bookPrint);
-        }
+        }*/
 
+        launch(args);
+
+    }
+    @Override
+    public void start(Stage primaryStage) {
+        final Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
+
+        final RightsRolesRepository rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
+        final UserRepository userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
+
+        final AuthenticationService authenticationService = new AuthenticationServiceImpl(userRepository,
+                rightsRolesRepository);
+
+        final LoginView loginView = new LoginView(primaryStage);
+
+        final UserValidator userValidator = new UserValidator(userRepository);
+
+        new LoginController(loginView, authenticationService, userValidator);
     }
 }

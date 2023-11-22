@@ -1,6 +1,4 @@
-package service;
-
-import model.book.BookInterface;
+package service.book;
 
 import java.util.List;
 

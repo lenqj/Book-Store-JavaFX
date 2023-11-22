@@ -1,15 +1,16 @@
 package repository.book.ebook;
 
+import repository.book.BookRepository;
 import model.book.ebook.EBook;
 import model.book.ebook.EBookInterface;
 import model.builder.EBookBuilder;
-import repository.book.BookRepository;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-class EBookRepository implements BookRepository<EBookInterface> {
+public class EBookRepository implements BookRepository<EBookInterface> {
     private final Connection connection;
     public EBookRepository(Connection connection){
         this.connection = connection;

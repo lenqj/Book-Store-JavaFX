@@ -1,6 +1,5 @@
 package repository.book.cache;
 
-import model.book.BookInterface;
 import repository.Cache;
 import repository.book.BookRepository;
 

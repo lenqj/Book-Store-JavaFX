@@ -1,4 +1,4 @@
-package service;
+package service.book;
 
 import model.book.BookInterface;
 import repository.book.BookRepository;
