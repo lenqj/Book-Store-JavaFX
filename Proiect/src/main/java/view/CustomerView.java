@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.User;
 import model.book.BookInterface;
 
 import java.util.List;
@@ -26,9 +27,9 @@ public class CustomerView {
     private Button sellBookButton;
     private Text textSellBook;
 
-    public CustomerView(Stage primaryStage) {
+    public CustomerView(Stage primaryStage, User userLoggedIn) {
         stage = primaryStage;
-        stage.setTitle("Book Store");
+        stage.setTitle("Book Store ");
 
         GridPane gridPane = new GridPane();
         initializeGridPane(gridPane);
@@ -36,7 +37,7 @@ public class CustomerView {
         Scene scene = new Scene(gridPane, 720, 480);
         stage.setScene(scene);
 
-        initializeSceneTitle(gridPane);
+        initializeSceneTitle(gridPane, userLoggedIn);
 
         table = new TableView<>();
         initializeTableView(table, gridPane);
@@ -55,8 +56,8 @@ public class CustomerView {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
     }
 
-    private void initializeSceneTitle(GridPane gridPane){
-        Text sceneTitle = new Text("Logged IN");
+    private void initializeSceneTitle(GridPane gridPane, User user){
+        Text sceneTitle = new Text("Logged IN as " + user.getUsername());
         sceneTitle.setFont(Font.font("Thoma", FontWeight.NORMAL, 20));
         gridPane.add(sceneTitle, 0, 0, 2, 1);
     }

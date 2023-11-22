@@ -48,9 +48,10 @@ public class Constants {
         public static final String RIGHT = "right";
         public static final String ROLE_RIGHT = "role_right";
         public static final String USER_ROLE = "user_role";
+        public static final String USER_BOOKS = "user_books";
 
         public static final String[] ORDERED_TABLES_FOR_CREATION = new String[]{USER, ROLE, RIGHT, ROLE_RIGHT, USER_ROLE,
-                BOOK};
+                BOOK, USER_BOOKS};
     }
 
     public static class Roles {
@@ -77,4 +78,5 @@ public class Constants {
         public static final String[] RIGHTS = new String[]{CREATE_USER, DELETE_USER, UPDATE_USER, CREATE_BOOK,
                 DELETE_BOOK, UPDATE_BOOK, SELL_BOOK, BUY_BOOK, RETURN_BOOK};
     }
+
 }

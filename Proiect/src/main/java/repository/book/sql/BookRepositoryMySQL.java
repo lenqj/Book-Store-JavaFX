@@ -73,8 +73,7 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
         String authorSave = book.getAuthor();
         String titleSave = book.getTitle();
         Date dateSave = Date.valueOf(book.getPublishedDate());
-        String sql = "INSERT INTO book VALUES(" + null + ", " + "'" + authorSave + "'" + ", " + "'" + titleSave + "'" + ", " + "'" + dateSave + "'" + ");";
-
+        String sql = "INSERT INTO book VALUES(" + null + "," + "'" + authorSave + "'" + ", " + "'" + titleSave + "'" + ", " + "'" + dateSave + "'" + ");";
         try{
             Statement statement = connection.createStatement();
             int rowsInserted = statement.executeUpdate(sql);

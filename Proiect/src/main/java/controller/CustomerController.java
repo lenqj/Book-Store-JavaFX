@@ -13,12 +13,16 @@ import repository.book.BookRepository;
 import repository.book.sql.BookRepositoryMySQL;
 import repository.security.RightsRolesRepository;
 import repository.security.RightsRolesRepositoryMySQL;
+import repository.user.UserBooksRepository;
+import repository.user.UserBooksRepositoryMySQL;
 import repository.user.UserRepository;
 import repository.user.UserRepositoryMySQL;
 import service.book.BookService;
 import service.book.BookServiceImpl;
 import service.user.AuthenticationService;
 import service.user.AuthenticationServiceImpl;
+import service.user.UserBooksService;
+import service.user.UserBooksServiceImpl;
 import view.CustomerView;
 import view.LoginView;
 
@@ -32,11 +36,12 @@ public class CustomerController {
 
     private final CustomerView customerView;
     private final BookService<BookInterface> bookService;
+    private final User user;
 
-
-    public CustomerController(CustomerView customerView, BookService<BookInterface> bookService) {
+    public CustomerController(CustomerView customerView, BookService<BookInterface> bookService, User user) {
         this.customerView = customerView;
         this.bookService = bookService;
+        this.user = user;
         customerView.setTableBookList(bookService.findAll());
         customerView.addSellBookButtonButtonListener(new SellBookButtonListener());
         customerView.addLogoutButtonListener(new LogoutButtonListener());
@@ -61,8 +66,11 @@ public class CustomerController {
         @Override
         public void handle(ActionEvent event) {
             BookInterface book = customerView.getSelectedBook();
-            if(book != null) {
-                customerView.setTextSellBook(customerView.getSelectedBook().toString());
+            Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
+            UserBooksRepository userBooksRepository = new UserBooksRepositoryMySQL(connection);
+            UserBooksService userBooksService = new UserBooksServiceImpl(userBooksRepository);
+            if (book != null && userBooksService.save(user, book)){
+                customerView.setTextSellBook(book.toString());
             }
         }
     }

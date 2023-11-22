@@ -47,11 +47,11 @@ public class LoginController {
                 loginView.setActionTargetText("Invalid Username or password!");
             }else{
                 loginView.setActionTargetText("LogIn Successfull!");
-                CustomerView customerView = new CustomerView(loginView.getStage());
+                CustomerView customerView = new CustomerView(loginView.getStage(), user);
                 Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
                 BookRepository<BookInterface> bookRepository = new BookRepositoryMySQL(connection);
                 BookServiceImpl bookService = new BookServiceImpl(bookRepository);
-                new CustomerController(customerView, bookService);
+                new CustomerController(customerView, bookService, user);
             }
 
         }
