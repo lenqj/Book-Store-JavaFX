@@ -21,12 +21,14 @@ import model.book.BookInterface;
 import java.util.List;
 
 public class CustomerView {
-    private Stage stage;
-    private TableView<BookInterface> table;
+    private final Stage stage;
+    private final TableView<BookInterface> table;
     private Button logoutButton;
     private Button soldBooksButton;
     private Button sellBookButton;
+    private Button buyBookButton;
     private Text textSellBook;
+    private Text moneyText;
 
     public CustomerView(Stage primaryStage, User userLoggedIn) {
         stage = primaryStage;
@@ -60,11 +62,24 @@ public class CustomerView {
     private void initializeSceneTitle(GridPane gridPane, User user){
         Text sceneTitle = new Text("Logged IN as " + user.getUsername());
         sceneTitle.setFont(Font.font("Thoma", FontWeight.NORMAL, 20));
-        gridPane.add(sceneTitle, 0, 0, 2, 1);
+        HBox sceneTitleHBox = new HBox(10);
+        sceneTitleHBox.setAlignment(Pos.BOTTOM_LEFT);
+        sceneTitleHBox.getChildren().add(sceneTitle);
+
+
+        moneyText = new Text();
+        setMoneyText("Money: " + user.getMoney());
+        moneyText.setFont(Font.font("Thoma", FontWeight.NORMAL, 20));
+        HBox moneyTextHBox = new HBox(10);
+        moneyTextHBox.setAlignment(Pos.BOTTOM_RIGHT);
+        moneyTextHBox.getChildren().add(moneyText);
+
+        gridPane.add(sceneTitleHBox, 0, 0, 2, 1);
+        gridPane.add(moneyTextHBox, 2, 0, 2, 1);
     }
     @SuppressWarnings("unchecked")
     private void initializeTableView(TableView<BookInterface> tableView, GridPane gridPane){
-        gridPane.add(table, 0, 1, 2, 1);
+        gridPane.add(table, 1, 1, 2, 1);
         TableColumn<BookInterface,String> id = new TableColumn<>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         TableColumn<BookInterface,String> author = new TableColumn<>("Author");
@@ -73,7 +88,11 @@ public class CustomerView {
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
         TableColumn<BookInterface,String> publishedDate = new TableColumn<>("Published Date");
         publishedDate.setCellValueFactory(new PropertyValueFactory<>("publishedDate"));
-        tableView.getColumns().setAll(id, author, title, publishedDate);
+        TableColumn<BookInterface,String> stock = new TableColumn<>("Stock");
+        stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        TableColumn<BookInterface,String> price = new TableColumn<>("Price");
+        price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        tableView.getColumns().setAll(id, author, title, publishedDate, stock, price);
     }
     public void setTableBookList(List<BookInterface> books){
         table.getItems().clear();
@@ -82,24 +101,31 @@ public class CustomerView {
     }
 
     private void initializeButtons(GridPane gridPane){
-        logoutButton = new Button("Logout");
-        HBox logOutButtonHBox = new HBox(10);
-        logOutButtonHBox.setAlignment(Pos.BOTTOM_RIGHT);
-        logOutButtonHBox.getChildren().add(logoutButton);
-        gridPane.add(logOutButtonHBox, 2, 5);
-
-
-        soldBooksButton = new Button("Sold Books");
-        HBox soldBooksButtonHBox = new HBox(10);
-        soldBooksButtonHBox.setAlignment(Pos.BOTTOM_CENTER);
-        soldBooksButtonHBox.getChildren().add(soldBooksButton);
-        gridPane.add(soldBooksButtonHBox, 1, 5);
-
         sellBookButton = new Button("Sell Book");
         HBox sellBookButtonHBox = new HBox(10);
         sellBookButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
         sellBookButtonHBox.getChildren().add(sellBookButton);
         gridPane.add(sellBookButtonHBox, 0, 5);
+
+
+        soldBooksButton = new Button("Sold Books");
+        HBox soldBooksButtonHBox = new HBox(10);
+        soldBooksButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
+        soldBooksButtonHBox.getChildren().add(soldBooksButton);
+        gridPane.add(soldBooksButtonHBox, 1, 5);
+
+        buyBookButton = new Button("Buy Book");
+        HBox buyBookButtonHBox = new HBox(10);
+        buyBookButtonHBox.setAlignment(Pos.BOTTOM_RIGHT);
+        buyBookButtonHBox.getChildren().add(buyBookButton);
+        gridPane.add(buyBookButtonHBox, 2, 5);
+
+
+        logoutButton = new Button("Logout");
+        HBox logOutButtonHBox = new HBox(10);
+        logOutButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
+        logOutButtonHBox.getChildren().add(logoutButton);
+        gridPane.add(logOutButtonHBox, 3, 5);
 
     }
     public void addLogoutButtonListener(EventHandler<ActionEvent> logoutButtonListener) {
@@ -111,6 +137,10 @@ public class CustomerView {
 
     public void addSellBookButtonButtonListener(EventHandler<ActionEvent> sellBookButtonButtonListener) {
         sellBookButton.setOnAction(sellBookButtonButtonListener);
+    }
+
+    public void addBuyBookButtonButtonListener(EventHandler<ActionEvent> buyBookButtonButtonListener) {
+        buyBookButton.setOnAction(buyBookButtonButtonListener);
     }
 
     public Stage getStage() {
@@ -125,5 +155,8 @@ public class CustomerView {
     }
     public void setTextSellBook (String text){
         textSellBook.setText(text);
+    }
+    public void setMoneyText(String text){
+        moneyText.setText(text);
     }
 }

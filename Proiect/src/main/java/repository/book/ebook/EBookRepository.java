@@ -90,6 +90,17 @@ public class EBookRepository implements BookRepository<EBookInterface> {
         }
 
     }
+
+    @Override
+    public EBookInterface updateStock(EBookInterface book, Long stock) {
+        return book;
+    }
+
+    @Override
+    public void updatePrice(EBookInterface book, Long Price) {
+
+    }
+
     private EBookInterface getBookFromResultSet(ResultSet resultSet) throws SQLException {
         return new EBookBuilder()
                 .setId(resultSet.getLong("id"))

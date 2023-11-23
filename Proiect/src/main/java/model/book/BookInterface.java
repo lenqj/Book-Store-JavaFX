@@ -7,4 +7,6 @@ public interface BookInterface {
     String getAuthor();
     String getTitle();
     LocalDate getPublishedDate();
+    Long getStock();
+    Long getPrice();
 }

@@ -1,12 +1,7 @@
 package database;
 
-import static database.Constants.Tables.BOOK;
-import static database.Constants.Tables.RIGHT;
-import static database.Constants.Tables.ROLE;
-import static database.Constants.Tables.ROLE_RIGHT;
-import static database.Constants.Tables.USER;
-import static database.Constants.Tables.USER_ROLE;
-import static database.Constants.Tables.USER_BOOKS;
+import static database.Constants.Tables.*;
+
 public class SQLTableCreationFactory {
 
     public String getCreateSQLForTable(String table) {
@@ -16,6 +11,8 @@ public class SQLTableCreationFactory {
                     "  author varchar(500) NOT NULL," +
                     "  title varchar(500) NOT NULL," +
                     "  publishedDate datetime DEFAULT NULL," +
+                    "  stock INT DEFAULT 0," +
+                    "  price INT DEFAULT 0," +
                     "  PRIMARY KEY (id)," +
                     "  UNIQUE KEY book_id_unique (id)" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
@@ -23,6 +20,7 @@ public class SQLTableCreationFactory {
                     "  id INT NOT NULL AUTO_INCREMENT," +
                     "  username VARCHAR(200) NOT NULL," +
                     "  `password` VARCHAR(64) NOT NULL," +
+                    "  money INT DEFAULT 0," +
                     "  PRIMARY KEY (id)," +
                     "  UNIQUE INDEX user_id_unique (id ASC)," +
                     "  UNIQUE INDEX user_username_unique (username ASC)" +
@@ -94,6 +92,26 @@ public class SQLTableCreationFactory {
                     "    ON DELETE CASCADE" +
                     "    ON UPDATE CASCADE," +
                     "  CONSTRAINT user_books_book_fk_id" +
+                    "    FOREIGN KEY (book_id)" +
+                    "    REFERENCES book (id)" +
+                    "    ON DELETE CASCADE" +
+                    "    ON UPDATE CASCADE" +
+                    ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";
+            case USER_BOUGHT_BOOKS -> "CREATE TABLE IF NOT EXISTS user_bought_books (" +
+                    "  id INT NOT NULL AUTO_INCREMENT," +
+                    "  user_id INT NOT NULL," +
+                    "  book_id INT NOT NULL," +
+                    "  date timestamp NOT NULL," +
+                    "  PRIMARY KEY (id)," +
+                    "  UNIQUE INDEX user_bought_books_user_id_unique (id ASC)," +
+                    "  INDEX user_bought_books_user_id_idx (user_id ASC)," +
+                    "  INDEX user_bought_books_book_id_idx (book_id ASC)," +
+                    "  CONSTRAINT user_bought_books_user_fk_id" +
+                    "    FOREIGN KEY (user_id)" +
+                    "    REFERENCES user (id)" +
+                    "    ON DELETE CASCADE" +
+                    "    ON UPDATE CASCADE," +
+                    "  CONSTRAINT user_bought_books_book_fk_id" +
                     "    FOREIGN KEY (book_id)" +
                     "    REFERENCES book (id)" +
                     "    ON DELETE CASCADE" +

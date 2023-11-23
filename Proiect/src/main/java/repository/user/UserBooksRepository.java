@@ -9,6 +9,7 @@ public interface UserBooksRepository {
 
     List<BookInterface> findAll(User user);
     boolean save(User user, BookInterface book);
+    boolean buy(User user, BookInterface book);
     int deleteBook(User user, BookInterface book);
     void removeAll(User user);
 

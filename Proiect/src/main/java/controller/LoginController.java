@@ -12,6 +12,8 @@ import repository.security.RightsRolesRepository;
 import repository.security.RightsRolesRepositoryMySQL;
 import repository.user.UserBooksRepository;
 import repository.user.UserBooksRepositoryMySQL;
+import repository.user.UserRepository;
+import repository.user.UserRepositoryMySQL;
 import service.book.BookService;
 import service.book.BookServiceImpl;
 import service.user.AuthenticationService;
@@ -58,7 +60,8 @@ public class LoginController {
                 Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
                 BookRepository<BookInterface> bookRepository = new BookRepositoryMySQL(connection);
                 RightsRolesRepository rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
-                UserBooksRepository userBooksRepository = new UserBooksRepositoryMySQL(connection, rightsRolesRepository, bookRepository);
+                UserRepository userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
+                UserBooksRepository userBooksRepository = new UserBooksRepositoryMySQL(connection, rightsRolesRepository, bookRepository, userRepository);
                 BookService<BookInterface> bookService = new BookServiceImpl(bookRepository);
                 UserBooksService userBooksService = new UserBooksServiceImpl(userBooksRepository);
                 new CustomerController(customerView, bookService, userBooksService, user);

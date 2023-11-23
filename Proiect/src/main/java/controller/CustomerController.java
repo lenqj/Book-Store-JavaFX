@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import model.User;
 import model.book.Book;
 import model.book.BookInterface;
+import model.validator.BookValidator;
 import model.validator.UserValidator;
 import repository.book.BookRepository;
 import repository.book.sql.BookRepositoryMySQL;
@@ -38,7 +39,7 @@ public class CustomerController {
     private final CustomerView customerView;
     private final BookService<BookInterface> bookService;
     private final UserBooksService userBookService;
-    private final User user;
+    private User user;
 
     public CustomerController(CustomerView customerView, BookService<BookInterface> bookService, UserBooksService userBookService, User user) {
         this.customerView = customerView;
@@ -49,6 +50,7 @@ public class CustomerController {
         customerView.addSellBookButtonButtonListener(new SellBookButtonListener());
         customerView.addSoldBooksButtonButtonListener(new SoldBookButtonListener());
         customerView.addLogoutButtonListener(new LogoutButtonListener());
+        customerView.addBuyBookButtonButtonListener(new BuyBookButtonListener());
     }
     private class LogoutButtonListener implements EventHandler<ActionEvent> {
         @Override
@@ -81,12 +83,41 @@ public class CustomerController {
             Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
             RightsRolesRepository rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
             BookRepository<BookInterface> bookRepository = new BookRepositoryMySQL(connection);
-            UserBooksRepository userBooksRepository = new UserBooksRepositoryMySQL(connection, rightsRolesRepository, bookRepository);
+            UserRepository userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
+            UserBooksRepository userBooksRepository = new UserBooksRepositoryMySQL(connection, rightsRolesRepository, bookRepository, userRepository);
             UserBooksService userBooksService = new UserBooksServiceImpl(userBooksRepository);
+
             if (book != null && userBooksService.save(user, book)){
                 customerView.setTextSellBook(book.toString());
             }
         }
     }
+
+    private class BuyBookButtonListener implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+            BookInterface book = customerView.getSelectedBook();
+            Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
+            RightsRolesRepository rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
+            BookRepository<BookInterface> bookRepository = new BookRepositoryMySQL(connection);
+            UserRepository userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
+            UserBooksRepository userBooksRepository = new UserBooksRepositoryMySQL(connection, rightsRolesRepository, bookRepository, userRepository);
+
+            UserBooksService userBooksService = new UserBooksServiceImpl(userBooksRepository);
+            BookValidator bookValidator = new BookValidator(user, book);
+            bookValidator.validate();
+            final List<String> errors = bookValidator.getErrors();
+            if (errors.isEmpty()) {
+                if (book != null && userBooksService.buy(user, book)) {
+                    customerView.setTextSellBook(book.toString());
+                    customerView.setTableBookList(bookService.findAll());
+                    customerView.setMoneyText("Money: " + userRepository.findById(user.getId()).getMoney());
+                }
+            }else {
+                customerView.setTextSellBook(bookValidator.getFormattedErrors());
+            }
+        }
+    }
+
 
 }

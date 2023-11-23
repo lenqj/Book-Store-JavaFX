@@ -9,6 +9,8 @@ public class Book implements BookInterface {
     private String author;
     private String title;
     private LocalDate publishedDate;
+    private Long stock;
+    private Long price;
     public Long getId() {
         return id;
     }
@@ -35,5 +37,20 @@ public class Book implements BookInterface {
     }
     public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
+    }
+    public Long getStock() {
+        return stock;
+    }
+
+    public void setStock(Long stock) {
+        this.stock = stock;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 }

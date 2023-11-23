@@ -11,4 +11,6 @@ public interface BookRepository<T> {
     boolean save(T book);
     boolean badSave(T book);
     void removeAll();
+    T updateStock(T book, Long stock);
+    void updatePrice(T book, Long Price);
 }

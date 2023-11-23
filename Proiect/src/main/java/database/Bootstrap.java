@@ -46,6 +46,7 @@ public class Bootstrap {
 
             String[] dropStatements = {
                     "DROP TABLE `user_books`;",
+                    "DROP TABLE `user_bought_books`;",
                     "DROP TABLE `role_right`;",
                     "DROP TABLE `user_role`;",
                     "DROP TABLE `book`, `role`, `right`, `user`;"
@@ -131,16 +132,22 @@ public class Bootstrap {
                 .setAuthor("author 1")
                 .setTitle("book 1")
                 .setPublishedDate(LocalDate.of(2010, 6, 2))
+                .setStock(3L)
+                .setPrice(1L)
                 .build();
         Book book1 = new BookBuilder()
                 .setAuthor("author 1")
                 .setTitle("book 1")
                 .setPublishedDate(LocalDate.of(2010, 6, 2))
+                .setStock(4L)
+                .setPrice(1L)
                 .build();
         Book book2 = new BookBuilder()
                 .setAuthor("author 2")
                 .setTitle("book 2")
                 .setPublishedDate(LocalDate.of(2010, 6, 2))
+                .setStock(5L)
+                .setPrice(2L)
                 .build();
         Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
         BookRepository<BookInterface> bookRepository = new BookRepositoryMySQL(connection);

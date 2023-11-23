@@ -90,6 +90,18 @@ class AudioBookRepository implements BookRepository<AudioBookInterface> {
         }
 
     }
+
+    @Override
+    public AudioBookInterface updateStock(AudioBookInterface book, Long stock) {
+
+        return book;
+    }
+
+    @Override
+    public void updatePrice(AudioBookInterface book, Long Price) {
+
+    }
+
     private AudioBookInterface getBookFromResultSet(ResultSet resultSet) throws SQLException {
         return new AudioBookBuilder()
                 .setId(resultSet.getLong("id"))

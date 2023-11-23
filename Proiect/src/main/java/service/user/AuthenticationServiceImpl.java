@@ -31,6 +31,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .setUsername(username)
                 .setPassword(encodedPassword)
                 .setRoles(Collections.singletonList(customerRole))
+                .setMoney(123L)
                 .build();
 
         return userRepository.save(user);

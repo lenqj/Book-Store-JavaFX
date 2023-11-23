@@ -30,6 +30,10 @@ public class UserBuilder {
         user.setRoles(roles);
         return this;
     }
+    public UserBuilder setMoney(Long money){
+        user.setMoney(money);
+        return this;
+    }
 
     public User build(){
         return user;

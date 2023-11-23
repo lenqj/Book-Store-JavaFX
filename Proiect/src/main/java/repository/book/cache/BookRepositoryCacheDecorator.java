@@ -40,4 +40,14 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
         cache.invalidateCache();
         decoratedRepository.removeAll();
     }
+
+    @Override
+    public T updateStock(T book, Long stock) {
+        return book;
+    }
+
+    @Override
+    public void updatePrice(T book, Long Price) {
+
+    }
 }

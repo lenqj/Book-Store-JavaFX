@@ -1,7 +1,9 @@
 package service.user;
 
 import model.User;
+import model.book.Book;
 import model.book.BookInterface;
+import repository.book.BookRepository;
 import repository.user.UserBooksRepository;
 
 import java.util.List;
@@ -19,6 +21,11 @@ public class UserBooksServiceImpl implements UserBooksService{
     }
     public boolean save(User user, BookInterface book){
         return userBooksRepository.save(user, book);
+    }
+
+    @Override
+    public boolean buy(User user, BookInterface book) {
+        return userBooksRepository.buy(user, book);
     }
 
     @Override

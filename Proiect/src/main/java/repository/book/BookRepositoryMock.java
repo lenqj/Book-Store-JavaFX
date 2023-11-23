@@ -34,4 +34,15 @@ public class BookRepositoryMock implements BookRepository<BookInterface>{
     public void removeAll() {
         books.clear();
     }
+
+    @Override
+    public BookInterface updateStock(BookInterface book, Long stock) {
+
+        return book;
+    }
+
+    @Override
+    public void updatePrice(BookInterface book, Long Price) {
+
+    }
 }
