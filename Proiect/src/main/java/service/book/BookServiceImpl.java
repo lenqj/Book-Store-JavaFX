@@ -18,8 +18,8 @@ public class BookServiceImpl implements BookService<BookInterface>{
     }
 
     public BookInterface findById(Long id) {
-        return bookRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Book with id: %d not found".formatted(id)));
+        return bookRepository.findById(id);
+                //.orElseThrow(() -> new IllegalArgumentException("Book with id: %d not found".formatted(id)));
     }
 
     public boolean save(BookInterface book) {

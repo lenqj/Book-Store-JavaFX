@@ -8,8 +8,15 @@ import model.book.BookInterface;
 import model.validator.UserValidator;
 import repository.book.BookRepository;
 import repository.book.sql.BookRepositoryMySQL;
+import repository.security.RightsRolesRepository;
+import repository.security.RightsRolesRepositoryMySQL;
+import repository.user.UserBooksRepository;
+import repository.user.UserBooksRepositoryMySQL;
+import service.book.BookService;
 import service.book.BookServiceImpl;
 import service.user.AuthenticationService;
+import service.user.UserBooksService;
+import service.user.UserBooksServiceImpl;
 import view.CustomerView;
 import view.LoginView;
 
@@ -50,8 +57,11 @@ public class LoginController {
                 CustomerView customerView = new CustomerView(loginView.getStage(), user);
                 Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
                 BookRepository<BookInterface> bookRepository = new BookRepositoryMySQL(connection);
-                BookServiceImpl bookService = new BookServiceImpl(bookRepository);
-                new CustomerController(customerView, bookService, user);
+                RightsRolesRepository rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
+                UserBooksRepository userBooksRepository = new UserBooksRepositoryMySQL(connection, rightsRolesRepository, bookRepository);
+                BookService<BookInterface> bookService = new BookServiceImpl(bookRepository);
+                UserBooksService userBooksService = new UserBooksServiceImpl(userBooksRepository);
+                new CustomerController(customerView, bookService, userBooksService, user);
             }
 
         }

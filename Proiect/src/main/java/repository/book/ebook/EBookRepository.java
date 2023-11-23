@@ -29,7 +29,7 @@ public class EBookRepository implements BookRepository<EBookInterface> {
         }
         return books;
     }
-    public Optional<EBookInterface> findById(Long bookID) {
+    public EBookInterface findById(Long bookID) {
         String sql = "SELECT * from ebook where id=?;";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -39,11 +39,11 @@ public class EBookRepository implements BookRepository<EBookInterface> {
             while (resultSet.next()) {
                 returnBook = getBookFromResultSet(resultSet);
             }
-            return Optional.ofNullable(returnBook);
+            return returnBook;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return Optional.empty();
+            return null;
         }
     }
     public boolean save(EBookInterface book) {

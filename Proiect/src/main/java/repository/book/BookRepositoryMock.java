@@ -17,8 +17,9 @@ public class BookRepositoryMock implements BookRepository<BookInterface>{
     }
 
     @Override
-    public Optional<BookInterface> findById(Long findID) {
-        return books.parallelStream().filter(it -> it.getId().equals(findID)).findFirst();
+    public BookInterface findById(Long findID) {
+        return null;
+        //return books.parallelStream().filter(it -> it.getId().equals(findID)).findFirst();
     }
 
     @Override

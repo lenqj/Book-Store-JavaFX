@@ -25,6 +25,7 @@ import service.user.UserBooksService;
 import service.user.UserBooksServiceImpl;
 import view.CustomerView;
 import view.LoginView;
+import view.SoldBooksView;
 
 import java.sql.Connection;
 import java.util.EventListener;
@@ -36,14 +37,17 @@ public class CustomerController {
 
     private final CustomerView customerView;
     private final BookService<BookInterface> bookService;
+    private final UserBooksService userBookService;
     private final User user;
 
-    public CustomerController(CustomerView customerView, BookService<BookInterface> bookService, User user) {
+    public CustomerController(CustomerView customerView, BookService<BookInterface> bookService, UserBooksService userBookService, User user) {
         this.customerView = customerView;
         this.bookService = bookService;
+        this.userBookService = userBookService;
         this.user = user;
         customerView.setTableBookList(bookService.findAll());
         customerView.addSellBookButtonButtonListener(new SellBookButtonListener());
+        customerView.addSoldBooksButtonButtonListener(new SoldBookButtonListener());
         customerView.addLogoutButtonListener(new LogoutButtonListener());
     }
     private class LogoutButtonListener implements EventHandler<ActionEvent> {
@@ -62,12 +66,22 @@ public class CustomerController {
         }
     }
 
+    private class SoldBookButtonListener implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+            SoldBooksView soldBooksView = new SoldBooksView(user);
+            new SoldBooksController(soldBooksView, userBookService, user);
+        }
+    }
+
     private class SellBookButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
             BookInterface book = customerView.getSelectedBook();
             Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
-            UserBooksRepository userBooksRepository = new UserBooksRepositoryMySQL(connection);
+            RightsRolesRepository rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
+            BookRepository<BookInterface> bookRepository = new BookRepositoryMySQL(connection);
+            UserBooksRepository userBooksRepository = new UserBooksRepositoryMySQL(connection, rightsRolesRepository, bookRepository);
             UserBooksService userBooksService = new UserBooksServiceImpl(userBooksRepository);
             if (book != null && userBooksService.save(user, book)){
                 customerView.setTextSellBook(book.toString());

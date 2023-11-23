@@ -1,28 +1,46 @@
 package repository.user;
 
 import model.User;
-import model.book.Book;
 import model.book.BookInterface;
+import model.builder.UserBuilder;
+import repository.book.BookRepository;
+import repository.security.RightsRolesRepository;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static database.Constants.Tables.USER_BOOKS;
 
 public class UserBooksRepositoryMySQL implements UserBooksRepository{
     private final Connection connection;
-    public UserBooksRepositoryMySQL(Connection connection){
+    private final RightsRolesRepository rightsRolesRepository;
+    private final BookRepository<BookInterface> bookRepository;
+    public UserBooksRepositoryMySQL(Connection connection, RightsRolesRepository rightsRolesRepository, BookRepository<BookInterface> bookRepository){
         this.connection = connection;
+        this.rightsRolesRepository = rightsRolesRepository;
+        this.bookRepository = bookRepository;
     }
     public List<BookInterface> findAll(User user){
-        return null;
+        List<BookInterface> books = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("SELECT * FROM " + USER_BOOKS + " where user_id = ?;");
+            preparedStatement.setLong(1, user.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                books.add(getBookFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
     }
     public boolean save(User user, BookInterface book){
         try {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO `user_books` values (null, ?, ?, ?);");
+                    .prepareStatement("INSERT INTO " + USER_BOOKS + " values (null, ?, ?, ?);");
             preparedStatement.setLong(1, user.getId());
             preparedStatement.setLong(2, book.getId());
             preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
@@ -34,6 +52,34 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
         }
         return false;
     }
+
+    @Override
+    public int deleteBook(User user, BookInterface book) {
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("DELETE FROM " + USER_BOOKS + " WHERE user_id = ? and book_id = ?;");
+            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setLong(2, book.getId());
+
+            return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public void removeAll(User user){
+    }
+    private BookInterface getBookFromResultSet(ResultSet resultSet) throws SQLException {
+            return bookRepository.findById(resultSet.getLong(3));
+    }
+    private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
+
+        return new UserBuilder()
+                .setId(resultSet.getLong("id"))
+                .setUsername(resultSet.getString("username"))
+                .setPassword(resultSet.getString("password"))
+                .setRoles(rightsRolesRepository.findRolesForUser(resultSet.getLong("id")))
+                .build();
     }
 }

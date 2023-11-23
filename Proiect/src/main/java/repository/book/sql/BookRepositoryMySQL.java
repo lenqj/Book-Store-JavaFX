@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static database.Constants.Tables.BOOK;
+
 public class BookRepositoryMySQL implements BookRepository<BookInterface> {
     private final Connection connection;
     public BookRepositoryMySQL(Connection connection){
@@ -18,7 +20,7 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
 
     @Override
     public List<BookInterface> findAll() {
-        String sql = "SELECT * FROM book;";
+        String sql = "SELECT * FROM " + BOOK + ";";
         List<BookInterface> books = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
@@ -33,8 +35,8 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
     }
 
     @Override
-    public Optional<BookInterface> findById(Long bookID) {
-        String sql = "SELECT * from book where id=?;";
+    public BookInterface findById(Long bookID) {
+        String sql = "SELECT * from " + BOOK + " where id = ?;";
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, bookID);
@@ -43,17 +45,17 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
             while(resultSet.next()){
                 returnBook = getBookFromResultSet(resultSet);
             }
-            return Optional.ofNullable(returnBook);
+            return returnBook;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return Optional.empty();
+            return null;
         }
     }
 
     @Override
     public boolean save(BookInterface book) {
-        String sql = "INSERT INTO book VALUES(null, ?, ?, ?);";
+        String sql = "INSERT INTO " + BOOK + " VALUES(null, ?, ?, ?);";
 
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(sql);

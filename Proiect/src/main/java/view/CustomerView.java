@@ -24,6 +24,7 @@ public class CustomerView {
     private Stage stage;
     private TableView<BookInterface> table;
     private Button logoutButton;
+    private Button soldBooksButton;
     private Button sellBookButton;
     private Text textSellBook;
 
@@ -75,6 +76,7 @@ public class CustomerView {
         tableView.getColumns().setAll(id, author, title, publishedDate);
     }
     public void setTableBookList(List<BookInterface> books){
+        table.getItems().clear();
         for (BookInterface book: books)
             table.getItems().add(book);
     }
@@ -84,18 +86,29 @@ public class CustomerView {
         HBox logOutButtonHBox = new HBox(10);
         logOutButtonHBox.setAlignment(Pos.BOTTOM_RIGHT);
         logOutButtonHBox.getChildren().add(logoutButton);
-        gridPane.add(logOutButtonHBox, 1, 5);
+        gridPane.add(logOutButtonHBox, 2, 5);
 
+
+        soldBooksButton = new Button("Sold Books");
+        HBox soldBooksButtonHBox = new HBox(10);
+        soldBooksButtonHBox.setAlignment(Pos.BOTTOM_CENTER);
+        soldBooksButtonHBox.getChildren().add(soldBooksButton);
+        gridPane.add(soldBooksButtonHBox, 1, 5);
 
         sellBookButton = new Button("Sell Book");
         HBox sellBookButtonHBox = new HBox(10);
         sellBookButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
         sellBookButtonHBox.getChildren().add(sellBookButton);
         gridPane.add(sellBookButtonHBox, 0, 5);
+
     }
     public void addLogoutButtonListener(EventHandler<ActionEvent> logoutButtonListener) {
         logoutButton.setOnAction(logoutButtonListener);
     }
+    public void addSoldBooksButtonButtonListener(EventHandler<ActionEvent> soldBooksButtonButtonListener) {
+        soldBooksButton.setOnAction(soldBooksButtonButtonListener);
+    }
+
     public void addSellBookButtonButtonListener(EventHandler<ActionEvent> sellBookButtonButtonListener) {
         sellBookButton.setOnAction(sellBookButtonButtonListener);
     }

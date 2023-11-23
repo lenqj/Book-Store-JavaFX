@@ -29,7 +29,7 @@ class AudioBookRepository implements BookRepository<AudioBookInterface> {
         }
         return books;
     }
-    public Optional<AudioBookInterface> findById(Long bookID) {
+    public AudioBookInterface findById(Long bookID) {
         String sql = "SELECT * from audiobook where id=?;";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -39,11 +39,11 @@ class AudioBookRepository implements BookRepository<AudioBookInterface> {
             while (resultSet.next()) {
                 returnBook = getBookFromResultSet(resultSet);
             }
-            return Optional.ofNullable(returnBook);
+            return returnBook;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return Optional.empty();
+            return null;
         }
     }
     public boolean save(AudioBookInterface book) {

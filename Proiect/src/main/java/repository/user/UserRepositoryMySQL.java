@@ -31,23 +31,17 @@ public class UserRepositoryMySQL implements UserRepository {
     @Override
     public User findByUsernameAndPassword(String username, String password) {
         try {
-            Statement statement = connection.createStatement();
+            String sql = "Select * from `" + USER + "` where `username` = ? and `password`= ?";
 
-            String fetchUserSql =
-                    "Select * from `" + USER + "` where `username`=\'" + username + "\' and `password`=\'" + password + "\'";
-            ResultSet userResultSet = statement.executeQuery(fetchUserSql);
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, username);
+            statement.setString(2, password);
+
+            ResultSet userResultSet = statement.executeQuery();
             userResultSet.next();
-
-            User user = new UserBuilder()
-                    .setId(userResultSet.getLong("id"))
-                    .setUsername(userResultSet.getString("username"))
-                    .setPassword(userResultSet.getString("password"))
-                    .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("id")))
-                    .build();
-
-            return user;
+            return getUserFromResultSet(userResultSet);
         } catch (SQLException e) {
-            System.out.println(e.toString());
+            e.printStackTrace();
         }
         return null;
     }
@@ -90,17 +84,24 @@ public class UserRepositoryMySQL implements UserRepository {
     @Override
     public boolean existsByUsername(String email) {
         try {
-            Statement statement = connection.createStatement();
-
-            String fetchUserSql =
-                    "Select * from `" + USER + "` where `username`=\'" + email + "\'";
-            ResultSet userResultSet = statement.executeQuery(fetchUserSql);
+            String sql = "Select * from `" + USER + "` where `username`= ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, email);
+            ResultSet userResultSet = statement.executeQuery();
             return userResultSet.next();
-
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+    public User getUserFromResultSet(ResultSet userResultSet) throws SQLException {
+        return new UserBuilder()
+                .setId(userResultSet.getLong("id"))
+                .setUsername(userResultSet.getString("username"))
+                .setPassword(userResultSet.getString("password"))
+                .setRoles(rightsRolesRepository.findRolesForUser(userResultSet.getLong("id")))
+                .build();
+
     }
 
 }

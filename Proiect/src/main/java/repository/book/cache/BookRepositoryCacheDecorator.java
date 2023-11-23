@@ -22,7 +22,7 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
         return books;
     }
 
-    public Optional<T> findById(Long id) {
+    public T findById(Long id) {
         return decoratedRepository.findById(id);
     }
 
