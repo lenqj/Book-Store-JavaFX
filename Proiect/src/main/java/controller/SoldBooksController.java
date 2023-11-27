@@ -19,7 +19,6 @@ public class SoldBooksController {
         this.soldBooksView = soldBooksView;
         soldBooksView.addBackButtonListener(new BackButtonButtonListener());
         soldBooksView.addDeleteButtonListener(new DeleteButtonButtonListener());
-        //soldBooksView.setTableBookList(userBooksService.findAll(loginController.getLoginNotification().getResult()));
     }
     private class BackButtonButtonListener implements EventHandler<ActionEvent> {
         @Override

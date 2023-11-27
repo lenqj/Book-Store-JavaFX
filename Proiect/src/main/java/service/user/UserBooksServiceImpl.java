@@ -20,8 +20,13 @@ public class UserBooksServiceImpl implements UserBooksService{
 
         return userBooksRepository.findAll(user);
     }
+<<<<<<< Updated upstream
+    public Notification<Boolean> sell(User user, BookInterface book){
+        return userBooksRepository.sell(user, book);
+=======
     public Notification<Boolean> save(User user, BookInterface book){
         return userBooksRepository.save(user, book);
+>>>>>>> Stashed changes
     }
 
     @Override

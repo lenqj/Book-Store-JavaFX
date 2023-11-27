@@ -103,50 +103,49 @@ public class CustomerView {
         HBox sellBookButtonHBox = new HBox(10);
         sellBookButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
         sellBookButtonHBox.getChildren().add(sellBookButton);
-        gridPane.add(sellBookButtonHBox, 0, 3);
+        gridPane.add(sellBookButtonHBox, 0, 5);
 
 
         soldBooksButton = new Button("Sold Books");
         HBox soldBooksButtonHBox = new HBox(10);
         soldBooksButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
         soldBooksButtonHBox.getChildren().add(soldBooksButton);
-        gridPane.add(soldBooksButtonHBox, 1, 3);
+        gridPane.add(soldBooksButtonHBox, 1, 5);
 
         buyBookButton = new Button("Buy Book");
         HBox buyBookButtonHBox = new HBox(10);
         buyBookButtonHBox.setAlignment(Pos.BOTTOM_RIGHT);
         buyBookButtonHBox.getChildren().add(buyBookButton);
-        gridPane.add(buyBookButtonHBox, 2, 3);
+        gridPane.add(buyBookButtonHBox, 2, 5);
 
 
         logoutButton = new Button("Logout");
         HBox logOutButtonHBox = new HBox(10);
         logOutButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
         logOutButtonHBox.getChildren().add(logoutButton);
-        gridPane.add(logOutButtonHBox, 3, 3);
+        gridPane.add(logOutButtonHBox, 3, 5);
 
     }
 
+    public BookInterface getSelectedBook(){
+        return table.getSelectionModel().getSelectedItem();
+    }
     public void initializeTextSellBook(GridPane gridPane){
         textSellBook = new Text();
         HBox textSellBookHBox = new HBox(10);
         textSellBookHBox.setAlignment(Pos.BOTTOM_RIGHT);
         textSellBookHBox.getChildren().add(textSellBook);
 
-        gridPane.add(textSellBook, 1, 6, 5, 1);
+        gridPane.add(textSellBook, 1, 4, 4, 1);
     }
-
-    public BookInterface getSelectedBook(){
-        return table.getSelectionModel().getSelectedItem();
+    public void setTextSellBook (String text){
+        textSellBook.setText(text);
     }
     public void setMoneyText(String text){
         moneyText.setText(text);
     }
     public void setUsernameText(String text) {
         usernameText.setText(text);
-    }
-    public void setTextSellBook (String text){
-        textSellBook.setText(text);
     }
     public void addLogoutButtonListener(EventHandler<ActionEvent> logoutButtonListener) {
         logoutButton.setOnAction(logoutButtonListener);
