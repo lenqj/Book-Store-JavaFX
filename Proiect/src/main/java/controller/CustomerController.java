@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import launcher.ComponentFactory;
 import model.User;
 import model.book.Book;
 import model.book.BookInterface;
@@ -33,46 +34,37 @@ import java.util.EventListener;
 import java.util.List;
 
 import static database.Constants.Schemas.PRODUCTION;
+import static launcher.ComponentFactory.loginController;
 
 public class CustomerController {
 
     private final CustomerView customerView;
-    private final BookService<BookInterface> bookService;
-    private final UserBooksService userBookService;
     private User user;
-
-    public CustomerController(CustomerView customerView, BookService<BookInterface> bookService, UserBooksService userBookService, User user) {
+    public CustomerController(CustomerView customerView) {
         this.customerView = customerView;
-        this.bookService = bookService;
-        this.userBookService = userBookService;
-        this.user = user;
-        customerView.setTableBookList(bookService.findAll());
+        //customerView.setTableBookList(ComponentFactory.getBookService().findAll());
         customerView.addSellBookButtonButtonListener(new SellBookButtonListener());
         customerView.addSoldBooksButtonButtonListener(new SoldBookButtonListener());
         customerView.addLogoutButtonListener(new LogoutButtonListener());
         customerView.addBuyBookButtonButtonListener(new BuyBookButtonListener());
     }
-    private class LogoutButtonListener implements EventHandler<ActionEvent> {
+    public void setUser(User user){
+        this.user = user;
+    }
+    private static class LogoutButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-            LoginView loginView = new LoginView(customerView.getStage());
-            Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
-            final RightsRolesRepository rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
-            final UserRepository userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
-
-            final AuthenticationService authenticationService = new AuthenticationServiceImpl(userRepository,
-                    rightsRolesRepository);
-            final UserValidator userValidator = new UserValidator(userRepository);
-
-            new LoginController(loginView, authenticationService, userValidator);
+            ComponentFactory.getCustomerView().showStage(false);
+            ComponentFactory.getLoginView().clearTexts();
+            ComponentFactory.getLoginView().showStage(true);
         }
     }
 
     private class SoldBookButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-            SoldBooksView soldBooksView = new SoldBooksView(user);
-            new SoldBooksController(soldBooksView, userBookService, user);
+            ComponentFactory.getCustomerView().showStage(false);
+            ComponentFactory.getSoldBooksView().showStage(true);
         }
     }
 
@@ -80,14 +72,8 @@ public class CustomerController {
         @Override
         public void handle(ActionEvent event) {
             BookInterface book = customerView.getSelectedBook();
-            Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
-            RightsRolesRepository rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
-            BookRepository<BookInterface> bookRepository = new BookRepositoryMySQL(connection);
-            UserRepository userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
-            UserBooksRepository userBooksRepository = new UserBooksRepositoryMySQL(connection, rightsRolesRepository, bookRepository, userRepository);
-            UserBooksService userBooksService = new UserBooksServiceImpl(userBooksRepository);
 
-            if (book != null && userBooksService.save(user, book)){
+            if (book != null && ComponentFactory.getUserBooksService().save(user, book)){
                 customerView.setTextSellBook(book.toString());
             }
         }
@@ -97,21 +83,14 @@ public class CustomerController {
         @Override
         public void handle(ActionEvent event) {
             BookInterface book = customerView.getSelectedBook();
-            Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
-            RightsRolesRepository rightsRolesRepository = new RightsRolesRepositoryMySQL(connection);
-            BookRepository<BookInterface> bookRepository = new BookRepositoryMySQL(connection);
-            UserRepository userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
-            UserBooksRepository userBooksRepository = new UserBooksRepositoryMySQL(connection, rightsRolesRepository, bookRepository, userRepository);
-
-            UserBooksService userBooksService = new UserBooksServiceImpl(userBooksRepository);
-            BookValidator bookValidator = new BookValidator(user, book);
+            BookValidator bookValidator = new BookValidator(loginController.getLoginNotification().getResult(), book);
             bookValidator.validate();
             final List<String> errors = bookValidator.getErrors();
             if (errors.isEmpty()) {
-                if (book != null && userBooksService.buy(user, book)) {
+                if (book != null && ComponentFactory.getUserBooksService().buy(loginController.getLoginNotification().getResult(), book)) {
                     customerView.setTextSellBook(book.toString());
-                    customerView.setTableBookList(bookService.findAll());
-                    customerView.setMoneyText("Money: " + userRepository.findById(user.getId()).getMoney());
+                    customerView.setTableBookList(ComponentFactory.getBookService().findAll());
+                    customerView.setMoneyText("Money: " + ComponentFactory.getUserRepository().findById(1L).getMoney());
                 }
             }else {
                 customerView.setTextSellBook(bookValidator.getFormattedErrors());

@@ -22,29 +22,31 @@ import service.book.BookService;
 import java.util.List;
 import java.util.Optional;
 
+import static launcher.ComponentFactory.loginController;
+
 public class SoldBooksView {
     private final Stage stage;
+    private final Scene scene;
     private TableView<BookInterface> table;
     private Button backButton;
     private Button deleteButton;
+    private Text sceneTitle;
 
-    public SoldBooksView(User user) {
-        stage = new Stage();
+    public SoldBooksView(Stage stage) {
+        this.stage = stage;
         stage.setTitle("Book Store ");
 
         GridPane gridPane = new GridPane();
         initializeGridPane(gridPane);
 
-        Scene scene = new Scene(gridPane, 720, 480);
-        stage.setScene(scene);
+        scene = new Scene(gridPane, 720, 480);
 
-        initializeSceneTitle(gridPane, user);
+        initializeSceneTitle(gridPane);
 
         table = new TableView<>();
         initializeTableView(table, gridPane);
 
         initializeButtons(gridPane);
-        showStage(true);
     }
 
     private void initializeGridPane(GridPane gridPane){
@@ -54,8 +56,8 @@ public class SoldBooksView {
         gridPane.setPadding(new Insets(25, 25, 25, 25));
     }
 
-    private void initializeSceneTitle(GridPane gridPane, User user){
-        Text sceneTitle = new Text("Sold books for " + user.getUsername());
+    private void initializeSceneTitle(GridPane gridPane){
+        sceneTitle = new Text();
         sceneTitle.setFont(Font.font("Thoma", FontWeight.NORMAL, 20));
         gridPane.add(sceneTitle, 0, 0, 2, 1);
     }
@@ -101,7 +103,8 @@ public class SoldBooksView {
     public BookInterface getSelectedBook(){
         return table.getSelectionModel().getSelectedItem();
     }
-    public void showStage(boolean flag){
+    public void showStage(Boolean flag) {
+        stage.setScene(scene);
         if(flag)
             stage.show();
         else
