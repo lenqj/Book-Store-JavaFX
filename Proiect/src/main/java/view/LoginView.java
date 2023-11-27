@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 public class LoginView {
     private Stage stage;
+    private Scene scene;
     private TextField userTextField;
     private PasswordField passwordField;
     private Button signInButton;
@@ -34,12 +35,10 @@ public class LoginView {
         GridPane gridPane = new GridPane();
         initializeGridPane(gridPane);
 
-        Scene scene = new Scene(gridPane, 720, 480);
-        stage.setScene(scene);
+        scene = new Scene(gridPane, 720, 480);
 
         initializeSceneTitle(gridPane);
         initializeFields(gridPane);
-        stage.show();
     }
 
     private void initializeGridPane(GridPane gridPane){
@@ -105,5 +104,17 @@ public class LoginView {
 
     public Stage getStage() {
         return stage;
+    }
+    public void showStage(Boolean flag) {
+        stage.setScene(scene);
+        if(flag)
+            stage.show();
+        else
+            stage.close();
+    }
+    public void clearTexts(){
+        userTextField.setText("");
+        passwordField.setText("");
+        actionTarget.setText("");
     }
 }

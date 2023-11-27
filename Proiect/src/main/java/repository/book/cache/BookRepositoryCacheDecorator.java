@@ -22,7 +22,7 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
         return books;
     }
 
-    public Optional<T> findById(Long id) {
+    public T findById(Long id) {
         return decoratedRepository.findById(id);
     }
 
@@ -39,5 +39,15 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
     public void removeAll() {
         cache.invalidateCache();
         decoratedRepository.removeAll();
+    }
+
+    @Override
+    public T updateStock(T book, Long stock) {
+        return book;
+    }
+
+    @Override
+    public void updatePrice(T book, Long Price) {
+
     }
 }

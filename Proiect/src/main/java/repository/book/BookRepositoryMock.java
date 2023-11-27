@@ -17,8 +17,9 @@ public class BookRepositoryMock implements BookRepository<BookInterface>{
     }
 
     @Override
-    public Optional<BookInterface> findById(Long findID) {
-        return books.parallelStream().filter(it -> it.getId().equals(findID)).findFirst();
+    public BookInterface findById(Long findID) {
+        return null;
+        //return books.parallelStream().filter(it -> it.getId().equals(findID)).findFirst();
     }
 
     @Override
@@ -32,5 +33,16 @@ public class BookRepositoryMock implements BookRepository<BookInterface>{
     @Override
     public void removeAll() {
         books.clear();
+    }
+
+    @Override
+    public BookInterface updateStock(BookInterface book, Long stock) {
+
+        return book;
+    }
+
+    @Override
+    public void updatePrice(BookInterface book, Long Price) {
+
     }
 }

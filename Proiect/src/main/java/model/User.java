@@ -10,6 +10,15 @@ public class User {
     private String username;
     private String password;
     private List<Role> roles;
+    private Long money;
+
+    public Long getMoney() {
+        return money;
+    }
+
+    public void setMoney(Long money) {
+        this.money = money;
+    }
 
     public Long getId() {
         return id;

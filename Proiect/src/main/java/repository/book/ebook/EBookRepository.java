@@ -29,7 +29,7 @@ public class EBookRepository implements BookRepository<EBookInterface> {
         }
         return books;
     }
-    public Optional<EBookInterface> findById(Long bookID) {
+    public EBookInterface findById(Long bookID) {
         String sql = "SELECT * from ebook where id=?;";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -39,11 +39,11 @@ public class EBookRepository implements BookRepository<EBookInterface> {
             while (resultSet.next()) {
                 returnBook = getBookFromResultSet(resultSet);
             }
-            return Optional.ofNullable(returnBook);
+            return returnBook;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return Optional.empty();
+            return null;
         }
     }
     public boolean save(EBookInterface book) {
@@ -90,6 +90,17 @@ public class EBookRepository implements BookRepository<EBookInterface> {
         }
 
     }
+
+    @Override
+    public EBookInterface updateStock(EBookInterface book, Long stock) {
+        return book;
+    }
+
+    @Override
+    public void updatePrice(EBookInterface book, Long Price) {
+
+    }
+
     private EBookInterface getBookFromResultSet(ResultSet resultSet) throws SQLException {
         return new EBookBuilder()
                 .setId(resultSet.getLong("id"))

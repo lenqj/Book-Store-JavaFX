@@ -51,11 +51,11 @@ public class RightsRolesRepositoryMySQL implements RightsRolesRepository {
 
     @Override
     public Role findRoleByTitle(String role) {
-        Statement statement;
         try {
-            statement = connection.createStatement();
-            String fetchRoleSql = "Select * from " + ROLE + " where `role`=\'" + role + "\'";
-            ResultSet roleResultSet = statement.executeQuery(fetchRoleSql);
+            String sql = "Select * from " + ROLE + " where `role`= ?;";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, role);
+            ResultSet roleResultSet = statement.executeQuery();
             roleResultSet.next();
             Long roleId = roleResultSet.getLong("id");
             String roleTitle = roleResultSet.getString("role");
@@ -63,7 +63,6 @@ public class RightsRolesRepositoryMySQL implements RightsRolesRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -86,11 +85,11 @@ public class RightsRolesRepositoryMySQL implements RightsRolesRepository {
 
     @Override
     public Right findRightByTitle(String right) {
-        Statement statement;
         try {
-            statement = connection.createStatement();
-            String fetchRoleSql = "Select * from `" + RIGHT + "` where `right`=\'" + right + "\'";
-            ResultSet rightResultSet = statement.executeQuery(fetchRoleSql);
+            String sql = "Select * from `" + RIGHT + "` where `right`= ?;";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, right);
+            ResultSet rightResultSet = statement.executeQuery();
             rightResultSet.next();
             Long rightId = rightResultSet.getLong("id");
             String rightTitle = rightResultSet.getString("right");
@@ -112,7 +111,7 @@ public class RightsRolesRepositoryMySQL implements RightsRolesRepository {
                 insertUserRoleStatement.executeUpdate();
             }
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -143,7 +142,7 @@ public class RightsRolesRepositoryMySQL implements RightsRolesRepository {
             insertStatement.setLong(2, rightId);
             insertStatement.executeUpdate();
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 }
