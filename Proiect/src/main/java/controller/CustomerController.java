@@ -10,6 +10,7 @@ import model.User;
 import model.book.Book;
 import model.book.BookInterface;
 import model.validator.BookValidator;
+import model.validator.Notification;
 import model.validator.UserValidator;
 import repository.book.BookRepository;
 import repository.book.sql.BookRepositoryMySQL;
@@ -39,17 +40,14 @@ import static launcher.ComponentFactory.loginController;
 public class CustomerController {
 
     private final CustomerView customerView;
-    private User user;
+    private Notification<Boolean> customerNotification;
     public CustomerController(CustomerView customerView) {
         this.customerView = customerView;
-        //customerView.setTableBookList(ComponentFactory.getBookService().findAll());
+        customerNotification = new Notification<>();
         customerView.addSellBookButtonButtonListener(new SellBookButtonListener());
         customerView.addSoldBooksButtonButtonListener(new SoldBookButtonListener());
         customerView.addLogoutButtonListener(new LogoutButtonListener());
         customerView.addBuyBookButtonButtonListener(new BuyBookButtonListener());
-    }
-    public void setUser(User user){
-        this.user = user;
     }
     private static class LogoutButtonListener implements EventHandler<ActionEvent> {
         @Override
@@ -72,9 +70,14 @@ public class CustomerController {
         @Override
         public void handle(ActionEvent event) {
             BookInterface book = customerView.getSelectedBook();
-
-            if (book != null && ComponentFactory.getUserBooksService().save(user, book)){
-                customerView.setTextSellBook(book.toString());
+            customerNotification = ComponentFactory.getUserBooksService().save(loginController.getLoginNotification().getResult(), book);
+            BookValidator bookValidator = new BookValidator(loginController.getLoginNotification().getResult(), book);
+            bookValidator.validate();
+            bookValidator.getErrors().forEach(customerNotification::addError);
+            if (customerNotification.hasErrors()){
+                customerView.setTextSellBook("You successfully sold: " + book.toString());
+            }else {
+                customerView.setTextSellBook(customerNotification.getFormattedErrors());
             }
         }
     }
@@ -83,17 +86,16 @@ public class CustomerController {
         @Override
         public void handle(ActionEvent event) {
             BookInterface book = customerView.getSelectedBook();
+            customerNotification = ComponentFactory.getUserBooksService().buy(loginController.getLoginNotification().getResult(), book);
             BookValidator bookValidator = new BookValidator(loginController.getLoginNotification().getResult(), book);
             bookValidator.validate();
-            final List<String> errors = bookValidator.getErrors();
-            if (errors.isEmpty()) {
-                if (book != null && ComponentFactory.getUserBooksService().buy(loginController.getLoginNotification().getResult(), book)) {
-                    customerView.setTextSellBook(book.toString());
-                    customerView.setTableBookList(ComponentFactory.getBookService().findAll());
-                    customerView.setMoneyText("Money: " + ComponentFactory.getUserRepository().findById(1L).getMoney());
-                }
+            bookValidator.getErrors().forEach(customerNotification::addError);
+            if (customerNotification.hasErrors()) {
+                customerView.setTextSellBook("You successfully bought: " + book.toString());
+                customerView.setTableBookList(ComponentFactory.getBookService().findAll());
+                customerView.setMoneyText("Money: " + ComponentFactory.getUserRepository().findById(loginController.getLoginNotification().getResult().getId()).getMoney());
             }else {
-                customerView.setTextSellBook(bookValidator.getFormattedErrors());
+                customerView.setTextSellBook(customerNotification.getFormattedErrors());
             }
         }
     }
