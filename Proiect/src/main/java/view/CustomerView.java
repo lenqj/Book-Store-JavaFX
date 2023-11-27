@@ -72,12 +72,12 @@ public class CustomerView {
         moneyTextHBox.setAlignment(Pos.BOTTOM_RIGHT);
         moneyTextHBox.getChildren().add(moneyText);
 
-        gridPane.add(usernameTextHBox, 0, 0);
-        gridPane.add(moneyTextHBox, 2, 0);
+        gridPane.add(usernameTextHBox, 0, 0, 2, 1);
+        gridPane.add(moneyTextHBox, 2, 0, 2, 1);
     }
     @SuppressWarnings("unchecked")
     private void initializeTableView(TableView<BookInterface> tableView, GridPane gridPane){
-        gridPane.add(table, 1, 1, 2, 1);
+        gridPane.add(table, 0, 1, 4, 1);
         TableColumn<BookInterface, String> id = new TableColumn<>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         TableColumn<BookInterface, String> author = new TableColumn<>("Author");
@@ -160,7 +160,7 @@ public class CustomerView {
         textSellBookHBox.setAlignment(Pos.BOTTOM_RIGHT);
         textSellBookHBox.getChildren().add(textSellBook);
 
-        gridPane.add(textSellBook, 1, 6);
+        gridPane.add(textSellBook, 1, 6, 4, 1);
     }
     public void setTextSellBook (String text){
         textSellBook.setText(text);
