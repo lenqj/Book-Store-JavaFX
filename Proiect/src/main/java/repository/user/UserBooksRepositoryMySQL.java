@@ -112,7 +112,7 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
     private Notification<BookInterface> getBookFromResultSet(ResultSet resultSet) throws SQLException {
             return bookRepository.findById(resultSet.getLong(3));
     }
-    private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
         return new UserBuilder()
                 .setId(resultSet.getLong("id"))
                 .setUsername(resultSet.getString("username"))

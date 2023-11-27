@@ -15,19 +15,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.User;
 import model.book.BookInterface;
-import service.book.BookService;
 
 import java.util.List;
-import java.util.Optional;
-
-import static launcher.ComponentFactory.loginController;
 
 public class SoldBooksView {
     private final Stage stage;
     private final Scene scene;
-    private TableView<BookInterface> table;
+    private final TableView<BookInterface> table;
     private Button backButton;
     private Button deleteButton;
     private Text sceneTitle;
@@ -59,11 +54,11 @@ public class SoldBooksView {
     private void initializeSceneTitle(GridPane gridPane){
         sceneTitle = new Text();
         sceneTitle.setFont(Font.font("Thoma", FontWeight.NORMAL, 20));
-        gridPane.add(sceneTitle, 0, 0, 2, 1);
+        gridPane.add(sceneTitle, 0, 0, 4, 1);
     }
     @SuppressWarnings("unchecked")
     private void initializeTableView(TableView<BookInterface> tableView, GridPane gridPane){
-        gridPane.add(table, 0, 1, 2, 1);
+        gridPane.add(table, 0, 1, 4, 4);
         TableColumn<BookInterface, String> id = new TableColumn<>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         TableColumn<BookInterface,String> author = new TableColumn<>("Author");
@@ -72,7 +67,7 @@ public class SoldBooksView {
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
         TableColumn<BookInterface,String> publishedDate = new TableColumn<>("Published Date");
         publishedDate.setCellValueFactory(new PropertyValueFactory<>("publishedDate"));
-        tableView.getColumns().setAll(  id, author, title, publishedDate);
+        tableView.getColumns().setAll(id, author, title, publishedDate);
     }
     public void setTableBookList(List<BookInterface> books){
         table.getItems().clear();
@@ -83,16 +78,16 @@ public class SoldBooksView {
     private void initializeButtons(GridPane gridPane){
         deleteButton = new Button("Delete");
         HBox deleteButtonHBox = new HBox(10);
-        deleteButtonHBox.setAlignment(Pos.BOTTOM_RIGHT);
+        deleteButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
         deleteButtonHBox.getChildren().add(deleteButton);
-        gridPane.add(deleteButtonHBox, 0, 5);
+        gridPane.add(deleteButtonHBox, 0, 7);
 
 
         backButton = new Button("Back");
         HBox backButtonHBox = new HBox(10);
         backButtonHBox.setAlignment(Pos.BOTTOM_RIGHT);
         backButtonHBox.getChildren().add(backButton);
-        gridPane.add(backButtonHBox, 1, 5);
+        gridPane.add(backButtonHBox, 1, 7);
     }
     public void addBackButtonListener(EventHandler<ActionEvent> backButtonListener) {
         backButton.setOnAction(backButtonListener);

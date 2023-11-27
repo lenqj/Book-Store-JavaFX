@@ -29,7 +29,7 @@ public class CustomerController {
         }
     }
 
-    private class SoldBookButtonListener implements EventHandler<ActionEvent> {
+    private static class SoldBookButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
             ComponentFactory.getCustomerView().showStage(false);
@@ -59,7 +59,7 @@ public class CustomerController {
             if (!customerNotification.hasErrors()) {
                 customerView.setTextSellBook("You successfully bought: " + book.toString());
                 customerView.setTableBookList(ComponentFactory.getBookService().findAll());
-                customerView.setMoneyText("Money: " + ComponentFactory.getUserRepository().findById(loginController.getLoginNotification().getResult().getId()).getMoney());
+                customerView.setMoneyText("Money: " + loginController.getLoginNotification().getResult().getMoney());
             }else {
                 customerView.setTextSellBook(customerNotification.getFormattedErrors());
             }
