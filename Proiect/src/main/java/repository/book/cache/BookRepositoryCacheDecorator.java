@@ -1,5 +1,6 @@
 package repository.book.cache;
 
+import model.validator.Notification;
 import repository.Cache;
 import repository.book.BookRepository;
 
@@ -22,7 +23,7 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
         return books;
     }
 
-    public T findById(Long id) {
+    public Notification<T> findById(Long id) {
         return decoratedRepository.findById(id);
     }
 
@@ -31,7 +32,6 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
         return decoratedRepository.save(book);
     }
 
-    @Override
     public boolean badSave(T book) {
         return false;
     }
@@ -41,12 +41,10 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
         decoratedRepository.removeAll();
     }
 
-    @Override
-    public T updateStock(T book, Long stock) {
-        return book;
+    public Notification<T> updateStock(T book, Long stock) {
+        return null;
     }
 
-    @Override
     public void updatePrice(T book, Long Price) {
 
     }

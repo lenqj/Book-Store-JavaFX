@@ -72,12 +72,12 @@ public class CustomerView {
         moneyTextHBox.setAlignment(Pos.BOTTOM_RIGHT);
         moneyTextHBox.getChildren().add(moneyText);
 
-        gridPane.add(usernameTextHBox, 0, 0);
-        gridPane.add(moneyTextHBox, 3, 0);
+        gridPane.add(usernameTextHBox, 0, 0, 2, 1);
+        gridPane.add(moneyTextHBox, 2, 0, 2, 1);
     }
     @SuppressWarnings("unchecked")
     private void initializeTableView(TableView<BookInterface> tableView, GridPane gridPane){
-        gridPane.add(table, 1, 1, 5, 2);
+        gridPane.add(table, 0, 1, 4, 1);
         TableColumn<BookInterface, String> id = new TableColumn<>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         TableColumn<BookInterface, String> author = new TableColumn<>("Author");

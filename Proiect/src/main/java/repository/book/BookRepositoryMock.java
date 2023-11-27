@@ -1,10 +1,10 @@
 package repository.book;
 
 import model.book.BookInterface;
+import model.validator.Notification;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class BookRepositoryMock implements BookRepository<BookInterface>{
     private final List<BookInterface> books;
@@ -17,7 +17,7 @@ public class BookRepositoryMock implements BookRepository<BookInterface>{
     }
 
     @Override
-    public BookInterface findById(Long findID) {
+    public Notification<BookInterface> findById(Long findID) {
         return null;
         //return books.parallelStream().filter(it -> it.getId().equals(findID)).findFirst();
     }
@@ -36,9 +36,9 @@ public class BookRepositoryMock implements BookRepository<BookInterface>{
     }
 
     @Override
-    public BookInterface updateStock(BookInterface book, Long stock) {
+    public Notification<BookInterface> updateStock(BookInterface book, Long stock) {
 
-        return book;
+        return null;
     }
 
     @Override
