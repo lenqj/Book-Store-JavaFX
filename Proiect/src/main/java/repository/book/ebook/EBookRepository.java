@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class EBookRepository implements BookRepository<EBookInterface> {
+public class EBookRepository {
     private final Connection connection;
     public EBookRepository(Connection connection){
         this.connection = connection;
@@ -88,16 +88,6 @@ public class EBookRepository implements BookRepository<EBookInterface> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-    }
-
-    @Override
-    public EBookInterface updateStock(EBookInterface book, Long stock) {
-        return book;
-    }
-
-    @Override
-    public void updatePrice(EBookInterface book, Long Price) {
 
     }
 

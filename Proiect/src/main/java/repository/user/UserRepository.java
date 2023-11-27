@@ -16,6 +16,6 @@ public interface UserRepository {
     void removeAll();
 
     boolean existsByUsername(String username);
-    User updateMoney(User user, Long money);
+    Notification<User> updateMoney(User user, Long money);
     User findById(Long id);
 }

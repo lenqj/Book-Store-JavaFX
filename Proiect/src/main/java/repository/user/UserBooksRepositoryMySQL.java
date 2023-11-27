@@ -1,8 +1,10 @@
 package repository.user;
 
 import model.User;
+import model.book.Book;
 import model.book.BookInterface;
 import model.builder.UserBuilder;
+import model.validator.Notification;
 import repository.book.BookRepository;
 import repository.security.RightsRolesRepository;
 
@@ -33,14 +35,15 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
             preparedStatement.setLong(1, user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                books.add(getBookFromResultSet(resultSet));
+                books.add(getBookFromResultSet(resultSet).getResult());
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return books;
     }
-    public boolean save(User user, BookInterface book){
+    public Notification<Boolean> save(User user, BookInterface book){
+        Notification<Boolean> saveNotification = new Notification<>();
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO " + USER_BOOKS + " values (null, ?, ?, ?);");
@@ -48,16 +51,19 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
             preparedStatement.setLong(2, book.getId());
             preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
             int rowsInserted = preparedStatement.executeUpdate();
-
-            return rowsInserted == 1;
+            saveNotification.setResult(rowsInserted == 1);
         } catch (SQLException e) {
+            saveNotification.addError("Something is wrong with the Database!");
             e.printStackTrace();
         }
-        return false;
+        return saveNotification;
     }
 
     @Override
-    public boolean buy(User user, BookInterface book) {
+    public Notification<Boolean> buy(User user, BookInterface book) {
+        Notification<Boolean> buyNotification = new Notification<>();
+        Notification<BookInterface> bookNotification = new Notification<>();
+        Notification<User> userNotification = new Notification<>();
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO " + USER_BOUGHT_BOOKS + " values (null, ?, ?, ?);");
@@ -65,13 +71,15 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
             preparedStatement.setLong(2, book.getId());
             preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
             int rowsInserted = preparedStatement.executeUpdate();
-            book = bookRepository.updateStock(book, (book.getStock() - 1));
-            user = userRepository.updateMoney(user, (user.getMoney() - book.getPrice()));
-            return rowsInserted == 1;
+
+            bookNotification = bookRepository.updateStock(book, (book.getStock() - 1));
+            userNotification = userRepository.updateMoney(user, (user.getMoney() - book.getPrice()));
+            buyNotification.setResult(rowsInserted == 1);
         } catch (SQLException e) {
+            buyNotification.addError("Something is wrong with the Database!");
             e.printStackTrace();
         }
-        return false;
+        return buyNotification;
     }
 
     @Override
@@ -91,7 +99,7 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
 
     public void removeAll(User user){
     }
-    private BookInterface getBookFromResultSet(ResultSet resultSet) throws SQLException {
+    private Notification<BookInterface> getBookFromResultSet(ResultSet resultSet) throws SQLException {
             return bookRepository.findById(resultSet.getLong(3));
     }
     private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
