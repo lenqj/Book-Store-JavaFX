@@ -16,10 +16,11 @@ public class BookValidator {
         this.errors = new ArrayList<>();
     }
 
-    public void validate() {
+    public boolean validate() {
         validateUserMoney(user);
         validateBookStock(book);
         validateUserBuyBook(user, book);
+        return errors.isEmpty();
     }
 
     private void validateUserMoney(User user) {
