@@ -3,6 +3,7 @@ package repository.book.audiobook;
 import model.book.audiobook.AudioBook;
 import model.book.audiobook.AudioBookInterface;
 import model.builder.AudioBookBuilder;
+import model.validator.Notification;
 import repository.book.BookRepository;
 
 import java.sql.*;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-class AudioBookRepository implements BookRepository<AudioBookInterface> {
+class AudioBookRepository {
     private final Connection connection;
     public AudioBookRepository(Connection connection){
         this.connection = connection;
@@ -91,16 +92,6 @@ class AudioBookRepository implements BookRepository<AudioBookInterface> {
 
     }
 
-    @Override
-    public AudioBookInterface updateStock(AudioBookInterface book, Long stock) {
-
-        return book;
-    }
-
-    @Override
-    public void updatePrice(AudioBookInterface book, Long Price) {
-
-    }
 
     private AudioBookInterface getBookFromResultSet(ResultSet resultSet) throws SQLException {
         return new AudioBookBuilder()

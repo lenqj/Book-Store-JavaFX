@@ -3,6 +3,7 @@ package service.user;
 import model.User;
 import model.book.Book;
 import model.book.BookInterface;
+import model.validator.Notification;
 import repository.book.BookRepository;
 import repository.user.UserBooksRepository;
 
@@ -19,12 +20,12 @@ public class UserBooksServiceImpl implements UserBooksService{
 
         return userBooksRepository.findAll(user);
     }
-    public boolean save(User user, BookInterface book){
+    public Notification<Boolean> save(User user, BookInterface book){
         return userBooksRepository.save(user, book);
     }
 
     @Override
-    public boolean buy(User user, BookInterface book) {
+    public Notification<Boolean> buy(User user, BookInterface book) {
         return userBooksRepository.buy(user, book);
     }
 

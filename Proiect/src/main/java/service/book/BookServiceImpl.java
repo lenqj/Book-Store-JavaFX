@@ -1,6 +1,8 @@
 package service.book;
 
+import model.book.Book;
 import model.book.BookInterface;
+import model.validator.Notification;
 import repository.book.BookRepository;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -17,7 +19,7 @@ public class BookServiceImpl implements BookService<BookInterface>{
         return bookRepository.findAll();
     }
 
-    public BookInterface findById(Long id) {
+    public Notification<BookInterface> findById(Long id) {
         return bookRepository.findById(id);
                 //.orElseThrow(() -> new IllegalArgumentException("Book with id: %d not found".formatted(id)));
     }
@@ -27,7 +29,7 @@ public class BookServiceImpl implements BookService<BookInterface>{
     }
 
     public int getAgeOfBook(Long id) {
-        BookInterface book = this.findById(id);
+        BookInterface book = this.findById(id).getResult();
 
         LocalDate now = LocalDate.now();
 

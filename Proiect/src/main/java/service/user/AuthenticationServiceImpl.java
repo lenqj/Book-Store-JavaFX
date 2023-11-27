@@ -32,6 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .setUsername(username)
                 .setPassword(password)
                 .setRoles(Collections.singletonList(customerRole))
+                .setMoney(100L)
                 .build();
 
         UserValidator userValidator = new UserValidator(user);

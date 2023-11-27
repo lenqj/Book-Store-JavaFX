@@ -127,18 +127,19 @@ public class UserRepositoryMySQL implements UserRepository {
     }
 
     @Override
-    public User updateMoney(User user, Long money) {
+    public Notification<User> updateMoney(User user, Long money) {
+        Notification<User> userNotification = new Notification<>();
         String sql = "UPDATE " + USER + " SET `money`= ? WHERE id = ?;";
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, money);
             preparedStatement.setLong(2, user.getId());
             preparedStatement.executeUpdate();
-            return findById(user.getId());
         } catch (SQLException e) {
+            userNotification.addError("Something is wrong with the Database!");
             e.printStackTrace();
         }
-        return null;
+        return userNotification;
     }
 
     public User getUserFromResultSet(ResultSet userResultSet) throws SQLException {

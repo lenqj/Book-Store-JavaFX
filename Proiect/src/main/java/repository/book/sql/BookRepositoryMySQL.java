@@ -1,5 +1,7 @@
 package repository.book.sql;
 
+import model.User;
+import model.validator.Notification;
 import repository.book.BookRepository;
 import model.book.Book;
 import model.book.BookInterface;
@@ -34,22 +36,26 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
     }
 
     @Override
-    public BookInterface findById(Long bookID) {
+    public Notification<BookInterface> findById(Long bookID) {
+        Notification<BookInterface> bookInterfaceNotification = new Notification<>();
         String sql = "SELECT * from " + BOOK + " where id = ?;";
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, bookID);
             ResultSet resultSet = preparedStatement.executeQuery();
-            BookInterface returnBook = new Book();
-            while(resultSet.next()){
-                returnBook = getBookFromResultSet(resultSet);
+            if (resultSet.next())
+            {
+                BookInterface book = getBookFromResultSet(resultSet);
+                bookInterfaceNotification.setResult(book);
+            } else {
+                bookInterfaceNotification.addError("Invalid username or password!");
+                return bookInterfaceNotification;
             }
-            return returnBook;
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            bookInterfaceNotification.addError("Something is wrong with the Database!");
         }
+        return bookInterfaceNotification;
     }
 
     @Override
@@ -103,7 +109,7 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
     }
 
     @Override
-    public BookInterface updateStock(BookInterface book, Long stock) {
+    public Notification<BookInterface> updateStock(BookInterface book, Long stock) {
         String sql = "UPDATE " + BOOK + " SET `stock`= ? WHERE id = ?;";
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
