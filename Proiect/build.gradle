@@ -26,4 +26,4 @@ javafx {
 test {
     useJUnitPlatform()
 }
-mainClassName = 'Main'
+mainClassName = 'launcher.Launcher'
