@@ -129,8 +129,8 @@ public class UserRepositoryMySQL implements UserRepository {
     @Override
     public Notification<User> updateMoney(User user, Long money) {
         Notification<User> userNotification = new Notification<>();
-        String sql = "UPDATE " + USER + " SET `money`= ? WHERE id = ?;";
         try{
+            String sql = "UPDATE " + USER + " SET `money`= ? WHERE id = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, money);
             preparedStatement.setLong(2, user.getId());
