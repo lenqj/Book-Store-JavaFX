@@ -133,7 +133,7 @@ public class Bootstrap {
                 .setTitle("book 1")
                 .setPublishedDate(LocalDate.of(2010, 6, 2))
                 .setStock(3L)
-                .setPrice(1L)
+                .setPrice(122L)
                 .build();
         Book book1 = new BookBuilder()
                 .setAuthor("author 1")

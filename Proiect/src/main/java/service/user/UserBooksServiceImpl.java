@@ -20,8 +20,8 @@ public class UserBooksServiceImpl implements UserBooksService{
 
         return userBooksRepository.findAll(user);
     }
-    public Notification<Boolean> save(User user, BookInterface book){
-        return userBooksRepository.save(user, book);
+    public Notification<Boolean> sell(User user, BookInterface book){
+        return userBooksRepository.sell(user, book);
     }
 
     @Override

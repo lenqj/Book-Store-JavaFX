@@ -43,40 +43,47 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
         }
         return books;
     }
-    public Notification<Boolean> save(User user, BookInterface book){
-        Notification<Boolean> saveNotification = new Notification<>();
+    public Notification<Boolean> sell(User user, BookInterface book){
+        Notification<Boolean> sellNotification = new Notification<>();
         try {
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO " + USER_BOOKS + " values (null, ?, ?, ?);");
-            preparedStatement.setLong(1, user.getId());
-            preparedStatement.setLong(2, book.getId());
-            preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
-            int rowsInserted = preparedStatement.executeUpdate();
-            saveNotification.setResult(rowsInserted == 1);
+            BookValidator bookValidator = new BookValidator(user, book);
+            if (bookValidator.validate()){
+                sellNotification.setResult(Boolean.TRUE);
+                PreparedStatement preparedStatement = connection
+                        .prepareStatement("INSERT INTO " + USER_BOOKS + " values (null, ?, ?, ?);");
+                preparedStatement.setLong(1, user.getId());
+                preparedStatement.setLong(2, book.getId());
+                preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                preparedStatement.executeUpdate();
+            }else{
+                bookValidator.getErrors().forEach(sellNotification::addError);
+                return sellNotification;
+            }
         } catch (SQLException e) {
-            saveNotification.addError("Something is wrong with the Database!");
+            sellNotification.addError("Something is wrong with the Database!");
             e.printStackTrace();
         }
-        return saveNotification;
+        return sellNotification;
     }
 
     @Override
     public Notification<Boolean> buy(User user, BookInterface book) {
         Notification<Boolean> buyNotification = new Notification<>();
         try {
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO " + USER_BOUGHT_BOOKS + " values (null, ?, ?, ?);");
-            preparedStatement.setLong(1, user.getId());
-            preparedStatement.setLong(2, book.getId());
-            preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
             BookValidator bookValidator = new BookValidator(user, book);
             if (bookValidator.validate()){
-                preparedStatement.executeUpdate();
                 buyNotification.setResult(Boolean.TRUE);
                 bookRepository.updateStock(book, (book.getStock() - 1));
                 userRepository.updateMoney(user, (user.getMoney() - book.getPrice()));
+                PreparedStatement preparedStatement = connection
+                        .prepareStatement("INSERT INTO " + USER_BOUGHT_BOOKS + " values (null, ?, ?, ?);");
+                preparedStatement.setLong(1, user.getId());
+                preparedStatement.setLong(2, book.getId());
+                preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                preparedStatement.executeUpdate();
             }else{
                 bookValidator.getErrors().forEach(buyNotification::addError);
+                return buyNotification;
             }
         } catch (SQLException e) {
             buyNotification.addError("Something is wrong with the Database!");

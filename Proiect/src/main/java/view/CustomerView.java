@@ -126,6 +126,27 @@ public class CustomerView {
         gridPane.add(logOutButtonHBox, 3, 5);
 
     }
+
+    public BookInterface getSelectedBook(){
+        return table.getSelectionModel().getSelectedItem();
+    }
+    public void initializeTextSellBook(GridPane gridPane){
+        textSellBook = new Text();
+        HBox textSellBookHBox = new HBox(10);
+        textSellBookHBox.setAlignment(Pos.BOTTOM_RIGHT);
+        textSellBookHBox.getChildren().add(textSellBook);
+
+        gridPane.add(textSellBook, 1, 4, 4, 1);
+    }
+    public void setTextSellBook (String text){
+        textSellBook.setText(text);
+    }
+    public void setMoneyText(String text){
+        moneyText.setText(text);
+    }
+    public void setUsernameText(String text) {
+        usernameText.setText(text);
+    }
     public void addLogoutButtonListener(EventHandler<ActionEvent> logoutButtonListener) {
         logoutButton.setOnAction(logoutButtonListener);
     }
@@ -140,35 +161,11 @@ public class CustomerView {
     public void addBuyBookButtonButtonListener(EventHandler<ActionEvent> buyBookButtonButtonListener) {
         buyBookButton.setOnAction(buyBookButtonButtonListener);
     }
-
-    public Stage getStage() {
-        return stage;
-    }
     public void showStage(Boolean flag) {
         stage.setScene(scene);
         if(flag)
             stage.show();
         else
             stage.close();
-    }
-    public BookInterface getSelectedBook(){
-        return table.getSelectionModel().getSelectedItem();
-    }
-    public void initializeTextSellBook(GridPane gridPane){
-        textSellBook = new Text();
-        HBox textSellBookHBox = new HBox(10);
-        textSellBookHBox.setAlignment(Pos.BOTTOM_RIGHT);
-        textSellBookHBox.getChildren().add(textSellBook);
-
-        gridPane.add(textSellBook, 1, 6, 4, 1);
-    }
-    public void setTextSellBook (String text){
-        textSellBook.setText(text);
-    }
-    public void setMoneyText(String text){
-        moneyText.setText(text);
-    }
-    public void setUsernameText(String text) {
-        usernameText.setText(text);
     }
 }

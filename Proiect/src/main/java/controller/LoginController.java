@@ -59,9 +59,9 @@ public class LoginController {
             }else{
                 loginView.setActionTargetText("LogIn Successfull!");
                 ComponentFactory.getCustomerView().showStage(true);
-                ComponentFactory.getCustomerView().setTableBookList(ComponentFactory.getUserBooksService().findAll(loginNotification.getResult()));
                 ComponentFactory.getCustomerView().setUsernameText(loginNotification.getResult().getUsername());
-                ComponentFactory.getCustomerView().setMoneyText(String.valueOf(loginNotification.getResult().getMoney()));
+                ComponentFactory.getCustomerView().setMoneyText("Money: " + loginNotification.getResult().getMoney());
+                ComponentFactory.getCustomerView().setTableBookList(ComponentFactory.getBookService().findAll());
             }
         }
     }

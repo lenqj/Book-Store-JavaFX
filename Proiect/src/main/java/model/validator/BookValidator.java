@@ -24,20 +24,27 @@ public class BookValidator {
     }
 
     private void validateUserMoney(User user) {
-        final Long response = user.getMoney();
-        if (response <= 0) {
-            errors.add("User doesn't have money!");
+        if (user.getMoney() <= 0) {
+            errors.add("User doesn't have enough money!");
         }
     }
 
     private void validateBookStock(BookInterface book) {
-        if (book.getStock() == null || book.getStock() == 0) {
+        if (book == null) {
+            errors.add("You must select 1 book.");
+            return;
+        }
+        if (book.getStock() == 0) {
             errors.add("Book doesn't have stock!");
         }
     }
 
     private void validateUserBuyBook(User user, BookInterface book) {
-        if (book.getPrice() == null || (user.getMoney() - book.getPrice() < 0)) {
+        if (book == null) {
+            errors.add("You must select 1 book.");
+            return;
+        }
+        if (user.getMoney() - book.getPrice() < 0) {
             errors.add("User doesn't enough money to buy book!");
         }
     }
