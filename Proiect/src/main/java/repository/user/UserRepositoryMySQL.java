@@ -1,5 +1,6 @@
 package repository.user;
 import model.book.BookInterface;
+import model.validator.Notification;
 import repository.book.BookRepository;
 import repository.security.RightsRolesRepository;
 import model.User;
@@ -31,21 +32,31 @@ public class UserRepositoryMySQL implements UserRepository {
     }
 
     @Override
-    public User findByUsernameAndPassword(String username, String password) {
+    public Notification<User> findByUsernameAndPassword(String username, String password) {
+        Notification<User> findByUsernameAndPasswordNotification = new Notification<>();
         try {
-            String sql = "Select * from `" + USER + "` where `username` = ? and `password`= ?";
+            String sql = "Select * from `" + USER + "` where `username` = ? and `password` = ?;";
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, username);
             statement.setString(2, password);
 
             ResultSet userResultSet = statement.executeQuery();
-            userResultSet.next();
-            return getUserFromResultSet(userResultSet);
+            if (userResultSet.next())
+            {
+                User user = getUserFromResultSet(userResultSet);
+                findByUsernameAndPasswordNotification.setResult(user);
+            } else {
+                findByUsernameAndPasswordNotification.addError("Invalid username or password!");
+                return findByUsernameAndPasswordNotification;
+            }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.toString());
+            findByUsernameAndPasswordNotification.addError("Something is wrong with the Database!");
         }
-        return null;
+
+        return findByUsernameAndPasswordNotification;
     }
 
     public User findById(Long id) {
