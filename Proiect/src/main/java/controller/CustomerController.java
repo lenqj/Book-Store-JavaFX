@@ -60,6 +60,7 @@ public class CustomerController {
                 customerView.setTextSellBook("You successfully bought: " + book.toString());
                 customerView.setTableBookList(ComponentFactory.getBookService().findAll());
                 customerView.setMoneyText("Money: " + ComponentFactory.getUserRepository().findById(loginController.getLoginNotification().getResult().getId()).getMoney());
+
             }else {
                 customerView.setTextSellBook(customerNotification.getFormattedErrors());
             }
