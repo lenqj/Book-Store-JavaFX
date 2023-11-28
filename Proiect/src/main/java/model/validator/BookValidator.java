@@ -15,7 +15,6 @@ public class BookValidator {
         this.book = book;
         this.errors = new ArrayList<>();
     }
-
     public boolean validate() {
         validateUserMoney(user);
         validateBookStock(book);

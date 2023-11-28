@@ -130,6 +130,10 @@ public class UserRepositoryMySQL implements UserRepository {
     @Override
     public Notification<User> updateMoney(User user, Long money) {
         Notification<User> userNotification = new Notification<>();
+<<<<<<< Updated upstream
+=======
+        String sql = "UPDATE " + USER + " SET `money`= ? WHERE id = ?;";
+>>>>>>> Stashed changes
         try{
             String sql = "UPDATE " + USER + " SET `money`= ? WHERE id = ?;";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);

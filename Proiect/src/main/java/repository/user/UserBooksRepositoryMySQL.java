@@ -4,7 +4,10 @@ import model.User;
 import model.book.Book;
 import model.book.BookInterface;
 import model.builder.UserBuilder;
+<<<<<<< Updated upstream
 import model.validator.BookValidator;
+=======
+>>>>>>> Stashed changes
 import model.validator.Notification;
 import repository.book.BookRepository;
 import repository.security.RightsRolesRepository;
@@ -43,6 +46,7 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
         }
         return books;
     }
+<<<<<<< Updated upstream
     public Notification<Boolean> sell(User user, BookInterface book){
         Notification<Boolean> sellNotification = new Notification<>();
         try {
@@ -64,11 +68,29 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
             e.printStackTrace();
         }
         return sellNotification;
+=======
+    public Notification<Boolean> save(User user, BookInterface book){
+        Notification<Boolean> saveNotification = new Notification<>();
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO " + USER_BOOKS + " values (null, ?, ?, ?);");
+            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setLong(2, book.getId());
+            preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            int rowsInserted = preparedStatement.executeUpdate();
+            saveNotification.setResult(rowsInserted == 1);
+        } catch (SQLException e) {
+            saveNotification.addError("Something is wrong with the Database!");
+            e.printStackTrace();
+        }
+        return saveNotification;
+>>>>>>> Stashed changes
     }
 
     @Override
     public Notification<Boolean> buy(User user, BookInterface book) {
         Notification<Boolean> buyNotification = new Notification<>();
+<<<<<<< Updated upstream
         try {
             BookValidator bookValidator = new BookValidator(user, book);
             if (bookValidator.validate()){
@@ -101,6 +123,21 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
                 bookValidator.getErrors().forEach(buyNotification::addError);
                 return buyNotification;
             }
+=======
+        Notification<BookInterface> bookNotification = new Notification<>();
+        Notification<User> userNotification = new Notification<>();
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO " + USER_BOUGHT_BOOKS + " values (null, ?, ?, ?);");
+            preparedStatement.setLong(1, user.getId());
+            preparedStatement.setLong(2, book.getId());
+            preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            int rowsInserted = preparedStatement.executeUpdate();
+
+            bookNotification = bookRepository.updateStock(book, (book.getStock() - 1));
+            userNotification = userRepository.updateMoney(user, (user.getMoney() - book.getPrice()));
+            buyNotification.setResult(rowsInserted == 1);
+>>>>>>> Stashed changes
         } catch (SQLException e) {
             buyNotification.addError("Something is wrong with the Database!");
             e.printStackTrace();
