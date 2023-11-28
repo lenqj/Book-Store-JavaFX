@@ -76,7 +76,8 @@ public class UserRepositoryMySQL implements UserRepository {
     }
 
     @Override
-    public boolean save(User user) {
+    public Notification<Boolean> save(User user) {
+        Notification<Boolean> saveNotification = new Notification<>();
         try {
             PreparedStatement insertUserStatement = connection
                     .prepareStatement("INSERT INTO `user` values (null, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
@@ -84,21 +85,21 @@ public class UserRepositoryMySQL implements UserRepository {
             insertUserStatement.setString(2, user.getPassword());
             insertUserStatement.setLong(3, user.getMoney());
 
-            insertUserStatement.executeUpdate();
-
+            if (insertUserStatement.executeUpdate() == 0){
+                saveNotification.addError("User already exist!");
+                return saveNotification;
+            }
             ResultSet rs = insertUserStatement.getGeneratedKeys();
-            rs.next();
-            long userId = rs.getLong(1);
-            user.setId(userId);
-
+            if (rs.next()) {
+                long userId = rs.getLong(1);
+                user.setId(userId);
+                saveNotification.setResult(Boolean.TRUE);
+            }
             rightsRolesRepository.addRolesToUser(user, user.getRoles());
-
-            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            saveNotification.addError("Something is wrong with the Database!");
         }
-
+        return saveNotification;
     }
 
     @Override
@@ -138,7 +139,13 @@ public class UserRepositoryMySQL implements UserRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setLong(1, money);
             preparedStatement.setLong(2, user.getId());
-            preparedStatement.executeUpdate();
+            int rs = preparedStatement.executeUpdate();
+            if (rs == 1){
+                user.setMoney(money);
+                userNotification.setResult(user);
+            }else{
+                userNotification.addError("User doesn't exist.");
+            }
         } catch (SQLException e) {
             userNotification.addError("Something is wrong with the Database!");
             e.printStackTrace();

@@ -28,8 +28,11 @@ public class Notification<T>{
         }
         return result;
     }
-
     public String getFormattedErrors(){
         return String.join("\n", errors);
+    }
+
+    public List<String> getErrors() {
+        return errors;
     }
 }

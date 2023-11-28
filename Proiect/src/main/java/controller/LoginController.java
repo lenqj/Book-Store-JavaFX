@@ -1,49 +1,47 @@
 package controller;
 
-import database.JDBCConnectionWrapper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import launcher.ComponentFactory;
 import model.User;
-import model.book.BookInterface;
 import model.validator.Notification;
-import model.validator.UserValidator;
-import repository.book.BookRepository;
-import repository.book.sql.BookRepositoryMySQL;
-import repository.security.RightsRolesRepository;
-import repository.security.RightsRolesRepositoryMySQL;
-import repository.user.UserBooksRepository;
-import repository.user.UserBooksRepositoryMySQL;
-import repository.user.UserRepository;
-import repository.user.UserRepositoryMySQL;
-import service.book.BookService;
-import service.book.BookServiceImpl;
-import service.user.AuthenticationService;
-import service.user.UserBooksService;
-import service.user.UserBooksServiceImpl;
-import view.CustomerView;
 import view.LoginView;
 
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
 
-import static database.Constants.Schemas.PRODUCTION;
+import static database.Constants.Roles.*;
 
 public class LoginController {
 
     private final LoginView loginView;
-    private Notification<User> loginNotification;
+    private static Notification<User> loginNotification;
 
     public LoginController(LoginView loginView) {
         this.loginView = loginView;
-        this.loginNotification = new Notification<>();
+        loginNotification = new Notification<>();
         this.loginView.addLoginButtonListener(new LoginButtonListener());
         this.loginView.addRegisterButtonListener(new RegisterButtonListener());
-        loginView.showStage(true);
     }
     public Notification<User> getLoginNotification(){
         return loginNotification;
+    }
+    public static void showStage(String role){
+        switch (role)  {
+            case CUSTOMER -> {
+                ComponentFactory.getMainView().showScene(ComponentFactory.getCustomerView().getScene());
+                ComponentFactory.getCustomerBooksView().setUsernameText(loginNotification.getResult().getUsername());
+                ComponentFactory.getCustomerBooksView().setMoneyText("Money: " + loginNotification.getResult().getMoney());
+                ComponentFactory.getCustomerBooksView().setTableBookList(ComponentFactory.getBookService().findAll());
+            }
+            case EMPLOYEE -> {
+                ComponentFactory.getMainView().showScene(ComponentFactory.getEmployeeView().getScene());
+            }
+            case ADMINISTRATOR -> {
+                ComponentFactory.getMainView().showScene(ComponentFactory.getAdminView().getScene());
+            }
+            default -> {
+                ComponentFactory.getMainView().showScene(ComponentFactory.getLoginView().getScene());
+            }
+        }
     }
 
     private class LoginButtonListener implements EventHandler<ActionEvent> {
@@ -56,12 +54,9 @@ public class LoginController {
 
             if (loginNotification.hasErrors()){
                 loginView.setActionTargetText(loginNotification.getFormattedErrors());
-            }else{
+            }else {
                 loginView.setActionTargetText("LogIn Successfull!");
-                ComponentFactory.getCustomerView().showStage(true);
-                ComponentFactory.getCustomerView().setUsernameText(loginNotification.getResult().getUsername());
-                ComponentFactory.getCustomerView().setMoneyText("Money: " + loginNotification.getResult().getMoney());
-                ComponentFactory.getCustomerView().setTableBookList(ComponentFactory.getBookService().findAll());
+                showStage((ComponentFactory.getRightsRolesRepository().findRolesForUser(loginNotification.getResult().getId()).get(0)).getRole());
             }
         }
     }
@@ -79,4 +74,6 @@ public class LoginController {
             }
         }
     }
+
+
 }

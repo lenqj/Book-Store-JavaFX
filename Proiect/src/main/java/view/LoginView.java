@@ -1,6 +1,4 @@
 package view;
-
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -10,50 +8,40 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
-public class LoginView {
-    private Stage stage;
-    private Scene scene;
+public class LoginView implements View{
+    private final Scene scene;
     private TextField userTextField;
     private PasswordField passwordField;
     private Button signInButton;
     private Button logInButton;
     private Text actionTarget;
-
-    public LoginView(Stage primaryStage) {
-        this.stage = primaryStage;
-        stage.setTitle("Book Store");
-
+    public LoginView() {
+        BorderPane rootPane = new BorderPane();
         GridPane gridPane = new GridPane();
+        rootPane.setCenter(gridPane);
+        scene = new Scene(rootPane);
         initializeGridPane(gridPane);
-
-        scene = new Scene(gridPane, 720, 480);
-
         initializeSceneTitle(gridPane);
         initializeFields(gridPane);
     }
-
     private void initializeGridPane(GridPane gridPane){
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(25, 25, 25, 25));
     }
-
     private void initializeSceneTitle(GridPane gridPane){
         Text sceneTitle = new Text("Welcome to our Book Store");
         sceneTitle.setFont(Font.font("Tahome", FontWeight.NORMAL, 20));
         gridPane.add(sceneTitle, 0, 0, 2, 1);
     }
-
     private void initializeFields(GridPane gridPane){
         Label userName = new Label("User Name:");
         gridPane.add(userName, 0, 1);
@@ -87,34 +75,23 @@ public class LoginView {
     public String getUsername() {
         return userTextField.getText();
     }
-
     public String getPassword() {
         return passwordField.getText();
     }
-
     public void setActionTargetText(String text){ this.actionTarget.setText(text);}
-
     public void addLoginButtonListener(EventHandler<ActionEvent> loginButtonListener) {
         logInButton.setOnAction(loginButtonListener);
     }
-
     public void addRegisterButtonListener(EventHandler<ActionEvent> signInButtonListener) {
         signInButton.setOnAction(signInButtonListener);
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-    public void showStage(Boolean flag) {
-        stage.setScene(scene);
-        if(flag)
-            stage.show();
-        else
-            stage.close();
     }
     public void clearTexts(){
         userTextField.setText("");
         passwordField.setText("");
         actionTarget.setText("");
     }
+    public Scene getScene() {
+        return scene;
+    }
+
 }

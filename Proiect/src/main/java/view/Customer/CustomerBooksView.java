@@ -1,29 +1,24 @@
-package view;
+package view.Customer;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import model.User;
 import model.book.BookInterface;
 
 import java.util.List;
 
-public class CustomerView {
-    private final Stage stage;
+public class CustomerBooksView {
+    private final GridPane gridPane;
     private final TableView<BookInterface> table;
-    private final Scene scene;
     private Button logoutButton;
     private Button soldBooksButton;
     private Button sellBookButton;
@@ -32,52 +27,55 @@ public class CustomerView {
     private Text textSellBook;
     private Text moneyText;
 
-    public CustomerView(Stage primaryStage) {
-        stage = primaryStage;
-        stage.setTitle("Book Store ");
-
-        GridPane gridPane = new GridPane();
-        initializeGridPane(gridPane);
-
-        scene = new Scene(gridPane, 720, 480);
-
-        initializeSceneTitle(gridPane);
-
+    public CustomerBooksView() {
+        gridPane = new GridPane();
+        initializeGridPane();
+        initializeSceneTitle();
         table = new TableView<>();
-        initializeTableView(table, gridPane);
-
-        initializeButtons(gridPane);
-
-        initializeTextSellBook(gridPane);
+        initializeTableView(table);
+        initializeButtons();
+        initializeTextSellBook();
     }
 
-    private void initializeGridPane(GridPane gridPane){
+    private void initializeGridPane(){
+        RowConstraints rc = new RowConstraints();
+        rc.setPercentHeight(100d / 7);
+        for (int i = 0; i < 7; i++) {
+            gridPane.getRowConstraints().add(rc);
+        }
+
+        ColumnConstraints cc = new ColumnConstraints();
+        cc.setPercentWidth(100d / 6);
+
+        for (int i = 0; i < 6; i++) {
+            gridPane.getColumnConstraints().add(cc);
+        }
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(25, 25, 25, 25));
     }
 
-    private void initializeSceneTitle(GridPane gridPane){
+    private void initializeSceneTitle(){
         usernameText = new Text();
         usernameText.setFont(Font.font("Thoma", FontWeight.NORMAL, 20));
-        HBox usernameTextHBox = new HBox(10);
+        HBox usernameTextHBox = new HBox();
         usernameTextHBox.setAlignment(Pos.BOTTOM_LEFT);
         usernameTextHBox.getChildren().add(usernameText);
 
 
         moneyText = new Text();
         moneyText.setFont(Font.font("Thoma", FontWeight.NORMAL, 20));
-        HBox moneyTextHBox = new HBox(10);
+        HBox moneyTextHBox = new HBox();
         moneyTextHBox.setAlignment(Pos.BOTTOM_RIGHT);
         moneyTextHBox.getChildren().add(moneyText);
 
-        gridPane.add(usernameTextHBox, 0, 0, 2, 1);
-        gridPane.add(moneyTextHBox, 2, 0, 2, 1);
+        gridPane.add(usernameTextHBox, 0, 0, 1, 1);
+        gridPane.add(moneyTextHBox, 5, 0, 1, 1);
     }
     @SuppressWarnings("unchecked")
-    private void initializeTableView(TableView<BookInterface> tableView, GridPane gridPane){
-        gridPane.add(table, 0, 1, 4, 1);
+    private void initializeTableView(TableView<BookInterface> tableView){
+        gridPane.add(table, 0, 1, 6, 5);
         TableColumn<BookInterface, String> id = new TableColumn<>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         TableColumn<BookInterface, String> author = new TableColumn<>("Author");
@@ -98,45 +96,45 @@ public class CustomerView {
             table.getItems().add(book);
     }
 
-    private void initializeButtons(GridPane gridPane){
+    private void initializeButtons(){
         sellBookButton = new Button("Sell Book");
-        HBox sellBookButtonHBox = new HBox(10);
-        sellBookButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
+        HBox sellBookButtonHBox = new HBox();
+        sellBookButtonHBox.setAlignment(Pos.BASELINE_LEFT);
         sellBookButtonHBox.getChildren().add(sellBookButton);
-        gridPane.add(sellBookButtonHBox, 0, 5);
+        gridPane.add(sellBookButtonHBox, 0, 7);
 
 
         soldBooksButton = new Button("Sold Books");
-        HBox soldBooksButtonHBox = new HBox(10);
-        soldBooksButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
+        HBox soldBooksButtonHBox = new HBox();
+        soldBooksButtonHBox.setAlignment(Pos.BASELINE_LEFT);
         soldBooksButtonHBox.getChildren().add(soldBooksButton);
-        gridPane.add(soldBooksButtonHBox, 1, 5);
+        gridPane.add(soldBooksButtonHBox, 1, 7);
 
         buyBookButton = new Button("Buy Book");
-        HBox buyBookButtonHBox = new HBox(10);
-        buyBookButtonHBox.setAlignment(Pos.BOTTOM_RIGHT);
+        HBox buyBookButtonHBox = new HBox();
+        buyBookButtonHBox.setAlignment(Pos.BASELINE_RIGHT);
         buyBookButtonHBox.getChildren().add(buyBookButton);
-        gridPane.add(buyBookButtonHBox, 2, 5);
+        gridPane.add(buyBookButtonHBox, 4, 7);
 
 
         logoutButton = new Button("Logout");
-        HBox logOutButtonHBox = new HBox(10);
-        logOutButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
+        HBox logOutButtonHBox = new HBox();
+        logOutButtonHBox.setAlignment(Pos.BASELINE_RIGHT);
         logOutButtonHBox.getChildren().add(logoutButton);
-        gridPane.add(logOutButtonHBox, 3, 5);
+        gridPane.add(logOutButtonHBox, 5, 7);
 
     }
 
     public BookInterface getSelectedBook(){
         return table.getSelectionModel().getSelectedItem();
     }
-    public void initializeTextSellBook(GridPane gridPane){
+    public void initializeTextSellBook(){
         textSellBook = new Text();
-        HBox textSellBookHBox = new HBox(10);
-        textSellBookHBox.setAlignment(Pos.BOTTOM_RIGHT);
+        HBox textSellBookHBox = new HBox();
+        textSellBookHBox.setAlignment(Pos.BASELINE_LEFT);
         textSellBookHBox.getChildren().add(textSellBook);
 
-        gridPane.add(textSellBook, 1, 4, 4, 1);
+        gridPane.add(textSellBook, 0, 6, 6, 1);
     }
     public void setTextSellBook (String text){
         textSellBook.setText(text);
@@ -146,6 +144,9 @@ public class CustomerView {
     }
     public void setUsernameText(String text) {
         usernameText.setText(text);
+    }
+    public void clearTexts(){
+        textSellBook.setText("");
     }
     public void addLogoutButtonListener(EventHandler<ActionEvent> logoutButtonListener) {
         logoutButton.setOnAction(logoutButtonListener);
@@ -161,11 +162,8 @@ public class CustomerView {
     public void addBuyBookButtonButtonListener(EventHandler<ActionEvent> buyBookButtonButtonListener) {
         buyBookButton.setOnAction(buyBookButtonButtonListener);
     }
-    public void showStage(Boolean flag) {
-        stage.setScene(scene);
-        if(flag)
-            stage.show();
-        else
-            stage.close();
+    public Pane getPane() {
+        return gridPane;
     }
+
 }
