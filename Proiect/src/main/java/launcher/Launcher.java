@@ -1,6 +1,7 @@
 package launcher;
 
 import javafx.application.Application;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import model.User;
 

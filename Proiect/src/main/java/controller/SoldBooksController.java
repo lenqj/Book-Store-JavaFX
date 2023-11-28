@@ -6,33 +6,32 @@ import launcher.ComponentFactory;
 import model.book.BookInterface;
 
 
-import service.user.UserBooksService;
-import view.SoldBooksView;
+import view.Customer.CustomerSoldBooksView;
 
 import static launcher.ComponentFactory.loginController;
 
 public class SoldBooksController {
 
-    private final SoldBooksView soldBooksView;
+    private final CustomerSoldBooksView customerSoldBooksView;
 
-    public SoldBooksController(SoldBooksView soldBooksView) {
-        this.soldBooksView = soldBooksView;
-        soldBooksView.addBackButtonListener(new BackButtonButtonListener());
-        soldBooksView.addDeleteButtonListener(new DeleteButtonButtonListener());
+    public SoldBooksController(CustomerSoldBooksView customerSoldBooksView) {
+        this.customerSoldBooksView = customerSoldBooksView;
+        customerSoldBooksView.addBackButtonListener(new BackButtonButtonListener());
+        customerSoldBooksView.addDeleteButtonListener(new DeleteButtonButtonListener());
     }
     private class BackButtonButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-            soldBooksView.showStage(false);
-            ComponentFactory.getCustomerView().showStage(true);
+            ComponentFactory.getCustomerBooksView().clearTexts();
+            ComponentFactory.getCustomerView().showPane(ComponentFactory.getCustomerBooksView().getPane());
         }
     }
     private class DeleteButtonButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-            BookInterface book = soldBooksView.getSelectedBook();
+            BookInterface book = customerSoldBooksView.getSelectedBook();
             ComponentFactory.getUserBooksService().deleteBook(loginController.getLoginNotification().getResult(), book);
-            soldBooksView.setTableBookList(ComponentFactory.getUserBooksService().findAll(loginController.getLoginNotification().getResult()));
+            customerSoldBooksView.setTableBookList(ComponentFactory.getUserBooksService().findAll(loginController.getLoginNotification().getResult()));
         }
     }
 

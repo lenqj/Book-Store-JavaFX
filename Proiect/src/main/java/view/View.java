@@ -1,4 +1,7 @@
 package view;
 
-public class View {
+import javafx.scene.Scene;
+
+public interface View {
+    Scene getScene();
 }
