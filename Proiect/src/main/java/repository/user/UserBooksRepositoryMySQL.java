@@ -72,15 +72,31 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
         try {
             BookValidator bookValidator = new BookValidator(user, book);
             if (bookValidator.validate()){
-                buyNotification.setResult(Boolean.TRUE);
-                bookRepository.updateStock(book, (book.getStock() - 1));
-                userRepository.updateMoney(user, (user.getMoney() - book.getPrice()));
+                Notification<BookInterface> bookUpdateNotification = bookRepository.updateStock(book, (book.getStock() - 1));
+                if(bookUpdateNotification.hasErrors()){
+                    bookUpdateNotification.getErrors().forEach(buyNotification::addError);
+                    return buyNotification;
+                }else{
+                    book = bookUpdateNotification.getResult();
+                }
+                Notification<User> userUpdateNotification = userRepository.updateMoney(user, (user.getMoney() - book.getPrice()));
+                if(userUpdateNotification.hasErrors()){
+                    userUpdateNotification.getErrors().forEach(buyNotification::addError);
+                    return buyNotification;
+                }else{
+                    user = userUpdateNotification.getResult();
+                }
                 PreparedStatement preparedStatement = connection
                         .prepareStatement("INSERT INTO " + USER_BOUGHT_BOOKS + " values (null, ?, ?, ?);");
                 preparedStatement.setLong(1, user.getId());
                 preparedStatement.setLong(2, book.getId());
                 preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
-                preparedStatement.executeUpdate();
+                int rs = preparedStatement.executeUpdate();
+                if (rs == 0){
+                    buyNotification.addError("Can't update this book!");
+                }else {
+                    buyNotification.setResult(Boolean.TRUE);
+                }
             }else{
                 bookValidator.getErrors().forEach(buyNotification::addError);
                 return buyNotification;
