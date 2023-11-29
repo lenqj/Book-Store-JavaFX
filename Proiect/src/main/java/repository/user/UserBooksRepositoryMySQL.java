@@ -26,7 +26,7 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
     }
-    public Map<Long, BookInterface> findAll(User user){
+    public Map<Long, BookInterface> findAllSoldBooks(User user){
         Map<Long, BookInterface> books = new TreeMap<>();
         try {
             PreparedStatement preparedStatement = connection
@@ -34,7 +34,7 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
             preparedStatement.setLong(1, user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                books.put(resultSet.getLong(1), getBookFromResultSet(resultSet).getResult());
+                books.put(resultSet.getLong("id"), getBookFromResultSet(resultSet).getResult());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,13 +46,19 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
         try {
             BookValidator bookValidator = new BookValidator(user, book);
             if (bookValidator.validate()){
-                sellNotification.setResult(Boolean.TRUE);
-                PreparedStatement preparedStatement = connection
-                        .prepareStatement("INSERT INTO " + USER_BOOKS + " values (null, ?, ?, ?);");
-                preparedStatement.setLong(1, user.getId());
-                preparedStatement.setLong(2, book.getId());
-                preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
-                preparedStatement.executeUpdate();
+                Notification<Boolean> sellBookNotification = bookRepository.sell(book);
+                if(sellBookNotification.hasErrors()){
+                    sellBookNotification.getErrors().forEach(sellNotification::addError);
+                    return sellNotification;
+                }else {
+                    sellNotification.setResult(Boolean.TRUE);
+                    PreparedStatement preparedStatement = connection
+                            .prepareStatement("INSERT INTO " + USER_BOOKS + " values (null, ?, ?, ?);");
+                    preparedStatement.setLong(1, user.getId());
+                    preparedStatement.setLong(2, book.getId());
+                    preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                    preparedStatement.executeUpdate();
+                }
             }else{
                 bookValidator.getErrors().forEach(sellNotification::addError);
                 return sellNotification;
@@ -124,7 +130,7 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
     public void removeAll(User user){
     }
     private Notification<BookInterface> getBookFromResultSet(ResultSet resultSet) throws SQLException {
-            return bookRepository.findById(resultSet.getLong("id"));
+            return bookRepository.findById(resultSet.getLong("book_id"));
     }
     private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
         return new UserBuilder()

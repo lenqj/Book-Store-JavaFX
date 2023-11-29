@@ -1,5 +1,6 @@
 package repository.book.cache;
 
+import model.book.BookInterface;
 import model.validator.Notification;
 import repository.Cache;
 import repository.book.BookRepository;
@@ -21,6 +22,11 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
         List<T> books = decoratedRepository.findAll();
         cache.save(books);
         return books;
+    }
+
+    @Override
+    public List<T> findAllSellableBooks() {
+        return null;
     }
 
     public Notification<T> findById(Long id) {
@@ -47,5 +53,10 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
 
     public void updatePrice(T book, Long Price) {
 
+    }
+
+    @Override
+    public Notification<Boolean> sell(BookInterface book) {
+        return null;
     }
 }

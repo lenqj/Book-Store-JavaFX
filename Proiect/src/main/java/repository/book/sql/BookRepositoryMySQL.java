@@ -35,6 +35,21 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
         return books;
     }
 
+    public List<BookInterface> findAllSellableBooks() {
+        String sql = "SELECT * FROM " + BOOK + " where toSell = TRUE;";
+        List<BookInterface> books = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while(resultSet.next()){
+                books.add(getBookFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return books;
+    }
+
     @Override
     public Notification<BookInterface> findById(Long bookID) {
         Notification<BookInterface> bookInterfaceNotification = new Notification<>();
@@ -60,7 +75,7 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
 
     @Override
     public boolean save(BookInterface book) {
-        String sql = "INSERT INTO " + BOOK + " VALUES(null, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO " + BOOK + " VALUES(null, ?, ?, ?, ?, ?, ?);";
 
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -69,6 +84,7 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
             preparedStatement.setDate(3, Date.valueOf(book.getPublishedDate()));
             preparedStatement.setLong(4, book.getStock());
             preparedStatement.setLong(5, book.getPrice());
+            preparedStatement.setBoolean(6, book.getToSell());
 
             int rowsInserted = preparedStatement.executeUpdate();
 
@@ -128,6 +144,24 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
 
     }
 
+    @Override
+    public Notification<Boolean> sell(BookInterface book) {
+        String sql = "UPDATE " + BOOK + " SET `toSell`= ? WHERE id = ?;";
+        Notification<Boolean> sellNotification = new Notification<>();
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setBoolean(1, !book.getToSell());
+            preparedStatement.setLong(2, book.getId());
+            preparedStatement.executeUpdate();
+            sellNotification.setResult(Boolean.TRUE);
+            return sellNotification;
+        } catch (SQLException e) {
+            sellNotification.addError("Something is wrong with the Database!");
+            e.printStackTrace();
+        }
+        return sellNotification;
+    }
+
     private BookInterface getBookFromResultSet(ResultSet resultSet) throws SQLException {
         return new BookBuilder()
                 .setId(resultSet.getLong("id"))
@@ -136,6 +170,7 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
                 .setPublishedDate(new java.sql.Date((resultSet.getDate("publishedDate")).getTime()).toLocalDate())
                 .setStock(resultSet.getLong("stock"))
                 .setPrice(resultSet.getLong("price"))
+                .setToSell(resultSet.getBoolean("toSell"))
                 .build();
     }
 }

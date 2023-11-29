@@ -8,7 +8,7 @@ import java.util.*;
 
 public interface UserBooksRepository {
 
-    Map<Long, BookInterface> findAll(User user);
+    Map<Long, BookInterface> findAllSoldBooks(User user);
     Notification<Boolean> sell(User user, BookInterface book);
     Notification<Boolean> buy(User user, BookInterface book);
     int deleteBook(User user, Long bookID);

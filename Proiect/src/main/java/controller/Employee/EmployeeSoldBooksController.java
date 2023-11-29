@@ -3,7 +3,10 @@ package controller.Employee;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import launcher.ComponentFactory;
+import model.book.BookInterface;
 import view.Employee.EmployeeSoldBooksView;
+
+import java.util.Map;
 
 
 public class EmployeeSoldBooksController {
@@ -14,9 +17,10 @@ public class EmployeeSoldBooksController {
     }
     private class DeleteButtonButtonListener implements EventHandler<ActionEvent> {
         public void handle(ActionEvent event) {
-            Long selectedBookID = employeeSoldBooksView.getSelectedBook();
-            ComponentFactory.getUserBooksService().deleteBook(ComponentFactory.getLoginController().getLoginNotification().getResult(), selectedBookID);
-            employeeSoldBooksView.setTableBookList(ComponentFactory.getUserBooksService().findAll(ComponentFactory.getLoginController().getLoginNotification().getResult()));
+            Map.Entry<Long, BookInterface> selectedBook = employeeSoldBooksView.getSelectedBook();
+            ComponentFactory.getUserBooksService().deleteBook(ComponentFactory.getLoginController().getLoginNotification().getResult(), selectedBook.getKey());
+            ComponentFactory.getBookService().sell(selectedBook.getValue());
+            employeeSoldBooksView.setTableBookList(ComponentFactory.getUserBooksService().findAllSoldBooks(ComponentFactory.getLoginController().getLoginNotification().getResult()));
         }
     }
 

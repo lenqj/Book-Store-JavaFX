@@ -111,8 +111,8 @@ public class EmployeeSoldBooksView {
     public void addDeleteButtonListener(EventHandler<ActionEvent> deleteButtonListener) {
         deleteButton.setOnAction(deleteButtonListener);
     }
-    public Long getSelectedBook(){
-        return table.getSelectionModel().getSelectedItem().getKey();
+    public Map.Entry<Long, BookInterface> getSelectedBook(){
+        return table.getSelectionModel().getSelectedItem();
     }
     public Pane getPane() {
         return gridPane;

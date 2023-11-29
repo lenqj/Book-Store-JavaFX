@@ -1,24 +1,32 @@
 package database;
 
+import model.Role;
+import model.User;
 import model.book.BookInterface;
+import model.builder.UserBuilder;
 import repository.book.BookRepository;
 import repository.book.sql.BookRepositoryMySQL;
 import repository.security.RightsRolesRepository;
 import repository.security.RightsRolesRepositoryMySQL;
 import model.book.Book;
 import model.builder.BookBuilder;
+import repository.user.UserRepository;
+import repository.user.UserRepositoryMySQL;
 import service.book.BookServiceImpl;
+import service.user.AuthenticationService;
+import service.user.AuthenticationServiceImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static database.Constants.Rights.RIGHTS;
-import static database.Constants.Roles.ROLES;
+import static database.Constants.Roles.*;
 import static database.Constants.Schemas.PRODUCTION;
 import static database.Constants.Schemas.SCHEMAS;
 import static database.Constants.getRolesRights;
@@ -35,6 +43,7 @@ public class Bootstrap {
         bootstrapUserData();
 
         bootstrapAddBooks();
+        bootstrapAddDefaultUsers();
     }
 
     private static void dropAll() throws SQLException {
@@ -134,6 +143,7 @@ public class Bootstrap {
                 .setPublishedDate(LocalDate.of(2010, 6, 2))
                 .setStock(3L)
                 .setPrice(122L)
+                .setToSell(Boolean.TRUE)
                 .build();
         Book book1 = new BookBuilder()
                 .setAuthor("author 1")
@@ -141,6 +151,7 @@ public class Bootstrap {
                 .setPublishedDate(LocalDate.of(2010, 6, 2))
                 .setStock(4L)
                 .setPrice(1L)
+                .setToSell(Boolean.TRUE)
                 .build();
         Book book2 = new BookBuilder()
                 .setAuthor("author 2")
@@ -148,6 +159,7 @@ public class Bootstrap {
                 .setPublishedDate(LocalDate.of(2010, 6, 2))
                 .setStock(5L)
                 .setPrice(2L)
+                .setToSell(Boolean.TRUE)
                 .build();
         Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
         BookRepository<BookInterface> bookRepository = new BookRepositoryMySQL(connection);
@@ -155,5 +167,38 @@ public class Bootstrap {
         bookService.save(book);
         bookService.save(book1);
         bookService.save(book2);
+    }
+    private static void bootstrapAddDefaultUsers() throws SQLException {
+        Role customerRole = rightsRolesRepository.findRoleByTitle(CUSTOMER);
+
+        User customer = new UserBuilder()
+                .setUsername("c@c.c")
+                .setPassword(AuthenticationServiceImpl.hashPassword("Qwerty1234!"))
+                .setRoles(Collections.singletonList(customerRole))
+                .setMoney(100L)
+                .build();
+        Role employeeRole = rightsRolesRepository.findRoleByTitle(EMPLOYEE);
+
+        User employee = new UserBuilder()
+                .setUsername("e@e.e")
+                .setPassword(AuthenticationServiceImpl.hashPassword("Qwerty1234!"))
+                .setRoles(Collections.singletonList(employeeRole))
+                .setMoney(100L)
+                .build();
+        Role administratorRole = rightsRolesRepository.findRoleByTitle(ADMINISTRATOR);
+
+        User administrator = new UserBuilder()
+                .setUsername("a@a.a")
+                .setPassword(AuthenticationServiceImpl.hashPassword("Qwerty1234!"))
+                .setRoles(Collections.singletonList(administratorRole))
+                .setMoney(100L)
+                .build();
+        Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
+        UserRepository userRepository = new UserRepositoryMySQL(connection, rightsRolesRepository);
+
+        userRepository.save(customer);
+        userRepository.save(employee);
+        userRepository.save(administrator);
+
     }
 }

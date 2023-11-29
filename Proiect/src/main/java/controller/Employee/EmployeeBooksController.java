@@ -27,6 +27,9 @@ public class EmployeeBooksController {
             }else {
                 employeeBooksView.setTextSellBook(employeeBooksNotification.getFormattedErrors());
             }
+            ComponentFactory.getEmployeeBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
+            ComponentFactory.getEmployeeBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
+            ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks());
         }
     }
 

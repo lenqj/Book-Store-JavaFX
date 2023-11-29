@@ -33,6 +33,10 @@ public class BookBuilder {
         book.setPrice(price);
         return this;
     }
+    public BookBuilder setToSell(Boolean toSell){
+        book.setToSell(toSell);
+        return this;
+    }
     public Book build(){
         return book;
     }

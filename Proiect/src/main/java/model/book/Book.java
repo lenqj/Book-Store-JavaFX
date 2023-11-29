@@ -11,6 +11,7 @@ public class Book implements BookInterface {
     private LocalDate publishedDate;
     private Long stock;
     private Long price;
+    private boolean toSell;
     public Long getId() {
         return id;
     }
@@ -52,5 +53,13 @@ public class Book implements BookInterface {
 
     public void setPrice(Long price) {
         this.price = price;
+    }
+
+    public boolean getToSell() {
+        return toSell;
+    }
+
+    public void setToSell(Boolean toSell) {
+        this.toSell = toSell;
     }
 }

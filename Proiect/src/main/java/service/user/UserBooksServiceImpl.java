@@ -16,8 +16,8 @@ public class UserBooksServiceImpl implements UserBooksService{
     public UserBooksServiceImpl(UserBooksRepository userBooksRepository) {
         this.userBooksRepository = userBooksRepository;
     }
-    public Map<Long, BookInterface> findAll(User user){
-        return userBooksRepository.findAll(user);
+    public Map<Long, BookInterface> findAllSoldBooks(User user){
+        return userBooksRepository.findAllSoldBooks(user);
     }
     public Notification<Boolean> sell(User user, BookInterface book){
         return userBooksRepository.sell(user, book);

@@ -18,6 +18,10 @@ public class BookServiceImpl implements BookService<BookInterface>{
     public List<BookInterface> findAll() {
         return bookRepository.findAll();
     }
+    public List<BookInterface> findAllSellableBooks() {
+        return bookRepository.findAllSellableBooks();
+    }
+
 
     public Notification<BookInterface> findById(Long id) {
         return bookRepository.findById(id);
@@ -26,6 +30,11 @@ public class BookServiceImpl implements BookService<BookInterface>{
 
     public boolean save(BookInterface book) {
         return bookRepository.save(book);
+    }
+
+    @Override
+    public Notification<Boolean> sell(BookInterface book) {
+        return bookRepository.sell(book);
     }
 
     public int getAgeOfBook(Long id) {

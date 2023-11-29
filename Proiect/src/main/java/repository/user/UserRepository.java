@@ -1,6 +1,7 @@
 package repository.user;
 
 import model.User;
+import model.book.BookInterface;
 import model.validator.Notification;
 
 import java.util.*;

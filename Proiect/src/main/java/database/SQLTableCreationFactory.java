@@ -13,6 +13,7 @@ public class SQLTableCreationFactory {
                     "  publishedDate datetime DEFAULT NULL," +
                     "  stock INT DEFAULT 0," +
                     "  price INT DEFAULT 0," +
+                    "  toSell BOOLEAN DEFAULT FALSE," +
                     "  PRIMARY KEY (id)," +
                     "  UNIQUE KEY book_id_unique (id)" +
                     ") ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;";

@@ -20,14 +20,14 @@ public class EmployeeController {
             ComponentFactory.getEmployeeView().showPane(ComponentFactory.getEmployeeBooksView().getPane());
             ComponentFactory.getEmployeeBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
             ComponentFactory.getEmployeeBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
-            ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAll());
+            ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks());
         }
     }
     private static class SoldBooksMenuListener implements EventHandler<ActionEvent> {
         public void handle(ActionEvent event) {
             ComponentFactory.getEmployeeView().showPane(ComponentFactory.getEmployeeSoldBooksView().getPane());
             ComponentFactory.getEmployeeSoldBooksView().setSceneTitle("Sold books by: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
-            ComponentFactory.getEmployeeSoldBooksView().setTableBookList(ComponentFactory.getUserBooksService().findAll(ComponentFactory.getLoginController().getLoginNotification().getResult()));
+            ComponentFactory.getEmployeeSoldBooksView().setTableBookList(ComponentFactory.getUserBooksService().findAllSoldBooks(ComponentFactory.getLoginController().getLoginNotification().getResult()));
         }
     }
     private static class LogoutMenuListener implements EventHandler<ActionEvent> {

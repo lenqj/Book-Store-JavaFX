@@ -9,4 +9,6 @@ public interface BookInterface {
     LocalDate getPublishedDate();
     Long getStock();
     Long getPrice();
+
+    boolean getToSell();
 }

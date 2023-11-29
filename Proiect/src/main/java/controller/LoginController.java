@@ -39,7 +39,7 @@ public class LoginController {
                 ComponentFactory.getMainView().setStageTitle("[EMPLOYEE] - Logged as " + ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                 ComponentFactory.getEmployeeBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                 ComponentFactory.getEmployeeBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
-                ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAll());
+                ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks());
             }
             case ADMINISTRATOR -> {
                 ComponentFactory.getMainView().showScene(ComponentFactory.getAdminView().getScene());
