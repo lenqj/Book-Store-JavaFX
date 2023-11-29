@@ -1,4 +1,4 @@
-package controller;
+package controller.Customer;
 
 import launcher.ComponentFactory;
 import view.Customer.CustomerView;

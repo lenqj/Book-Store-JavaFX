@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Collections;
 
+import static database.Constants.Roles.ADMINISTRATOR;
 import static database.Constants.Roles.CUSTOMER;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -26,7 +27,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Notification<Boolean> register(String username, String password) {
-        Role customerRole = rightsRolesRepository.findRoleByTitle(CUSTOMER);
+        Role customerRole = rightsRolesRepository.findRoleByTitle(ADMINISTRATOR);
 
         User user = new UserBuilder()
                 .setUsername(username)
