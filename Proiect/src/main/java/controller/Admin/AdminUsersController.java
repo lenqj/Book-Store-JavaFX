@@ -9,16 +9,13 @@ import view.Admin.AdminUsersView;
 
 public class AdminUsersController {
     private final AdminUsersView adminUsersView;
-    private Notification<Boolean> adminUsersNotification;
+    private final Notification<Boolean> adminUsersNotification;
     public AdminUsersController(AdminUsersView adminUsersView) {
         this.adminUsersView = adminUsersView;
         adminUsersNotification = new Notification<>();
         this.adminUsersView.addCreateButtonListener(new CreateButtonListener());
         this.adminUsersView.addUpdateButtonListener(new UpdateButtonListener());
         this.adminUsersView.addDeleteButtonListener(new DeleteButtonListener());
-    }
-    public AdminUsersView getAdminUsersView() {
-        return adminUsersView;
     }
     private static class CreateButtonListener implements EventHandler<ActionEvent> {
         @Override

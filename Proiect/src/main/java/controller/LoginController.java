@@ -29,18 +29,28 @@ public class LoginController {
         switch (role)  {
             case CUSTOMER -> {
                 ComponentFactory.getMainView().showScene(ComponentFactory.getCustomerView().getScene());
-                ComponentFactory.getCustomerBooksView().setUsernameText(loginNotification.getResult().getUsername());
-                ComponentFactory.getCustomerBooksView().setMoneyText("Money: " + loginNotification.getResult().getMoney());
+                ComponentFactory.getMainView().setStageTitle("[CUSTOMER] - Logged as " + ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
+                ComponentFactory.getCustomerBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
+                ComponentFactory.getCustomerBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
                 ComponentFactory.getCustomerBooksView().setTableBookList(ComponentFactory.getBookService().findAll());
             }
             case EMPLOYEE -> {
                 ComponentFactory.getMainView().showScene(ComponentFactory.getEmployeeView().getScene());
+                ComponentFactory.getMainView().setStageTitle("[EMPLOYEE] - Logged as " + ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
+                ComponentFactory.getEmployeeBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
+                ComponentFactory.getEmployeeBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
+                ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAll());
             }
             case ADMINISTRATOR -> {
                 ComponentFactory.getMainView().showScene(ComponentFactory.getAdminView().getScene());
-                ComponentFactory.getAdminUsersView().setTableBookList(ComponentFactory.getUserService().findAll());
+                ComponentFactory.getMainView().setStageTitle("[ADMINISTRATOR] - Logged as " + ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
+                ComponentFactory.getAdminUsersView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
+                ComponentFactory.getAdminUsersView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
+                ComponentFactory.getAdminUsersView().setTableUserList(ComponentFactory.getUserService().findAll());
+
             }
             default -> {
+                ComponentFactory.getMainView().setStageTitle("Welcome to our Book Store");
                 ComponentFactory.getMainView().showScene(ComponentFactory.getLoginView().getScene());
             }
         }

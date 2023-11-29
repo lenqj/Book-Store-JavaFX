@@ -6,6 +6,7 @@ import controller.Admin.AdminController;
 import controller.Admin.AdminUsersController;
 import controller.Customer.CustomerBooksController;
 import controller.Customer.CustomerController;
+import controller.Employee.EmployeeBooksController;
 import controller.Employee.EmployeeSoldBooksController;
 import controller.Employee.EmployeeController;
 import database.DatabaseConnectionFactory;
@@ -28,6 +29,7 @@ import view.Admin.AdminUsersView;
 import view.Admin.AdminView;
 import view.Customer.CustomerBooksView;
 import view.Customer.CustomerView;
+import view.Employee.EmployeeBooksView;
 import view.Employee.EmployeeSoldBooksView;
 import view.Employee.EmployeeView;
 
@@ -39,6 +41,7 @@ public class ComponentFactory {
     private static CustomerView customerView;
     private static CustomerBooksView customerBooksView;
     private static EmployeeView employeeView;
+    private static EmployeeBooksView employeeBooksView;
     private static EmployeeSoldBooksView employeeSoldBooksView;
     private static AdminView adminView;
     private static AdminUsersView adminUsersView;
@@ -48,6 +51,7 @@ public class ComponentFactory {
     private static CustomerController customerController;
     private static CustomerBooksController customerBooksController;
     private static EmployeeController employeeController;
+    private static EmployeeBooksController employeeBooksController;
     private static EmployeeSoldBooksController employeeSoldBooksController;
     private static AdminController adminController;
     private static AdminUsersController adminUsersController;
@@ -96,6 +100,7 @@ public class ComponentFactory {
 
         employeeView = new EmployeeView();
         employeeSoldBooksView = new EmployeeSoldBooksView();
+        employeeBooksView = new EmployeeBooksView();
 
 
         adminView = new AdminView();
@@ -113,6 +118,7 @@ public class ComponentFactory {
 
         employeeController = new EmployeeController(employeeView);
         employeeSoldBooksController = new EmployeeSoldBooksController(employeeSoldBooksView);
+        employeeBooksController = new EmployeeBooksController(employeeBooksView);
 
         adminController = new AdminController(adminView);
         adminUsersController = new AdminUsersController(adminUsersView);
@@ -155,6 +161,9 @@ public class ComponentFactory {
     public static CustomerBooksView getCustomerBooksView(){
         return customerBooksView;
     }
+    public static EmployeeBooksView getEmployeeBooksView(){
+        return employeeBooksView;
+    }
     public static EmployeeSoldBooksView getEmployeeSoldBooksView(){
         return employeeSoldBooksView;
     }
@@ -176,19 +185,15 @@ public class ComponentFactory {
     public static LoginController getLoginController() {
         return loginController;
     }
-
     public static CustomerController getCustomerController() {
         return customerController;
     }
-
     public static CustomerBooksController getCustomerBooksController() {
         return customerBooksController;
     }
-
     public static EmployeeSoldBooksController getEmployeeSoldBooksController() {
         return employeeSoldBooksController;
     }
-
     public static EmployeeController getEmployeeController() {
         return employeeController;
     }

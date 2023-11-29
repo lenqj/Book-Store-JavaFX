@@ -15,11 +15,13 @@ public class AdminView implements View {
     private final Scene scene;
     private final BorderPane rootPane;
     private final MenuItem usersMenuItem;
+    private final MenuItem logoutMenuItem;
     private final MenuItem booksMenuItem;
     public AdminView() {
         rootPane = new BorderPane();
         scene = new Scene(rootPane);
         usersMenuItem = new MenuItem("Users");
+        logoutMenuItem = new MenuItem("Logout");
         booksMenuItem = new MenuItem("Books");
         initializeMenuBar();
     }
@@ -27,8 +29,8 @@ public class AdminView implements View {
         MenuBar menuBar = new MenuBar();
         Menu usersMenu = new Menu("Users");
         Menu booksMenu = new Menu("Books");
-        usersMenu.getItems().add(usersMenuItem);
-        booksMenu.getItems().add(booksMenuItem);
+        usersMenu.getItems().addAll(usersMenuItem, logoutMenuItem);
+        booksMenu.getItems().addAll(booksMenuItem);
         menuBar.getMenus().addAll(usersMenu, booksMenu);
         rootPane.setTop(menuBar);
     }
@@ -40,6 +42,9 @@ public class AdminView implements View {
     }
     public void addUsersMenuListener(EventHandler<ActionEvent> usersMenuListener){
         usersMenuItem.setOnAction(usersMenuListener);
+    }
+    public void addLogoutMenuListener(EventHandler<ActionEvent> logoutMenuListener) {
+        logoutMenuItem.setOnAction(logoutMenuListener);
     }
     public void addBooksMenuListener(EventHandler<ActionEvent> booksMenuListener){
         booksMenuItem.setOnAction(booksMenuListener);

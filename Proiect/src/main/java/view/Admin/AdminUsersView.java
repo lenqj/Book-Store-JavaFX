@@ -23,7 +23,8 @@ public class AdminUsersView {
     private Button createButton;
     private Button updateButton;
     private Button deleteButton;
-    private Text sceneTitle;
+    private Text usernameText;
+    private Text moneyText;
 
     public AdminUsersView() {
         gridPane = new GridPane();
@@ -54,9 +55,21 @@ public class AdminUsersView {
     }
 
     private void initializeSceneTitle(GridPane gridPane){
-        sceneTitle = new Text();
-        sceneTitle.setFont(Font.font("Thoma", FontWeight.NORMAL, 20));
-        gridPane.add(sceneTitle, 0, 0, 6, 1);
+        usernameText = new Text();
+        usernameText.setFont(Font.font("Thoma", FontWeight.NORMAL, 20));
+        HBox usernameTextHBox = new HBox();
+        usernameTextHBox.setAlignment(Pos.BOTTOM_LEFT);
+        usernameTextHBox.getChildren().add(usernameText);
+
+
+        moneyText = new Text();
+        moneyText.setFont(Font.font("Thoma", FontWeight.NORMAL, 20));
+        HBox moneyTextHBox = new HBox();
+        moneyTextHBox.setAlignment(Pos.BOTTOM_RIGHT);
+        moneyTextHBox.getChildren().add(moneyText);
+
+        gridPane.add(usernameTextHBox, 0, 0, 1, 1);
+        gridPane.add(moneyTextHBox, 5, 0, 1, 1);
     }
     @SuppressWarnings("unchecked")
     private void initializeTableView(TableView<User> tableView, GridPane gridPane){
@@ -75,7 +88,7 @@ public class AdminUsersView {
         money.setCellValueFactory(new PropertyValueFactory<>("money"));
         tableView.getColumns().setAll(id, username, roles, money);
     }
-    public void setTableBookList(List<User> users){
+    public void setTableUserList(List<User> users){
         table.getItems().clear();
         for (User user: users)
             table.getItems().add(user);
@@ -101,9 +114,11 @@ public class AdminUsersView {
         updateButtonHBox.getChildren().add(updateButton);
         gridPane.add(updateButtonHBox, 5, 7);
     }
-
-    public void setSceneTitle(String sceneTitle) {
-        this.sceneTitle.setText(sceneTitle);
+    public void setMoneyText(String text){
+        moneyText.setText(text);
+    }
+    public void setUsernameText(String text) {
+        usernameText.setText(text);
     }
     public void addDeleteButtonListener(EventHandler<ActionEvent> deleteButtonListener) {
         deleteButton.setOnAction(deleteButtonListener);

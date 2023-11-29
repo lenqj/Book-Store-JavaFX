@@ -1,4 +1,4 @@
-package view.Admin;
+package view.Employee;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,25 +17,28 @@ import model.book.BookInterface;
 
 import java.util.List;
 
-public class AdminBooksView {
+public class EmployeeBooksView {
     private final GridPane gridPane;
     private final TableView<BookInterface> table;
-    private Button createButton;
-    private Button updateButton;
-    private Button deleteButton;
+    private Button sellBookButton;
+    private Button buyBookButton;
     private Text usernameText;
+    private Text textSellBook;
     private Text moneyText;
-    public AdminBooksView() {
+
+    public EmployeeBooksView() {
         gridPane = new GridPane();
-        initializeGridPane(gridPane);
+        initializeGridPane();
         initializeSceneTitle();
         table = new TableView<>();
-        initializeTableView(table, gridPane);
-        initializeButtons(gridPane);
+        initializeTableView(table);
+        initializeButtons();
+        initializeTextSellBook();
     }
-    private void initializeGridPane(GridPane gridPane){
+
+    private void initializeGridPane(){
         RowConstraints rc = new RowConstraints();
-        rc.setPercentHeight(100d / 5);
+        rc.setPercentHeight(100d / 7);
         for (int i = 0; i < 7; i++) {
             gridPane.getRowConstraints().add(rc);
         }
@@ -70,7 +73,7 @@ public class AdminBooksView {
         gridPane.add(moneyTextHBox, 5, 0, 1, 1);
     }
     @SuppressWarnings("unchecked")
-    private void initializeTableView(TableView<BookInterface> tableView, GridPane gridPane){
+    private void initializeTableView(TableView<BookInterface> tableView){
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         ScrollPane sp = new ScrollPane(tableView);
         sp.setFitToHeight(true);
@@ -78,13 +81,17 @@ public class AdminBooksView {
         gridPane.add(sp, 0, 1, 6, 5);
         TableColumn<BookInterface, String> id = new TableColumn<>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        TableColumn<BookInterface,String> title = new TableColumn<>("Title");
-        title.setCellValueFactory(new PropertyValueFactory<>("title"));
-        TableColumn<BookInterface,String> author = new TableColumn<>("Author");
+        TableColumn<BookInterface, String> author = new TableColumn<>("Author");
         author.setCellValueFactory(new PropertyValueFactory<>("author"));
-        TableColumn<BookInterface,String> publishedDate = new TableColumn<>("Published Date");
+        TableColumn<BookInterface, String> title = new TableColumn<>("Title");
+        title.setCellValueFactory(new PropertyValueFactory<>("title"));
+        TableColumn<BookInterface, String> publishedDate = new TableColumn<>("Published Date");
         publishedDate.setCellValueFactory(new PropertyValueFactory<>("publishedDate"));
-        tableView.getColumns().setAll(id, title, author, publishedDate);
+        TableColumn<BookInterface, String> stock = new TableColumn<>("Stock");
+        stock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        TableColumn<BookInterface, String> price = new TableColumn<>("Price");
+        price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        tableView.getColumns().setAll(id, author, title, publishedDate, stock, price);
     }
     public void setTableBookList(List<BookInterface> books){
         table.getItems().clear();
@@ -92,43 +99,52 @@ public class AdminBooksView {
             table.getItems().add(book);
     }
 
-    private void initializeButtons(GridPane gridPane){
-        deleteButton = new Button("DELETE");
-        HBox deleteButtonHBox = new HBox(10);
-        deleteButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
-        deleteButtonHBox.getChildren().add(deleteButton);
-        gridPane.add(deleteButtonHBox, 0, 7);
+    private void initializeButtons(){
+        sellBookButton = new Button("Sell Book");
+        HBox sellBookButtonHBox = new HBox();
+        sellBookButtonHBox.setAlignment(Pos.BASELINE_LEFT);
+        sellBookButtonHBox.getChildren().add(sellBookButton);
+        gridPane.add(sellBookButtonHBox, 0, 7);
 
-        createButton = new Button("CREATE");
-        HBox createButtonHBox = new HBox(10);
-        createButtonHBox.setAlignment(Pos.BOTTOM_CENTER);
-        createButtonHBox.getChildren().add(createButton);
-        gridPane.add(createButtonHBox, 2, 7, 2, 1);
 
-        updateButton = new Button("UPDATE");
-        HBox updateButtonHBox = new HBox(10);
-        updateButtonHBox.setAlignment(Pos.BOTTOM_RIGHT);
-        updateButtonHBox.getChildren().add(updateButton);
-        gridPane.add(updateButtonHBox, 5, 7);
+        buyBookButton = new Button("Buy Book");
+        HBox buyBookButtonHBox = new HBox();
+        buyBookButtonHBox.setAlignment(Pos.BASELINE_RIGHT);
+        buyBookButtonHBox.getChildren().add(buyBookButton);
+        gridPane.add(buyBookButtonHBox, 4, 7);
+
     }
 
+    public BookInterface getSelectedBook(){
+        return table.getSelectionModel().getSelectedItem();
+    }
+    public void initializeTextSellBook(){
+        textSellBook = new Text();
+        HBox textSellBookHBox = new HBox();
+        textSellBookHBox.setAlignment(Pos.BASELINE_LEFT);
+        textSellBookHBox.getChildren().add(textSellBook);
+
+        gridPane.add(textSellBook, 0, 6, 6, 1);
+    }
+    public void setTextSellBook (String text){
+        textSellBook.setText(text);
+    }
     public void setMoneyText(String text){
         moneyText.setText(text);
     }
     public void setUsernameText(String text) {
         usernameText.setText(text);
     }
-    public void addDeleteButtonListener(EventHandler<ActionEvent> deleteButtonListener) {
-        deleteButton.setOnAction(deleteButtonListener);
+    public void clearTexts(){
+        textSellBook.setText("");
     }
-    public void addCreateButtonListener(EventHandler<ActionEvent> createButtonListener) {
-        createButton.setOnAction(createButtonListener);
+
+    public void addSellBookButtonButtonListener(EventHandler<ActionEvent> sellBookButtonButtonListener) {
+        sellBookButton.setOnAction(sellBookButtonButtonListener);
     }
-    public void addUpdateButtonListener(EventHandler<ActionEvent> updateButtonListener) {
-        updateButton.setOnAction(updateButtonListener);
-    }
-    public BookInterface getSelectedBook(){
-        return table.getSelectionModel().getSelectedItem();
+
+    public void addBuyBookButtonButtonListener(EventHandler<ActionEvent> buyBookButtonButtonListener) {
+        buyBookButton.setOnAction(buyBookButtonButtonListener);
     }
     public Pane getPane() {
         return gridPane;

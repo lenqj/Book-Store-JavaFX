@@ -6,7 +6,6 @@ import launcher.ComponentFactory;
 import model.User;
 import model.validator.Notification;
 import view.Admin.AdminBooksView;
-import view.Admin.AdminUsersView;
 
 public class AdminBooksController {
     private final AdminBooksView adminBooksView;
@@ -17,9 +16,6 @@ public class AdminBooksController {
         this.adminBooksView.addCreateButtonListener(new CreateButtonListener());
         this.adminBooksView.addUpdateButtonListener(new UpdateButtonListener());
         this.adminBooksView.addDeleteButtonListener(new DeleteButtonListener());
-    }
-    public AdminBooksView getAdminUsersView() {
-        return adminBooksView;
     }
     private static class CreateButtonListener implements EventHandler<ActionEvent> {
         @Override

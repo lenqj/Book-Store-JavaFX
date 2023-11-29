@@ -10,13 +10,7 @@ public class EmployeeSoldBooksController {
     private final EmployeeSoldBooksView employeeSoldBooksView;
     public EmployeeSoldBooksController(EmployeeSoldBooksView employeeSoldBooksView) {
         this.employeeSoldBooksView = employeeSoldBooksView;
-        employeeSoldBooksView.addBackButtonListener(new BackButtonButtonListener());
         employeeSoldBooksView.addDeleteButtonListener(new DeleteButtonButtonListener());
-    }
-    private class BackButtonButtonListener implements EventHandler<ActionEvent> {
-        public void handle(ActionEvent event) {
-            ComponentFactory.getEmployeeView().showPane(ComponentFactory.getCustomerBooksView().getPane());
-        }
     }
     private class DeleteButtonButtonListener implements EventHandler<ActionEvent> {
         public void handle(ActionEvent event) {

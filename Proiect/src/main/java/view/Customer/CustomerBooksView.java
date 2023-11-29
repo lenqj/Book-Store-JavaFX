@@ -21,8 +21,6 @@ public class CustomerBooksView {
     private final GridPane gridPane;
     private final TableView<BookInterface> table;
     private Button logoutButton;
-    private Button soldBooksButton;
-    private Button sellBookButton;
     private Button buyBookButton;
     private Text usernameText;
     private Text textSellBook;
@@ -102,24 +100,12 @@ public class CustomerBooksView {
     }
 
     private void initializeButtons(){
-        sellBookButton = new Button("Sell Book");
-        HBox sellBookButtonHBox = new HBox();
-        sellBookButtonHBox.setAlignment(Pos.BASELINE_LEFT);
-        sellBookButtonHBox.getChildren().add(sellBookButton);
-        gridPane.add(sellBookButtonHBox, 0, 7);
-
-
-        soldBooksButton = new Button("Sold Books");
-        HBox soldBooksButtonHBox = new HBox();
-        soldBooksButtonHBox.setAlignment(Pos.BASELINE_LEFT);
-        soldBooksButtonHBox.getChildren().add(soldBooksButton);
-        gridPane.add(soldBooksButtonHBox, 1, 7);
 
         buyBookButton = new Button("Buy Book");
         HBox buyBookButtonHBox = new HBox();
         buyBookButtonHBox.setAlignment(Pos.BASELINE_RIGHT);
         buyBookButtonHBox.getChildren().add(buyBookButton);
-        gridPane.add(buyBookButtonHBox, 4, 7);
+        gridPane.add(buyBookButtonHBox, 0, 7);
 
 
         logoutButton = new Button("Logout");
@@ -156,14 +142,6 @@ public class CustomerBooksView {
     public void addLogoutButtonListener(EventHandler<ActionEvent> logoutButtonListener) {
         logoutButton.setOnAction(logoutButtonListener);
     }
-    public void addSoldBooksButtonButtonListener(EventHandler<ActionEvent> soldBooksButtonButtonListener) {
-        soldBooksButton.setOnAction(soldBooksButtonButtonListener);
-    }
-
-    public void addSellBookButtonButtonListener(EventHandler<ActionEvent> sellBookButtonButtonListener) {
-        sellBookButton.setOnAction(sellBookButtonButtonListener);
-    }
-
     public void addBuyBookButtonButtonListener(EventHandler<ActionEvent> buyBookButtonButtonListener) {
         buyBookButton.setOnAction(buyBookButtonButtonListener);
     }
