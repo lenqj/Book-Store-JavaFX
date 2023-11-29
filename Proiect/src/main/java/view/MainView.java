@@ -2,7 +2,7 @@ package view;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MainView implements View {
+public class MainView {
     private final Stage stage;
     public MainView(Stage primaryStage) {
         stage = primaryStage;

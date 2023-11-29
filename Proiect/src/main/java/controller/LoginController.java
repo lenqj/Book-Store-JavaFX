@@ -37,6 +37,7 @@ public class LoginController {
             }
             case ADMINISTRATOR -> {
                 ComponentFactory.getMainView().showScene(ComponentFactory.getAdminView().getScene());
+                ComponentFactory.getAdminUsersView().setTableBookList(ComponentFactory.getUserService().findAll());
             }
             default -> {
                 ComponentFactory.getMainView().showScene(ComponentFactory.getLoginView().getScene());
