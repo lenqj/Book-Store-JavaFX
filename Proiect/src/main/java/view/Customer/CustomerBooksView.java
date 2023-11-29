@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -75,7 +76,10 @@ public class CustomerBooksView {
     }
     @SuppressWarnings("unchecked")
     private void initializeTableView(TableView<BookInterface> tableView){
-        gridPane.add(table, 0, 1, 6, 5);
+        ScrollPane sp = new ScrollPane(tableView);
+        sp.setFitToHeight(true);
+        sp.setFitToWidth(true);
+        gridPane.add(sp, 0, 1, 6, 5);
         TableColumn<BookInterface, String> id = new TableColumn<>("ID");
         id.setCellValueFactory(new PropertyValueFactory<>("id"));
         TableColumn<BookInterface, String> author = new TableColumn<>("Author");

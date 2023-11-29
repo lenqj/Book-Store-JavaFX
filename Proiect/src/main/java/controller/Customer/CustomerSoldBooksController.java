@@ -6,6 +6,8 @@ import launcher.ComponentFactory;
 import model.book.BookInterface;
 import view.Customer.CustomerSoldBooksView;
 
+import java.util.Map;
+
 
 public class CustomerSoldBooksController {
     private final CustomerSoldBooksView customerSoldBooksView;
@@ -22,8 +24,8 @@ public class CustomerSoldBooksController {
     }
     private class DeleteButtonButtonListener implements EventHandler<ActionEvent> {
         public void handle(ActionEvent event) {
-            BookInterface book = customerSoldBooksView.getSelectedBook();
-            ComponentFactory.getUserBooksService().deleteBook(ComponentFactory.getLoginController().getLoginNotification().getResult(), book);
+            Long selectedBookID = customerSoldBooksView.getSelectedBook();
+            ComponentFactory.getUserBooksService().deleteBook(ComponentFactory.getLoginController().getLoginNotification().getResult(), selectedBookID);
             customerSoldBooksView.setTableBookList(ComponentFactory.getUserBooksService().findAll(ComponentFactory.getLoginController().getLoginNotification().getResult()));
         }
     }
