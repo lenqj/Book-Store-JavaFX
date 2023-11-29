@@ -1,11 +1,12 @@
 package launcher;
 
 import controller.*;
+import controller.Admin.AdminBooksController;
 import controller.Admin.AdminController;
 import controller.Admin.AdminUsersController;
 import controller.Customer.CustomerBooksController;
 import controller.Customer.CustomerController;
-import controller.Customer.CustomerSoldBooksController;
+import controller.Employee.EmployeeSoldBooksController;
 import controller.Employee.EmployeeController;
 import database.DatabaseConnectionFactory;
 import javafx.stage.Stage;
@@ -22,11 +23,12 @@ import service.book.BookService;
 import service.book.BookServiceImpl;
 import service.user.*;
 import view.*;
+import view.Admin.AdminBooksView;
 import view.Admin.AdminUsersView;
 import view.Admin.AdminView;
 import view.Customer.CustomerBooksView;
 import view.Customer.CustomerView;
-import view.Customer.CustomerSoldBooksView;
+import view.Employee.EmployeeSoldBooksView;
 import view.Employee.EmployeeView;
 
 import java.sql.Connection;
@@ -36,18 +38,20 @@ public class ComponentFactory {
     private static LoginView loginView;
     private static CustomerView customerView;
     private static CustomerBooksView customerBooksView;
-    private static CustomerSoldBooksView customerSoldBooksView;
     private static EmployeeView employeeView;
+    private static EmployeeSoldBooksView employeeSoldBooksView;
     private static AdminView adminView;
     private static AdminUsersView adminUsersView;
+    private static AdminBooksView adminBooksView;
     private static MainController mainController;
     private static LoginController loginController;
     private static CustomerController customerController;
     private static CustomerBooksController customerBooksController;
-    private static CustomerSoldBooksController customerSoldBooksController;
     private static EmployeeController employeeController;
+    private static EmployeeSoldBooksController employeeSoldBooksController;
     private static AdminController adminController;
     private static AdminUsersController adminUsersController;
+    private static AdminBooksController adminBooksController;
     private static UserRepository userRepository;
     private static RightsRolesRepository rightsRolesRepository;
     private static BookRepository<BookInterface> bookRepository;
@@ -84,22 +88,35 @@ public class ComponentFactory {
 
         mainView = new MainView(stage);
         loginView = new LoginView();
+
+
         customerView = new CustomerView();
         customerBooksView = new CustomerBooksView();
-        customerSoldBooksView = new CustomerSoldBooksView();
+
+
         employeeView = new EmployeeView();
+        employeeSoldBooksView = new EmployeeSoldBooksView();
+
+
         adminView = new AdminView();
         adminUsersView = new AdminUsersView();
+        adminBooksView = new AdminBooksView();
 
 
         mainController = new MainController(mainView);
         loginController = new LoginController(loginView);
+
+
         customerController = new CustomerController(customerView);
         customerBooksController = new CustomerBooksController(customerBooksView);
-        customerSoldBooksController = new CustomerSoldBooksController(customerSoldBooksView);
+
+
         employeeController = new EmployeeController(employeeView);
+        employeeSoldBooksController = new EmployeeSoldBooksController(employeeSoldBooksView);
+
         adminController = new AdminController(adminView);
         adminUsersController = new AdminUsersController(adminUsersView);
+        adminBooksController = new AdminBooksController(adminBooksView);
     }
 
     public static UserRepository getUserRepository(){
@@ -138,8 +155,8 @@ public class ComponentFactory {
     public static CustomerBooksView getCustomerBooksView(){
         return customerBooksView;
     }
-    public static CustomerSoldBooksView getCustomerSoldBooksView(){
-        return customerSoldBooksView;
+    public static EmployeeSoldBooksView getEmployeeSoldBooksView(){
+        return employeeSoldBooksView;
     }
     public static EmployeeView getEmployeeView() {
         return employeeView;
@@ -150,7 +167,9 @@ public class ComponentFactory {
     public static AdminUsersView getAdminUsersView() {
         return adminUsersView;
     }
-
+    public static AdminBooksView getAdminBooksView() {
+        return adminBooksView;
+    }
     public static MainController getMainController() {
         return mainController;
     }
@@ -166,8 +185,8 @@ public class ComponentFactory {
         return customerBooksController;
     }
 
-    public static CustomerSoldBooksController getCustomerSoldBooksController() {
-        return customerSoldBooksController;
+    public static EmployeeSoldBooksController getEmployeeSoldBooksController() {
+        return employeeSoldBooksController;
     }
 
     public static EmployeeController getEmployeeController() {

@@ -30,9 +30,9 @@ public class CustomerBooksController {
     private static class SoldBookButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-            ComponentFactory.getCustomerView().showPane(ComponentFactory.getCustomerSoldBooksView().getPane());
-            ComponentFactory.getCustomerSoldBooksView().setTableBookList(ComponentFactory.getUserBooksService().findAll(ComponentFactory.getLoginController().getLoginNotification().getResult()));
-            ComponentFactory.getCustomerSoldBooksView().setSceneTitle("Sold Books for: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
+            ComponentFactory.getCustomerView().showPane(ComponentFactory.getEmployeeSoldBooksView().getPane());
+            ComponentFactory.getEmployeeSoldBooksView().setTableBookList(ComponentFactory.getUserBooksService().findAll(ComponentFactory.getLoginController().getLoginNotification().getResult()));
+            ComponentFactory.getEmployeeSoldBooksView().setSceneTitle("Sold Books for: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
 
         }
     }

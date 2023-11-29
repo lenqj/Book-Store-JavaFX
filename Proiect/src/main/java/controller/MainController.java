@@ -14,4 +14,7 @@ public class MainController {
     public MainView getMainView() {
         return mainView;
     }
+    public void setStageTitle(String text){
+        mainView.setStageTitle(text);
+    }
 }

@@ -20,6 +20,7 @@ public class LoginController {
         loginNotification = new Notification<>();
         this.loginView.addLoginButtonListener(new LoginButtonListener());
         this.loginView.addRegisterButtonListener(new RegisterButtonListener());
+        ComponentFactory.getMainController().setStageTitle("Welcome to our Book Store");
     }
     public Notification<User> getLoginNotification(){
         return loginNotification;

@@ -5,20 +5,21 @@ import javafx.event.EventHandler;
 import launcher.ComponentFactory;
 import model.User;
 import model.validator.Notification;
+import view.Admin.AdminBooksView;
 import view.Admin.AdminUsersView;
 
-public class AdminUsersController {
-    private final AdminUsersView adminUsersView;
-    private Notification<Boolean> adminUsersNotification;
-    public AdminUsersController(AdminUsersView adminUsersView) {
-        this.adminUsersView = adminUsersView;
-        adminUsersNotification = new Notification<>();
-        this.adminUsersView.addCreateButtonListener(new CreateButtonListener());
-        this.adminUsersView.addUpdateButtonListener(new UpdateButtonListener());
-        this.adminUsersView.addDeleteButtonListener(new DeleteButtonListener());
+public class AdminBooksController {
+    private final AdminBooksView adminBooksView;
+    private Notification<Boolean> adminBooksNotification;
+    public AdminBooksController(AdminBooksView adminBooksView) {
+        this.adminBooksView = adminBooksView;
+        adminBooksNotification = new Notification<>();
+        this.adminBooksView.addCreateButtonListener(new CreateButtonListener());
+        this.adminBooksView.addUpdateButtonListener(new UpdateButtonListener());
+        this.adminBooksView.addDeleteButtonListener(new DeleteButtonListener());
     }
-    public AdminUsersView getAdminUsersView() {
-        return adminUsersView;
+    public AdminBooksView getAdminUsersView() {
+        return adminBooksView;
     }
     private static class CreateButtonListener implements EventHandler<ActionEvent> {
         @Override

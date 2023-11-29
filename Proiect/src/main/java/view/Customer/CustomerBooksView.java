@@ -76,6 +76,7 @@ public class CustomerBooksView {
     }
     @SuppressWarnings("unchecked")
     private void initializeTableView(TableView<BookInterface> tableView){
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         ScrollPane sp = new ScrollPane(tableView);
         sp.setFitToHeight(true);
         sp.setFitToWidth(true);

@@ -1,5 +1,6 @@
-package view.Admin;
+package view.Employee;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -8,24 +9,22 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import model.User;
+import model.book.BookInterface;
 
-import java.util.List;
+import java.util.Map;
 
-public class AdminUsersView {
+public class EmployeeSoldBooksView {
     private final GridPane gridPane;
-    private final TableView<User> table;
-    private Button createButton;
-    private Button updateButton;
+    private final TableView<Map.Entry<Long, BookInterface>> table;
+    private Button backButton;
     private Button deleteButton;
     private Text sceneTitle;
 
-    public AdminUsersView() {
+    public EmployeeSoldBooksView() {
         gridPane = new GridPane();
         initializeGridPane(gridPane);
         initializeSceneTitle(gridPane);
@@ -34,6 +33,7 @@ public class AdminUsersView {
 
         initializeButtons(gridPane);
     }
+
     private void initializeGridPane(GridPane gridPane){
         RowConstraints rc = new RowConstraints();
         rc.setPercentHeight(100d / 5);
@@ -59,66 +59,62 @@ public class AdminUsersView {
         gridPane.add(sceneTitle, 0, 0, 6, 1);
     }
     @SuppressWarnings("unchecked")
-    private void initializeTableView(TableView<User> tableView, GridPane gridPane){
+    private void initializeTableView(TableView<Map.Entry<Long, BookInterface>> tableView, GridPane gridPane){
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         ScrollPane sp = new ScrollPane(tableView);
         sp.setFitToHeight(true);
         sp.setFitToWidth(true);
         gridPane.add(sp, 0, 1, 6, 5);
-        TableColumn<User, String> id = new TableColumn<>("ID");
-        id.setCellValueFactory(new PropertyValueFactory<>("id"));
-        TableColumn<User,String> username = new TableColumn<>("Username");
-        username.setCellValueFactory(new PropertyValueFactory<>("username"));
-        TableColumn<User,String> roles = new TableColumn<>("Roles");
-        roles.setCellValueFactory(new PropertyValueFactory<>("roles"));
-        TableColumn<User,String> money = new TableColumn<>("Money");
-        money.setCellValueFactory(new PropertyValueFactory<>("money"));
-        tableView.getColumns().setAll(id, username, roles, money);
+        TableColumn<Map.Entry<Long, BookInterface>, String> id = new TableColumn<>("#");
+        id.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getKey())));
+
+        TableColumn<Map.Entry<Long, BookInterface>, String> book_id = new TableColumn<>("Book ID");
+        book_id.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getValue().getId())));
+
+        TableColumn<Map.Entry<Long, BookInterface>, String> author = new TableColumn<>("Author");
+        author.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getValue().getAuthor()));
+
+        TableColumn<Map.Entry<Long, BookInterface>, String> title = new TableColumn<>("Title");
+        title.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getValue().getTitle()));
+
+        TableColumn<Map.Entry<Long, BookInterface>, String> publishedDate = new TableColumn<>("Published Date");
+        publishedDate.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getValue().getPublishedDate())));
+        tableView.getColumns().setAll(id, book_id, author, title, publishedDate);
     }
-    public void setTableBookList(List<User> users){
+    public void setTableBookList(Map<Long, BookInterface> books){
         table.getItems().clear();
-        for (User user: users)
-            table.getItems().add(user);
+        table.getItems().addAll(books.entrySet());
     }
 
     private void initializeButtons(GridPane gridPane){
-        deleteButton = new Button("DELETE");
+        deleteButton = new Button("Delete");
         HBox deleteButtonHBox = new HBox(10);
         deleteButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
         deleteButtonHBox.getChildren().add(deleteButton);
         gridPane.add(deleteButtonHBox, 0, 7);
 
 
-        createButton = new Button("CREATE");
-        HBox createButtonHBox = new HBox(10);
-        createButtonHBox.setAlignment(Pos.BOTTOM_CENTER);
-        createButtonHBox.getChildren().add(createButton);
-        gridPane.add(createButtonHBox, 2, 7, 2, 1);
-
-        updateButton = new Button("UPDATE");
-        HBox updateButtonHBox = new HBox(10);
-        updateButtonHBox.setAlignment(Pos.BOTTOM_RIGHT);
-        updateButtonHBox.getChildren().add(updateButton);
-        gridPane.add(updateButtonHBox, 5, 7);
+        backButton = new Button("Back");
+        HBox backButtonHBox = new HBox(10);
+        backButtonHBox.setAlignment(Pos.BOTTOM_RIGHT);
+        backButtonHBox.getChildren().add(backButton);
+        gridPane.add(backButtonHBox, 5, 7);
     }
 
     public void setSceneTitle(String sceneTitle) {
         this.sceneTitle.setText(sceneTitle);
     }
+
+    public void addBackButtonListener(EventHandler<ActionEvent> backButtonListener) {
+        backButton.setOnAction(backButtonListener);
+    }
     public void addDeleteButtonListener(EventHandler<ActionEvent> deleteButtonListener) {
         deleteButton.setOnAction(deleteButtonListener);
     }
-    public void addCreateButtonListener(EventHandler<ActionEvent> createButtonListener) {
-        createButton.setOnAction(createButtonListener);
-    }
-    public void addUpdateButtonListener(EventHandler<ActionEvent> updateButtonListener) {
-        updateButton.setOnAction(updateButtonListener);
-    }
-    public User getSelectedUser(){
-        return table.getSelectionModel().getSelectedItem();
+    public Long getSelectedBook(){
+        return table.getSelectionModel().getSelectedItem().getKey();
     }
     public Pane getPane() {
         return gridPane;
     }
-
 }
