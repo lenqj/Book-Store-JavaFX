@@ -8,6 +8,7 @@ import repository.book.BookRepository;
 import repository.user.UserBooksRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class UserBooksServiceImpl implements UserBooksService{
@@ -15,7 +16,7 @@ public class UserBooksServiceImpl implements UserBooksService{
     public UserBooksServiceImpl(UserBooksRepository userBooksRepository) {
         this.userBooksRepository = userBooksRepository;
     }
-    public List<BookInterface> findAll(User user){
+    public Map<Long, BookInterface> findAll(User user){
         return userBooksRepository.findAll(user);
     }
     public Notification<Boolean> sell(User user, BookInterface book){
@@ -25,9 +26,8 @@ public class UserBooksServiceImpl implements UserBooksService{
     public Notification<Boolean> buy(User user, BookInterface book) {
         return userBooksRepository.buy(user, book);
     }
-    @Override
-    public int deleteBook(User user, BookInterface book) {
-        return userBooksRepository.deleteBook(user, book);
+    public int deleteBook(User user, Long bookID) {
+        return userBooksRepository.deleteBook(user, bookID);
     }
     public void removeAll(User user){
     }

@@ -10,9 +10,7 @@ import repository.book.BookRepository;
 import repository.security.RightsRolesRepository;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static database.Constants.Tables.USER_BOOKS;
 import static database.Constants.Tables.USER_BOUGHT_BOOKS;
@@ -28,15 +26,15 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
     }
-    public List<BookInterface> findAll(User user){
-        List<BookInterface> books = new ArrayList<>();
+    public Map<Long, BookInterface> findAll(User user){
+        Map<Long, BookInterface> books = new TreeMap<>();
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("SELECT * FROM " + USER_BOOKS + " where user_id = ?;");
             preparedStatement.setLong(1, user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                books.add(getBookFromResultSet(resultSet).getResult());
+                books.put(resultSet.getLong(1), getBookFromResultSet(resultSet).getResult());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,12 +107,12 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
     }
 
     @Override
-    public int deleteBook(User user, BookInterface book) {
+    public int deleteBook(User user, Long bookID) {
         try {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("DELETE FROM " + USER_BOOKS + " WHERE user_id = ? and book_id = ?;");
+                    .prepareStatement("DELETE FROM " + USER_BOOKS + " WHERE user_id = ? and id = ?;");
             preparedStatement.setLong(1, user.getId());
-            preparedStatement.setLong(2, book.getId());
+            preparedStatement.setLong(2, bookID);
 
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -126,9 +124,9 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
     public void removeAll(User user){
     }
     private Notification<BookInterface> getBookFromResultSet(ResultSet resultSet) throws SQLException {
-            return bookRepository.findById(resultSet.getLong(3));
+            return bookRepository.findById(resultSet.getLong("id"));
     }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
+    private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
         return new UserBuilder()
                 .setId(resultSet.getLong("id"))
                 .setUsername(resultSet.getString("username"))
