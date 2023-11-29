@@ -11,10 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
-import static database.Constants.Tables.BOOK;
-import static database.Constants.Tables.USER;
+import static database.Constants.Tables.*;
 
 public class UserRepositoryMySQL implements UserRepository {
 
@@ -28,7 +28,18 @@ public class UserRepositoryMySQL implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return null;
+        List<User> users = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM " + USER + ";";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while(resultSet.next()){
+                users.add(getUserFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return users;
     }
 
     @Override
@@ -158,6 +169,25 @@ public class UserRepositoryMySQL implements UserRepository {
                 .setMoney(userResultSet.getLong("money"))
                 .build();
 
+    }
+
+    public Notification<Boolean> deleteUser(User user) {
+        Notification<Boolean> deleteUserNotification = new Notification<>();
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("DELETE FROM " + USER + " WHERE id = ?;");
+            preparedStatement.setLong(1, user.getId());
+            if(preparedStatement.executeUpdate() == 1){
+                deleteUserNotification.setResult(Boolean.TRUE);
+            }else{
+                deleteUserNotification.addError("User can't be deleted.");
+                return deleteUserNotification;
+            }
+        } catch (SQLException e) {
+            deleteUserNotification.addError("Something is wrong with the Database!");
+            e.printStackTrace();
+        }
+        return deleteUserNotification;
     }
 
 }

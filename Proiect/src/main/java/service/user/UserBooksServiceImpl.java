@@ -12,28 +12,23 @@ import java.util.Optional;
 
 public class UserBooksServiceImpl implements UserBooksService{
     private final UserBooksRepository userBooksRepository;
-
     public UserBooksServiceImpl(UserBooksRepository userBooksRepository) {
         this.userBooksRepository = userBooksRepository;
     }
     public List<BookInterface> findAll(User user){
-
         return userBooksRepository.findAll(user);
     }
     public Notification<Boolean> sell(User user, BookInterface book){
         return userBooksRepository.sell(user, book);
     }
-
     @Override
     public Notification<Boolean> buy(User user, BookInterface book) {
         return userBooksRepository.buy(user, book);
     }
-
     @Override
     public int deleteBook(User user, BookInterface book) {
         return userBooksRepository.deleteBook(user, book);
     }
-
     public void removeAll(User user){
     }
 

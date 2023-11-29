@@ -18,4 +18,5 @@ public interface UserRepository {
     boolean existsByUsername(String username);
     Notification<User> updateMoney(User user, Long money);
     User findById(Long id);
+    Notification<Boolean> deleteUser(User user);
 }
