@@ -4,9 +4,7 @@ import controller.*;
 import controller.Admin.*;
 import controller.Customer.CustomerBooksController;
 import controller.Customer.CustomerController;
-import controller.Employee.EmployeeBooksController;
-import controller.Employee.EmployeeSoldBooksController;
-import controller.Employee.EmployeeController;
+import controller.Employee.*;
 import database.DatabaseConnectionFactory;
 import javafx.stage.Stage;
 import model.book.BookInterface;
@@ -25,9 +23,7 @@ import view.*;
 import view.Admin.*;
 import view.Customer.CustomerBooksView;
 import view.Customer.CustomerView;
-import view.Employee.EmployeeBooksView;
-import view.Employee.EmployeeSoldBooksView;
-import view.Employee.EmployeeView;
+import view.Employee.*;
 
 import java.sql.Connection;
 
@@ -38,6 +34,8 @@ public class ComponentFactory {
     private static CustomerBooksView customerBooksView;
     private static EmployeeView employeeView;
     private static EmployeeBooksView employeeBooksView;
+    private static EmployeeCreateBookView employeeCreateBookView;
+    private static EmployeeUpdateBookView employeeUpdateBookView;
     private static EmployeeSoldBooksView employeeSoldBooksView;
     private static AdminView adminView;
     private static AdminUsersView adminUsersView;
@@ -50,6 +48,8 @@ public class ComponentFactory {
     private static CustomerBooksController customerBooksController;
     private static EmployeeController employeeController;
     private static EmployeeBooksController employeeBooksController;
+    private static EmployeeCreateBookController employeeCreateBookController;
+    private static EmployeeUpdateBookController employeeUpdateBookController;
     private static EmployeeSoldBooksController employeeSoldBooksController;
     private static AdminController adminController;
     private static AdminUsersController adminUsersController;
@@ -100,6 +100,8 @@ public class ComponentFactory {
 
         employeeView = new EmployeeView();
         employeeSoldBooksView = new EmployeeSoldBooksView();
+        employeeCreateBookView = new EmployeeCreateBookView();
+        employeeUpdateBookView = new EmployeeUpdateBookView();
         employeeBooksView = new EmployeeBooksView();
 
 
@@ -119,8 +121,10 @@ public class ComponentFactory {
 
 
         employeeController = new EmployeeController(employeeView);
-        employeeSoldBooksController = new EmployeeSoldBooksController(employeeSoldBooksView);
         employeeBooksController = new EmployeeBooksController(employeeBooksView);
+        employeeCreateBookController = new EmployeeCreateBookController(employeeCreateBookView);
+        employeeUpdateBookController = new EmployeeUpdateBookController(employeeUpdateBookView);
+        employeeSoldBooksController = new EmployeeSoldBooksController(employeeSoldBooksView);
 
         adminController = new AdminController(adminView);
         adminUsersController = new AdminUsersController(adminUsersView);
@@ -168,6 +172,15 @@ public class ComponentFactory {
     public static EmployeeBooksView getEmployeeBooksView(){
         return employeeBooksView;
     }
+
+    public static EmployeeCreateBookView getEmployeeCreateBookView() {
+        return employeeCreateBookView;
+    }
+
+    public static EmployeeUpdateBookView getEmployeeUpdateBookView() {
+        return employeeUpdateBookView;
+    }
+
     public static EmployeeSoldBooksView getEmployeeSoldBooksView(){
         return employeeSoldBooksView;
     }
@@ -183,11 +196,9 @@ public class ComponentFactory {
     public static AdminCreateUserView getAdminCreateUserView(){
         return adminCreateUserView;
     }
-
     public static AdminUpdateUserView getAdminUpdateUserView() {
         return adminUpdateUserView;
     }
-
     public static AdminBooksView getAdminBooksView() {
         return adminBooksView;
     }
@@ -210,10 +221,21 @@ public class ComponentFactory {
         return employeeController;
     }
 
+    public static EmployeeBooksController getEmployeeBooksController() {
+        return employeeBooksController;
+    }
+
+    public static EmployeeCreateBookController getEmployeeCreateBookController() {
+        return employeeCreateBookController;
+    }
+
+    public static EmployeeUpdateBookController getEmployeeUpdateBookController() {
+        return employeeUpdateBookController;
+    }
+
     public static AdminController getAdminController() {
         return adminController;
     }
-
     public static AdminUsersController getAdminUsersController() {
         return adminUsersController;
     }

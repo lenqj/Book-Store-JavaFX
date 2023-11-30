@@ -15,6 +15,7 @@ public class EmployeeBooksController {
         this.employeeBooksView = employeeBooksView;
         employeeBooksNotification = new Notification<>();
         employeeBooksView.addSellBookButtonButtonListener(new SellBookButtonListener());
+        employeeBooksView.addCreateBookButtonButtonListener(new CreateBookButtonListener());
     }
     private class SellBookButtonListener implements EventHandler<ActionEvent> {
         @Override
@@ -31,6 +32,13 @@ public class EmployeeBooksController {
                 ComponentFactory.getMainView().getAlert().setContentText(employeeBooksNotification.getFormattedErrors());
                 ComponentFactory.getMainView().getAlert().showAndWait();
             }
+        }
+    }
+
+    private class CreateBookButtonListener implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+            ComponentFactory.getEmployeeView().showPane(ComponentFactory.getEmployeeCreateBookView().getPane());
         }
     }
 
