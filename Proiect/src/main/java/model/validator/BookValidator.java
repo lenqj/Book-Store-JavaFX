@@ -23,6 +23,13 @@ public class BookValidator {
         return errors.isEmpty();
     }
 
+    public boolean validateToSell() {
+        if (book == null) {
+            errors.add("You must select 1 book.");
+        }
+        return errors.isEmpty();
+    }
+
     private void validateUserMoney(User user) {
         if (user.getMoney() <= 0) {
             errors.add("User doesn't have enough money!");
