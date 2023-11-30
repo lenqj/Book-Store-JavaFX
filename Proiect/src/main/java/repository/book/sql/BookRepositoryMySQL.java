@@ -35,8 +35,8 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
         return books;
     }
 
-    public List<BookInterface> findAllSellableBooks() {
-        String sql = "SELECT * FROM " + BOOK + " where toSell = TRUE;";
+    public List<BookInterface> findAllSellableBooks(Boolean flag) {
+        String sql = "SELECT * FROM " + BOOK + " where toSell = " + flag + ";";
         List<BookInterface> books = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();

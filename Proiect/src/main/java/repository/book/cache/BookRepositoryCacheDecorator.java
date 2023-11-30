@@ -25,7 +25,7 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
     }
 
     @Override
-    public List<T> findAllSellableBooks() {
+    public List<T> findAllSellableBooks(Boolean flag) {
         return null;
     }
 

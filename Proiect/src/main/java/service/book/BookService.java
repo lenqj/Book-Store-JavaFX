@@ -8,7 +8,7 @@ import java.util.List;
 public interface BookService<T> {
 
     List<T> findAll();
-    List<T> findAllSellableBooks();
+    List<T> findAllSellableBooks(Boolean flag);
     Notification<T> findById(Long id);
     boolean save(T book);
     Notification<Boolean> sell(BookInterface book);

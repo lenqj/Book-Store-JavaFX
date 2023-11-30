@@ -17,7 +17,7 @@ public class BookRepositoryMock implements BookRepository<BookInterface>{
     }
 
     @Override
-    public List<BookInterface> findAllSellableBooks() {
+    public List<BookInterface> findAllSellableBooks(Boolean flag) {
         return null;
     }
 

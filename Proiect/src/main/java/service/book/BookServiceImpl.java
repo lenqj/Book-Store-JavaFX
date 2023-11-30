@@ -18,8 +18,8 @@ public class BookServiceImpl implements BookService<BookInterface>{
     public List<BookInterface> findAll() {
         return bookRepository.findAll();
     }
-    public List<BookInterface> findAllSellableBooks() {
-        return bookRepository.findAllSellableBooks();
+    public List<BookInterface> findAllSellableBooks(Boolean flag) {
+        return bookRepository.findAllSellableBooks(flag);
     }
 
 

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface BookRepository<T> {
     List<T> findAll();
-    List<T> findAllSellableBooks();
+    List<T> findAllSellableBooks(Boolean flag);
     Notification<T> findById(Long id);
     boolean save(T book);
     boolean badSave(T book);
