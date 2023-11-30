@@ -5,6 +5,11 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 import model.User;
 
+import java.util.List;
+import java.util.stream.Stream;
+
+import static database.Constants.Roles.*;
+
 public class Launcher extends Application {
     public static void main(String[] args){
         launch(args);

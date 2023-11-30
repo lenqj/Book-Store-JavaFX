@@ -1,10 +1,7 @@
 package launcher;
 
 import controller.*;
-import controller.Admin.AdminBooksController;
-import controller.Admin.AdminController;
-import controller.Admin.AdminCreateUserController;
-import controller.Admin.AdminUsersController;
+import controller.Admin.*;
 import controller.Customer.CustomerBooksController;
 import controller.Customer.CustomerController;
 import controller.Employee.EmployeeBooksController;
@@ -25,10 +22,7 @@ import service.book.BookService;
 import service.book.BookServiceImpl;
 import service.user.*;
 import view.*;
-import view.Admin.AdminBooksView;
-import view.Admin.AdminCreateUserView;
-import view.Admin.AdminUsersView;
-import view.Admin.AdminView;
+import view.Admin.*;
 import view.Customer.CustomerBooksView;
 import view.Customer.CustomerView;
 import view.Employee.EmployeeBooksView;
@@ -48,6 +42,7 @@ public class ComponentFactory {
     private static AdminView adminView;
     private static AdminUsersView adminUsersView;
     private static AdminCreateUserView adminCreateUserView;
+    private static AdminUpdateUserView adminUpdateUserView;
     private static AdminBooksView adminBooksView;
     private static MainController mainController;
     private static LoginController loginController;
@@ -59,6 +54,7 @@ public class ComponentFactory {
     private static AdminController adminController;
     private static AdminUsersController adminUsersController;
     private static AdminCreateUserController adminCreateUserController;
+    private static AdminUpdateUserController adminUpdateUserController;
     private static AdminBooksController adminBooksController;
     private static UserRepository userRepository;
     private static RightsRolesRepository rightsRolesRepository;
@@ -110,6 +106,7 @@ public class ComponentFactory {
         adminView = new AdminView();
         adminUsersView = new AdminUsersView();
         adminCreateUserView = new AdminCreateUserView();
+        adminUpdateUserView = new AdminUpdateUserView();
         adminBooksView = new AdminBooksView();
 
 
@@ -128,6 +125,7 @@ public class ComponentFactory {
         adminController = new AdminController(adminView);
         adminUsersController = new AdminUsersController(adminUsersView);
         adminCreateUserController = new AdminCreateUserController(adminCreateUserView);
+        adminUpdateUserController = new AdminUpdateUserController(adminUpdateUserView);
         adminBooksController = new AdminBooksController(adminBooksView);
     }
 
@@ -185,6 +183,11 @@ public class ComponentFactory {
     public static AdminCreateUserView getAdminCreateUserView(){
         return adminCreateUserView;
     }
+
+    public static AdminUpdateUserView getAdminUpdateUserView() {
+        return adminUpdateUserView;
+    }
+
     public static AdminBooksView getAdminBooksView() {
         return adminBooksView;
     }

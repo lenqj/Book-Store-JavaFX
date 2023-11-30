@@ -182,7 +182,7 @@ public class Bootstrap {
         User employee = new UserBuilder()
                 .setUsername("e@e.e")
                 .setPassword(AuthenticationServiceImpl.hashPassword("Qwerty1234!"))
-                .setRoles(Collections.singletonList(employeeRole))
+                .setRoles(List.of(employeeRole, customerRole))
                 .setMoney(100L)
                 .build();
         Role administratorRole = rightsRolesRepository.findRoleByTitle(ADMINISTRATOR);
@@ -190,7 +190,7 @@ public class Bootstrap {
         User administrator = new UserBuilder()
                 .setUsername("a@a.a")
                 .setPassword(AuthenticationServiceImpl.hashPassword("Qwerty1234!"))
-                .setRoles(Collections.singletonList(administratorRole))
+                .setRoles(List.of(administratorRole, employeeRole))
                 .setMoney(100L)
                 .build();
         Connection connection = new JDBCConnectionWrapper(PRODUCTION).getConnection();
