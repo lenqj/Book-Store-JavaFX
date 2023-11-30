@@ -21,7 +21,6 @@ public class EmployeeBooksView {
     private final GridPane gridPane;
     private final TableView<BookInterface> table;
     private Button sellBookButton;
-    private Button buyBookButton;
     private Text usernameText;
     private Text textSellBook;
     private Text moneyText;
@@ -106,13 +105,6 @@ public class EmployeeBooksView {
         sellBookButtonHBox.getChildren().add(sellBookButton);
         gridPane.add(sellBookButtonHBox, 0, 7);
 
-
-        buyBookButton = new Button("Buy Book");
-        HBox buyBookButtonHBox = new HBox();
-        buyBookButtonHBox.setAlignment(Pos.BASELINE_RIGHT);
-        buyBookButtonHBox.getChildren().add(buyBookButton);
-        gridPane.add(buyBookButtonHBox, 4, 7);
-
     }
 
     public BookInterface getSelectedBook(){
@@ -143,9 +135,6 @@ public class EmployeeBooksView {
         sellBookButton.setOnAction(sellBookButtonButtonListener);
     }
 
-    public void addBuyBookButtonButtonListener(EventHandler<ActionEvent> buyBookButtonButtonListener) {
-        buyBookButton.setOnAction(buyBookButtonButtonListener);
-    }
     public Pane getPane() {
         return gridPane;
     }

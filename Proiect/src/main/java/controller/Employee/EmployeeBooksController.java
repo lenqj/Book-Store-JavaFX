@@ -15,38 +15,25 @@ public class EmployeeBooksController {
         this.employeeBooksView = employeeBooksView;
         employeeBooksNotification = new Notification<>();
         employeeBooksView.addSellBookButtonButtonListener(new SellBookButtonListener());
-        employeeBooksView.addBuyBookButtonButtonListener(new BuyBookButtonListener());
     }
     private class SellBookButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
+            employeeBooksNotification = new Notification<>();
             BookInterface book = employeeBooksView.getSelectedBook();
             employeeBooksNotification = ComponentFactory.getUserBooksService().sell(ComponentFactory.getLoginController().getLoginNotification().getResult(), book);
             if (!employeeBooksNotification.hasErrors()) {
                 employeeBooksView.setTextSellBook("You successfully sold: " + book.toString());
+                ComponentFactory.getEmployeeBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
+                ComponentFactory.getEmployeeBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
+                ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks(Boolean.TRUE));
             }else {
-                employeeBooksView.setTextSellBook(employeeBooksNotification.getFormattedErrors());
+                ComponentFactory.getMainView().getAlert().setContentText(employeeBooksNotification.getFormattedErrors());
+                ComponentFactory.getMainView().getAlert().showAndWait();
             }
-            ComponentFactory.getEmployeeBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
-            ComponentFactory.getEmployeeBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
-            ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks(Boolean.TRUE));
         }
     }
 
-    private class BuyBookButtonListener implements EventHandler<ActionEvent> {
-        @Override
-        public void handle(ActionEvent event) {
-            BookInterface book = employeeBooksView.getSelectedBook();
-            employeeBooksNotification = ComponentFactory.getUserBooksService().buy(ComponentFactory.getLoginController().getLoginNotification().getResult(), book);
-            if (!employeeBooksNotification.hasErrors()) {
-                employeeBooksView.setTextSellBook("You successfully bought: " + book.toString());
-                employeeBooksView.setTableBookList(ComponentFactory.getBookService().findAll());
-                employeeBooksView.setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
-            }else {
-                employeeBooksView.setTextSellBook(employeeBooksNotification.getFormattedErrors());
-            }
-        }
-    }
 
 
 }

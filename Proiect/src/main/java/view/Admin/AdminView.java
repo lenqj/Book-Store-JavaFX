@@ -3,12 +3,15 @@ package view.Admin;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import view.View;
+
+import static javafx.scene.control.Alert.AlertType.ERROR;
 
 
 public class AdminView implements View {

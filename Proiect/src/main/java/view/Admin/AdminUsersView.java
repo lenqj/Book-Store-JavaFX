@@ -25,6 +25,7 @@ public class AdminUsersView {
     private Button deleteButton;
     private Text usernameText;
     private Text moneyText;
+    private Text errorsText;
 
     public AdminUsersView() {
         gridPane = new GridPane();
@@ -68,8 +69,15 @@ public class AdminUsersView {
         moneyTextHBox.setAlignment(Pos.BOTTOM_RIGHT);
         moneyTextHBox.getChildren().add(moneyText);
 
+        errorsText = new Text();
+        errorsText.setFont(Font.font("Thoma", FontWeight.NORMAL, 20));
+        HBox errorsTextHBox = new HBox();
+        errorsTextHBox.setAlignment(Pos.BOTTOM_LEFT);
+        errorsTextHBox.getChildren().add(errorsText);
+
         gridPane.add(usernameTextHBox, 0, 0, 1, 1);
         gridPane.add(moneyTextHBox, 5, 0, 1, 1);
+        gridPane.add(errorsTextHBox, 0, 6, 6, 1);
     }
     @SuppressWarnings("unchecked")
     private void initializeTableView(TableView<User> tableView, GridPane gridPane){
@@ -101,7 +109,6 @@ public class AdminUsersView {
         deleteButtonHBox.getChildren().add(deleteButton);
         gridPane.add(deleteButtonHBox, 0, 7);
 
-
         createButton = new Button("CREATE");
         HBox createButtonHBox = new HBox(10);
         createButtonHBox.setAlignment(Pos.BOTTOM_CENTER);
@@ -120,6 +127,13 @@ public class AdminUsersView {
     public void setUsernameText(String text) {
         usernameText.setText(text);
     }
+    public void setErrorsText(String text) {
+        errorsText.setText(text);
+    }
+    public void clearErrorsText(){
+        setErrorsText("");
+    }
+
     public void addDeleteButtonListener(EventHandler<ActionEvent> deleteButtonListener) {
         deleteButton.setOnAction(deleteButtonListener);
     }

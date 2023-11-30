@@ -21,6 +21,7 @@ public class AdminController {
             ComponentFactory.getAdminUsersView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
             ComponentFactory.getAdminUsersView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
             ComponentFactory.getAdminUsersView().setTableUserList(ComponentFactory.getUserService().findAll());
+            ComponentFactory.getAdminUsersView().clearErrorsText();
         }
     }
     private static class BooksMenuListener implements EventHandler<ActionEvent> {
@@ -29,14 +30,15 @@ public class AdminController {
             ComponentFactory.getAdminBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
             ComponentFactory.getAdminBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
             ComponentFactory.getAdminBooksView().setTableBookList(ComponentFactory.getBookService().findAll());
+            ComponentFactory.getAdminUsersView().clearErrorsText();
         }
-
     }
     private static class LogoutMenuListener implements EventHandler<ActionEvent> {
         public void handle(ActionEvent event) {
             ComponentFactory.getMainView().showScene(ComponentFactory.getLoginView().getScene());
             ComponentFactory.getLoginView().clearTexts();
             ComponentFactory.getMainView().setStageTitle("Welcome to our Book Store");
+            ComponentFactory.getAdminUsersView().clearErrorsText();
         }
     }
 }

@@ -20,7 +20,6 @@ import java.util.List;
 public class CustomerBooksView {
     private final GridPane gridPane;
     private final TableView<BookInterface> table;
-    private Button logoutButton;
     private Button buyBookButton;
     private Text usernameText;
     private Text textSellBook;
@@ -108,12 +107,6 @@ public class CustomerBooksView {
         gridPane.add(buyBookButtonHBox, 0, 7);
 
 
-        logoutButton = new Button("Logout");
-        HBox logOutButtonHBox = new HBox();
-        logOutButtonHBox.setAlignment(Pos.BASELINE_RIGHT);
-        logOutButtonHBox.getChildren().add(logoutButton);
-        gridPane.add(logOutButtonHBox, 5, 7);
-
     }
 
     public BookInterface getSelectedBook(){
@@ -138,9 +131,6 @@ public class CustomerBooksView {
     }
     public void clearTexts(){
         textSellBook.setText("");
-    }
-    public void addLogoutButtonListener(EventHandler<ActionEvent> logoutButtonListener) {
-        logoutButton.setOnAction(logoutButtonListener);
     }
     public void addBuyBookButtonButtonListener(EventHandler<ActionEvent> buyBookButtonButtonListener) {
         buyBookButton.setOnAction(buyBookButtonButtonListener);

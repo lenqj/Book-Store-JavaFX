@@ -2,12 +2,10 @@ package controller.Admin;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.layout.Pane;
 import launcher.ComponentFactory;
-import model.User;
 import model.validator.Notification;
 import view.Admin.AdminCreateUserView;
-import view.Admin.AdminUsersView;
+
 
 public class AdminCreateUserController {
     private final AdminCreateUserView adminCreateUserView;
@@ -19,6 +17,7 @@ public class AdminCreateUserController {
     }
     private static class CreateButtonListener implements EventHandler<ActionEvent> {
         public void handle(ActionEvent event) {
+            adminCreateUserNotification = new Notification<>();
             Notification<Boolean> createUserNotification = ComponentFactory.getUserService().createUser(
                     ComponentFactory.getAdminCreateUserView().getUsernameTextField(),
                     ComponentFactory.getAdminCreateUserView().getPasswordTextField(),
@@ -32,6 +31,10 @@ public class AdminCreateUserController {
                 ComponentFactory.getAdminUsersView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                 ComponentFactory.getAdminUsersView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
                 ComponentFactory.getAdminUsersView().setTableUserList(ComponentFactory.getUserService().findAll());
+            }
+            if(adminCreateUserNotification.hasErrors()) {
+                ComponentFactory.getMainView().getAlert().setContentText(adminCreateUserNotification.getFormattedErrors());
+                ComponentFactory.getMainView().getAlert().showAndWait();
             }
         }
     }

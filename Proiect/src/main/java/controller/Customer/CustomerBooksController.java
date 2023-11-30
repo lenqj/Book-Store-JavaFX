@@ -14,19 +14,12 @@ public class CustomerBooksController {
     public CustomerBooksController(CustomerBooksView customerBooksView) {
         this.customerBooksView = customerBooksView;
         customerNotification = new Notification<>();
-        customerBooksView.addLogoutButtonListener(new LogoutButtonListener());
         customerBooksView.addBuyBookButtonButtonListener(new BuyBookButtonListener());
-    }
-    private static class LogoutButtonListener implements EventHandler<ActionEvent> {
-        @Override
-        public void handle(ActionEvent event) {
-            ComponentFactory.getMainView().showScene(ComponentFactory.getLoginView().getScene());
-            ComponentFactory.getLoginView().clearTexts();
-        }
     }
     private class BuyBookButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
+            customerNotification = new Notification<>();
             BookInterface book = customerBooksView.getSelectedBook();
             customerNotification = ComponentFactory.getUserBooksService().buy(ComponentFactory.getLoginController().getLoginNotification().getResult(), book);
             if (!customerNotification.hasErrors()) {
@@ -34,7 +27,8 @@ public class CustomerBooksController {
                 customerBooksView.setTableBookList(ComponentFactory.getBookService().findAll());
                 customerBooksView.setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
             }else {
-                customerBooksView.setTextSellBook(customerNotification.getFormattedErrors());
+                ComponentFactory.getMainView().getAlert().setContentText(customerNotification.getFormattedErrors());
+                ComponentFactory.getMainView().getAlert().showAndWait();
             }
         }
     }

@@ -64,7 +64,8 @@ public class LoginController {
             loginNotification = ComponentFactory.getAuthenticationService().login(username, password);
 
             if (loginNotification.hasErrors()){
-                loginView.setActionTargetText(loginNotification.getFormattedErrors());
+                ComponentFactory.getMainView().getAlert().setContentText(loginNotification.getFormattedErrors());
+                ComponentFactory.getMainView().getAlert().showAndWait();
             }else {
                 loginView.setActionTargetText("LogIn Successfull!");
                 showStage((ComponentFactory.getRightsRolesRepository().findRolesForUser(loginNotification.getResult().getId()).get(0)).getRole());
@@ -74,14 +75,19 @@ public class LoginController {
     private class RegisterButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
+            loginNotification = new Notification<>();
             String username = loginView.getUsername();
             String password = loginView.getPassword();
             Notification<Boolean> registerNotification = ComponentFactory.getAuthenticationService().register(username, password);
 
             if (registerNotification.hasErrors()) {
-                loginView.setActionTargetText(registerNotification.getFormattedErrors());
+                registerNotification.getErrors().forEach(loginNotification::addError);
             } else {
                 loginView.setActionTargetText("Register successful!");
+            }
+            if(loginNotification.hasErrors()) {
+                ComponentFactory.getMainView().getAlert().setContentText(loginNotification.getFormattedErrors());
+                ComponentFactory.getMainView().getAlert().showAndWait();
             }
         }
     }
