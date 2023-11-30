@@ -20,7 +20,7 @@ public class EmployeeController {
             ComponentFactory.getEmployeeView().showPane(ComponentFactory.getEmployeeBooksView().getPane());
             ComponentFactory.getEmployeeBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
             ComponentFactory.getEmployeeBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
-            ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks());
+            ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks(Boolean.TRUE));
         }
     }
     private static class SoldBooksMenuListener implements EventHandler<ActionEvent> {

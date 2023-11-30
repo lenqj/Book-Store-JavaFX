@@ -32,14 +32,14 @@ public class LoginController {
                 ComponentFactory.getMainView().setStageTitle("[CUSTOMER] - Logged as " + ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                 ComponentFactory.getCustomerBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                 ComponentFactory.getCustomerBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
-                ComponentFactory.getCustomerBooksView().setTableBookList(ComponentFactory.getBookService().findAll());
+                ComponentFactory.getCustomerBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks(Boolean.FALSE));
             }
             case EMPLOYEE -> {
                 ComponentFactory.getMainView().showScene(ComponentFactory.getEmployeeView().getScene());
                 ComponentFactory.getMainView().setStageTitle("[EMPLOYEE] - Logged as " + ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                 ComponentFactory.getEmployeeBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                 ComponentFactory.getEmployeeBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
-                ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks());
+                ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks(Boolean.TRUE));
             }
             case ADMINISTRATOR -> {
                 ComponentFactory.getMainView().showScene(ComponentFactory.getAdminView().getScene());
@@ -47,7 +47,6 @@ public class LoginController {
                 ComponentFactory.getAdminUsersView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                 ComponentFactory.getAdminUsersView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
                 ComponentFactory.getAdminUsersView().setTableUserList(ComponentFactory.getUserService().findAll());
-
             }
             default -> {
                 ComponentFactory.getMainView().setStageTitle("Welcome to our Book Store");

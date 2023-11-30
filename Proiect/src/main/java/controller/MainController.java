@@ -10,10 +10,6 @@ public class MainController {
         this.mainView = mainView;
         mainView.showScene(ComponentFactory.getLoginView().getScene());
     }
-
-    public MainView getMainView() {
-        return mainView;
-    }
     public void setStageTitle(String text){
         mainView.setStageTitle(text);
     }

@@ -20,7 +20,7 @@ public class CustomerController {
             ComponentFactory.getCustomerView().showPane(ComponentFactory.getCustomerBooksView().getPane());
             ComponentFactory.getCustomerBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
             ComponentFactory.getCustomerBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
-            ComponentFactory.getCustomerBooksView().setTableBookList(ComponentFactory.getBookService().findAll());
+            ComponentFactory.getCustomerBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks(Boolean.FALSE));
         }
     }
 

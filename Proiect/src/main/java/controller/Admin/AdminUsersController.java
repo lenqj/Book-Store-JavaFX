@@ -20,6 +20,7 @@ public class AdminUsersController {
     private static class CreateButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
+            ComponentFactory.getAdminView().showPane(ComponentFactory.getAdminCreateUserView().getPane());
 
         }
     }

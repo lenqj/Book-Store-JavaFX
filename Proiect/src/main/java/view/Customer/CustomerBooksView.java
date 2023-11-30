@@ -103,7 +103,7 @@ public class CustomerBooksView {
 
         buyBookButton = new Button("Buy Book");
         HBox buyBookButtonHBox = new HBox();
-        buyBookButtonHBox.setAlignment(Pos.BASELINE_RIGHT);
+        buyBookButtonHBox.setAlignment(Pos.BASELINE_LEFT);
         buyBookButtonHBox.getChildren().add(buyBookButton);
         gridPane.add(buyBookButtonHBox, 0, 7);
 
