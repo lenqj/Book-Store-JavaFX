@@ -11,7 +11,7 @@ public interface UserBooksRepository {
     Map<Long, BookInterface> findAllSoldBooks(User user);
     Notification<Boolean> sell(User user, BookInterface book);
     Notification<Boolean> buy(User user, BookInterface book);
-    int deleteBook(User user, Long bookID);
+    Notification<Boolean> deleteBook(User user, Long bookID);
     void removeAll(User user);
 
 }

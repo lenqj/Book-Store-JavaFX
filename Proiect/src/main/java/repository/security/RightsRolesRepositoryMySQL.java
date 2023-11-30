@@ -145,4 +145,20 @@ public class RightsRolesRepositoryMySQL implements RightsRolesRepository {
             e.printStackTrace();
         }
     }
+    public List<Role> findAllRoles() {
+        List <Role> roles = new ArrayList<>();
+        try {
+            PreparedStatement selectStatement = connection
+                    .prepareStatement("Select * from " + ROLE + " ORDER BY ID;");
+            ResultSet resultSet = selectStatement.executeQuery();
+
+            while(resultSet.next()){
+                Role role = findRoleById(resultSet.getLong("id"));
+                roles.add(role);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return roles;
+    }
 }

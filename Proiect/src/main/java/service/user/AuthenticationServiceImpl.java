@@ -11,6 +11,7 @@ import repository.user.UserRepository;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.Collections;
+import java.util.List;
 
 import static database.Constants.Roles.*;
 
@@ -64,6 +65,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public boolean logout(User user) {
         return false;
+    }
+    public List<Role> findAllRoles(){
+        return rightsRolesRepository.findAllRoles();
     }
 
     public static String hashPassword(String password) {

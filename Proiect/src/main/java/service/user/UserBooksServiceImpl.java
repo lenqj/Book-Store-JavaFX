@@ -26,7 +26,7 @@ public class UserBooksServiceImpl implements UserBooksService{
     public Notification<Boolean> buy(User user, BookInterface book) {
         return userBooksRepository.buy(user, book);
     }
-    public int deleteBook(User user, Long bookID) {
+    public Notification<Boolean> deleteBook(User user, Long bookID) {
         return userBooksRepository.deleteBook(user, bookID);
     }
     public void removeAll(User user){

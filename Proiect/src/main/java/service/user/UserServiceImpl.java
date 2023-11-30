@@ -56,4 +56,8 @@ public class UserServiceImpl implements UserService {
         }
         return userRegisterNotification;
     }
+
+    public Notification<User> updateUser(User user, String username, String password, Long money, List<Role> roles){
+        return userRepository.updateUser(user, username, password, money, roles);
+    }
 }

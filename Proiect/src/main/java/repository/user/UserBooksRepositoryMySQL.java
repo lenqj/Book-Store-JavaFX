@@ -45,7 +45,7 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
         Notification<Boolean> sellNotification = new Notification<>();
         try {
             BookValidator bookValidator = new BookValidator(user, book);
-            if (bookValidator.validate()){
+            if (bookValidator.validateToSell()){
                 Notification<Boolean> sellBookNotification = bookRepository.sell(book);
                 if(sellBookNotification.hasErrors()){
                     sellBookNotification.getErrors().forEach(sellNotification::addError);
@@ -113,18 +113,23 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
     }
 
     @Override
-    public int deleteBook(User user, Long bookID) {
+    public Notification<Boolean> deleteBook(User user, Long bookID) {
+        Notification<Boolean> deleteBookNotification = new Notification<>();
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("DELETE FROM " + USER_BOOKS + " WHERE user_id = ? and id = ?;");
             preparedStatement.setLong(1, user.getId());
             preparedStatement.setLong(2, bookID);
-
-            return preparedStatement.executeUpdate();
+            if(preparedStatement.executeUpdate() == 1){
+                deleteBookNotification.setResult(Boolean.TRUE);
+            }else{
+                deleteBookNotification.addError("Something went wrong!");
+                return deleteBookNotification;
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            deleteBookNotification.addError("Something is wrong with the Database!");
         }
-        return 0;
+        return deleteBookNotification;
     }
 
     public void removeAll(User user){

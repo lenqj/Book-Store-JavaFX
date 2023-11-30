@@ -1,4 +1,5 @@
 package repository.user;
+import model.Role;
 import model.book.BookInterface;
 import model.validator.Notification;
 import repository.book.BookRepository;
@@ -173,6 +174,11 @@ public class UserRepositoryMySQL implements UserRepository {
 
     public Notification<Boolean> deleteUser(User user) {
         Notification<Boolean> deleteUserNotification = new Notification<>();
+        if (user == null) {
+            deleteUserNotification.addError("You must select 1 user");
+            deleteUserNotification.setResult(Boolean.FALSE);
+            return deleteUserNotification;
+        }
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("DELETE FROM " + USER + " WHERE id = ?;");
@@ -189,5 +195,29 @@ public class UserRepositoryMySQL implements UserRepository {
         }
         return deleteUserNotification;
     }
+
+    public Notification<User> updateUser(User user, String username, String password, Long money, List<Role> roles) {
+        Notification<User> updateUserNotification = new Notification<>();
+        rightsRolesRepository.addRolesToUser(user, roles);
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("UPDATE " + USER + " SET `username` = COALESCE(?, `username`), `password` = COALESCE(?, `password`), `money` = COALESCE(?, `money`) WHERE id = ?;");
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.setLong(3, money);
+            preparedStatement.setLong(4, user.getId());
+            if(preparedStatement.executeUpdate() == 1){
+                updateUserNotification.setResult(findById(user.getId()));
+            }else{
+                updateUserNotification.addError("User can't be updated.");
+                return updateUserNotification;
+            }
+        } catch (SQLException e) {
+            updateUserNotification.addError("Something is wrong with the Database!");
+            e.printStackTrace();
+        }
+        return updateUserNotification;
+    }
+
 
 }
