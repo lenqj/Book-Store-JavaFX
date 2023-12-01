@@ -10,6 +10,8 @@ import repository.book.BookRepository;
 import repository.security.RightsRolesRepository;
 
 import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 import static database.Constants.Tables.USER_BOOKS;
@@ -26,15 +28,16 @@ public class UserBooksRepositoryMySQL implements UserBooksRepository{
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
     }
-    public Map<Long, BookInterface> findAllSoldBooks(User user){
-        Map<Long, BookInterface> books = new TreeMap<>();
+    public Map<Long, Map.Entry<BookInterface, Date>> findAllSoldBooks(User user){
+        Map<Long, Map.Entry<BookInterface, Date>> books = new TreeMap<>();
         try {
             PreparedStatement preparedStatement = connection
                     .prepareStatement("SELECT * FROM " + USER_BOOKS + " where user_id = ?;");
             preparedStatement.setLong(1, user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
-                books.put(resultSet.getLong("id"), getBookFromResultSet(resultSet).getResult());
+                books.put(resultSet.getLong("id"), new AbstractMap.SimpleEntry<>(getBookFromResultSet(resultSet).getResult(), resultSet.getDate("date"))
+                );
             }
         } catch (SQLException e) {
             e.printStackTrace();

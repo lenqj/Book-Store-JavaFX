@@ -6,14 +6,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LongStringConverter;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import static database.Constants.Roles.ROLES;
 
 public class EmployeeCreateBookView {
     private final GridPane gridPane;

@@ -1,9 +1,14 @@
 package controller.Employee;
 
+import com.itextpdf.text.DocumentException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import launcher.ComponentFactory;
+import model.PDF;
 import view.Employee.EmployeeView;
+
+import java.io.IOException;
+
 
 public class EmployeeController {
     private final EmployeeView employeeView;
@@ -13,7 +18,7 @@ public class EmployeeController {
         employeeView.addBooksMenuListener(new BooksMenuListener());
         employeeView.addSoldBooksMenuListener(new SoldBooksMenuListener());
         employeeView.addLogoutMenuListener(new LogoutMenuListener());
-
+        employeeView.addReportMenuListener(new ReportMenuListener());
     }
     private static class BooksMenuListener implements EventHandler<ActionEvent> {
         public void handle(ActionEvent event) {
@@ -36,6 +41,19 @@ public class EmployeeController {
             ComponentFactory.getMainView().showScene(ComponentFactory.getLoginView().getScene());
             ComponentFactory.getLoginView().clearTexts();
             ComponentFactory.getMainView().setStageTitle("Welcome to our Book Store");
+        }
+    }
+    private static class ReportMenuListener implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent event) {
+            PDF pdfContentGenerator = new PDF();
+
+            final String fileName = "sample.pdf";
+
+            try {
+                pdfContentGenerator.generatePdf(fileName,ComponentFactory.getLoginController().getLoginNotification().getResult(), ComponentFactory.getUserBooksService().findAllSoldBooks(ComponentFactory.getLoginController().getLoginNotification().getResult()));
+            } catch (DocumentException | IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }

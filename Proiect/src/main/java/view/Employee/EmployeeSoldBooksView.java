@@ -15,11 +15,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import model.book.BookInterface;
 
+import java.sql.Date;
 import java.util.Map;
 
 public class EmployeeSoldBooksView {
     private final GridPane gridPane;
-    private final TableView<Map.Entry<Long, BookInterface>> table;
+    private final TableView<Map.Entry<Long, Map.Entry<BookInterface, Date>>> table;
     private Button backButton;
     private Button deleteButton;
     private Text sceneTitle;
@@ -59,29 +60,34 @@ public class EmployeeSoldBooksView {
         gridPane.add(sceneTitle, 0, 0, 6, 1);
     }
     @SuppressWarnings("unchecked")
-    private void initializeTableView(TableView<Map.Entry<Long, BookInterface>> tableView, GridPane gridPane){
+    private void initializeTableView(TableView<Map.Entry<Long, Map.Entry<BookInterface, Date>>> tableView, GridPane gridPane){
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         ScrollPane sp = new ScrollPane(tableView);
         sp.setFitToHeight(true);
         sp.setFitToWidth(true);
         gridPane.add(sp, 0, 1, 6, 5);
-        TableColumn<Map.Entry<Long, BookInterface>, String> id = new TableColumn<>("#");
+        TableColumn<Map.Entry<Long, Map.Entry<BookInterface, Date>>, String> id = new TableColumn<>("#");
         id.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getKey())));
 
-        TableColumn<Map.Entry<Long, BookInterface>, String> book_id = new TableColumn<>("Book ID");
-        book_id.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getValue().getId())));
+        TableColumn<Map.Entry<Long, Map.Entry<BookInterface, Date>>, String> book_id = new TableColumn<>("Book ID");
+        book_id.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getValue().getKey().getId())));
 
-        TableColumn<Map.Entry<Long, BookInterface>, String> author = new TableColumn<>("Author");
-        author.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getValue().getAuthor()));
+        TableColumn<Map.Entry<Long, Map.Entry<BookInterface, Date>>, String> author = new TableColumn<>("Author");
+        author.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getValue().getKey().getAuthor()));
 
-        TableColumn<Map.Entry<Long, BookInterface>, String> title = new TableColumn<>("Title");
-        title.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getValue().getTitle()));
+        TableColumn<Map.Entry<Long, Map.Entry<BookInterface, Date>>, String> title = new TableColumn<>("Title");
+        title.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getValue().getKey().getTitle()));
 
-        TableColumn<Map.Entry<Long, BookInterface>, String> publishedDate = new TableColumn<>("Published Date");
-        publishedDate.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getValue().getPublishedDate())));
-        tableView.getColumns().setAll(id, book_id, author, title, publishedDate);
+        TableColumn<Map.Entry<Long, Map.Entry<BookInterface, Date>>, String> publishedDate = new TableColumn<>("Published Date");
+        publishedDate.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getValue().getKey().getPublishedDate())));
+
+        TableColumn<Map.Entry<Long, Map.Entry<BookInterface, Date>>, String> date = new TableColumn<>("Sold Date");
+        date.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getValue().getValue())));
+
+
+        tableView.getColumns().setAll(id, book_id, author, title, publishedDate, date);
     }
-    public void setTableBookList(Map<Long, BookInterface> books){
+    public void setTableBookList(Map<Long, Map.Entry<BookInterface, Date>> books){
         table.getItems().clear();
         table.getItems().addAll(books.entrySet());
     }
@@ -111,7 +117,7 @@ public class EmployeeSoldBooksView {
     public void addDeleteButtonListener(EventHandler<ActionEvent> deleteButtonListener) {
         deleteButton.setOnAction(deleteButtonListener);
     }
-    public Map.Entry<Long, BookInterface> getSelectedBook(){
+    public Map.Entry<Long, Map.Entry<BookInterface, Date>> getSelectedBook(){
         return table.getSelectionModel().getSelectedItem();
     }
     public Pane getPane() {

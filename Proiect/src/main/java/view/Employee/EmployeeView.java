@@ -16,12 +16,14 @@ public class EmployeeView implements View {
     private final MenuItem booksMenuItem;
     private final MenuItem soldBooksMenuItem;
     private final MenuItem logoutMenuItem;
+    private final MenuItem reportMenuItem;
     public EmployeeView() {
         rootPane = new BorderPane();
         scene = new Scene(rootPane);
         booksMenuItem = new MenuItem("Books");
         soldBooksMenuItem = new MenuItem("Sold Books");
         logoutMenuItem = new MenuItem("Logout");
+        reportMenuItem = new MenuItem("Report Activity");
         initializeMenuBar();
     }
     public void initializeMenuBar() {
@@ -29,7 +31,7 @@ public class EmployeeView implements View {
         Menu usersMenu = new Menu("Users");
         Menu booksMenu = new Menu("Books");
         usersMenu.getItems().addAll(logoutMenuItem);
-        booksMenu.getItems().addAll(booksMenuItem, soldBooksMenuItem);
+        booksMenu.getItems().addAll(booksMenuItem, soldBooksMenuItem, reportMenuItem);
         menuBar.getMenus().addAll(usersMenu, booksMenu);
         rootPane.setTop(menuBar);
     }
@@ -47,5 +49,8 @@ public class EmployeeView implements View {
     }
     public void addLogoutMenuListener(EventHandler<ActionEvent> logoutMenuListener) {
         logoutMenuItem.setOnAction(logoutMenuListener);
+    }
+    public void addReportMenuListener(EventHandler<ActionEvent> reportMenuListeners) {
+        reportMenuItem.setOnAction(reportMenuListeners);
     }
 }

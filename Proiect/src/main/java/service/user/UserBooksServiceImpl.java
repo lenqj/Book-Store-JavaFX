@@ -7,6 +7,8 @@ import model.validator.Notification;
 import repository.book.BookRepository;
 import repository.user.UserBooksRepository;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,7 +18,7 @@ public class UserBooksServiceImpl implements UserBooksService{
     public UserBooksServiceImpl(UserBooksRepository userBooksRepository) {
         this.userBooksRepository = userBooksRepository;
     }
-    public Map<Long, BookInterface> findAllSoldBooks(User user){
+    public Map<Long, Map.Entry<BookInterface, Date>> findAllSoldBooks(User user){
         return userBooksRepository.findAllSoldBooks(user);
     }
     public Notification<Boolean> sell(User user, BookInterface book){
