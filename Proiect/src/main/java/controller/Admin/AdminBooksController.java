@@ -3,7 +3,7 @@ package controller.Admin;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import launcher.ComponentFactory;
-import model.User;
+import model.book.BookInterface;
 import model.validator.Notification;
 import view.Admin.AdminBooksView;
 
@@ -17,23 +17,59 @@ public class AdminBooksController {
         this.adminBooksView.addUpdateButtonListener(new UpdateButtonListener());
         this.adminBooksView.addDeleteButtonListener(new DeleteButtonListener());
     }
-    private static class CreateButtonListener implements EventHandler<ActionEvent> {
+    private class CreateButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
 
-        }
-    }
-    private static class UpdateButtonListener implements EventHandler<ActionEvent> {
-        @Override
-        public void handle(ActionEvent event) {
+            adminBooksNotification = new Notification<>();
+            ComponentFactory.getAdminView().showPane(ComponentFactory.getEmployeeCreateBookView().getPane());
 
         }
     }
-    private static class DeleteButtonListener implements EventHandler<ActionEvent> {
+    private class UpdateButtonListener implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent event) {
-            User user = ComponentFactory.getAdminUsersView().getSelectedUser();
-            ComponentFactory.getUserService().deleteUser(user);
+            adminBooksNotification = new Notification<>();
+            BookInterface book = ComponentFactory.getAdminBooksView().getSelectedBook();
+            if(book != null) {
+                ComponentFactory.getAdminView().showPane(ComponentFactory.getEmployeeUpdateBookView().getPane());
+                ComponentFactory.getEmployeeUpdateBookView().setUserLabels(
+                        book.getAuthor(),
+                        book.getTitle(),
+                        book.getPublishedDate(),
+                        book.getStock(),
+                        book.getPrice());
+            }else{
+                adminBooksNotification.addError("You must select 1 book.");
+            }
+            if(adminBooksNotification.hasErrors()){
+                ComponentFactory.getMainView().getAlert().setContentText(adminBooksNotification.getFormattedErrors());
+                ComponentFactory.getMainView().getAlert().showAndWait();
+            }
+        }
+    }
+    private class DeleteButtonListener implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent event) {
+            adminBooksNotification = new Notification<>();
+            BookInterface book = ComponentFactory.getAdminBooksView().getSelectedBook();
+            if(book == null){
+                adminBooksNotification.addError("You must select 1 book.");
+            }else{
+                Notification<Boolean> deleteNotification = ComponentFactory.getBookService().delete(book);
+                if(deleteNotification.hasErrors()){
+                    deleteNotification.getErrors().forEach(adminBooksNotification::addError);
+                }else{
+                    //adminBooksView.setTextSellBook("You successfully deleted: " + book);
+                    ComponentFactory.getAdminBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
+                    ComponentFactory.getAdminBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
+                    ComponentFactory.getAdminBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks(Boolean.TRUE));
+                }
+            }
+            if(adminBooksNotification.hasErrors()){
+                ComponentFactory.getMainView().getAlert().setContentText(adminBooksNotification.getFormattedErrors());
+                ComponentFactory.getMainView().getAlert().showAndWait();
+            }
         }
     }
 }

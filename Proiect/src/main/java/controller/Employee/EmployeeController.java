@@ -21,6 +21,7 @@ public class EmployeeController {
             ComponentFactory.getEmployeeBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
             ComponentFactory.getEmployeeBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
             ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks(Boolean.TRUE));
+            ComponentFactory.getEmployeeBooksView().clearTexts();
         }
     }
     private static class SoldBooksMenuListener implements EventHandler<ActionEvent> {

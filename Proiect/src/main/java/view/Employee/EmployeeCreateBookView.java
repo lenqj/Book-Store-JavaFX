@@ -9,6 +9,7 @@ import javafx.scene.layout.*;
 import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LongStringConverter;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -71,11 +72,23 @@ public class EmployeeCreateBookView {
         HBox createButtonHBox = new HBox(10);
         createButtonHBox.setAlignment(Pos.BOTTOM_CENTER);
         createButtonHBox.getChildren().add(createButton);
-        gridPane.add(createButtonHBox, 0, 4, 2, 1);
+        gridPane.add(createButtonHBox, 0, 5, 2, 1);
     }
-
-
-
+    public String getAuthorTextField(){
+        return authorTextField.getText() == null || authorTextField.getText().isEmpty() ? null : authorTextField.getText();
+    }
+    public String getTitleTextField(){
+        return titleTextField.getText() == null || titleTextField.getText().isEmpty() ? null : titleTextField.getText();
+    }
+    public LocalDate getPublishedDateDatePicker() {
+        return publishedDateDatePicker.getValue() == null ? new Date(0, 0, 0).toLocalDate() : publishedDateDatePicker.getValue();
+    }
+    public Long getStockTextField(){
+        return stockTextField.getText() == null || stockTextField.getText().isEmpty() ? 0L : Long.parseLong(stockTextField.getText());
+    }
+    public Long getPriceTextField(){
+        return priceTextField.getText() == null || priceTextField.getText().isEmpty() ? 0L : Long.parseLong(priceTextField.getText());
+    }
     public void addCreateButtonListener(EventHandler<ActionEvent> createButtonListener) {
         createButton.setOnAction(createButtonListener);
     }

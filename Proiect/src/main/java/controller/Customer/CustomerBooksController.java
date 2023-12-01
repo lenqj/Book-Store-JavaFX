@@ -24,7 +24,7 @@ public class CustomerBooksController {
             customerNotification = ComponentFactory.getUserBooksService().buy(ComponentFactory.getLoginController().getLoginNotification().getResult(), book);
             if (!customerNotification.hasErrors()) {
                 customerBooksView.setTextSellBook("You successfully bought: " + book.toString());
-                customerBooksView.setTableBookList(ComponentFactory.getBookService().findAll());
+                customerBooksView.setTableBookList(ComponentFactory.getBookService().findAllSellableBooks(Boolean.FALSE));
                 customerBooksView.setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
             }else {
                 ComponentFactory.getMainView().getAlert().setContentText(customerNotification.getFormattedErrors());

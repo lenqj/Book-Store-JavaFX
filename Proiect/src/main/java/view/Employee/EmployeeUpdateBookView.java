@@ -5,10 +5,14 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.util.converter.LongStringConverter;
 
+import java.sql.Date;
 import java.time.LocalDate;
+
 
 public class EmployeeUpdateBookView {
     private final GridPane gridPane;
@@ -47,7 +51,7 @@ public class EmployeeUpdateBookView {
         gridPane.add(bookTitleLabel, 1, 0, 1, 1);
         gridPane.add(bookPublishedDateLabel, 2, 0, 1, 1);
         gridPane.add(bookStockLabel, 3, 0, 1, 1);
-        gridPane.add(bookPriceLabel, 4, 0, 2, 1);
+        gridPane.add(bookPriceLabel, 4, 0, 1, 1);
 
 
         authorTextField = new TextField();
@@ -65,17 +69,17 @@ public class EmployeeUpdateBookView {
         Label stockLabel = new Label("Stock: ");
         Label priceLabel = new Label("Price: ");
 
-        gridPane.add(authorTextField, 1, 2, 1, 1);
-        gridPane.add(titleTextField, 1, 3, 1, 1);
-        gridPane.add(publishedDateDatePicker, 1, 4, 1, 1);
-        gridPane.add(stockTextField, 1, 5, 1, 1);
-        gridPane.add(priceTextField, 1, 6, 2, 1);
+        gridPane.add(authorTextField, 2, 2, 3, 1);
+        gridPane.add(titleTextField, 2, 3, 3, 1);
+        gridPane.add(publishedDateDatePicker, 2, 4, 3, 1);
+        gridPane.add(stockTextField, 2, 5, 3, 1);
+        gridPane.add(priceTextField, 2, 6, 3, 1);
 
 
-        gridPane.add(authorLabel, 0, 2, 1, 1);
-        gridPane.add(titleLabel, 0, 3, 1, 1);
-        gridPane.add(publishedDateLabel, 0, 4, 1, 1);
-        gridPane.add(stockLabel, 0, 5, 1, 1);
+        gridPane.add(authorLabel, 0, 2, 2, 1);
+        gridPane.add(titleLabel, 0, 3, 2, 1);
+        gridPane.add(publishedDateLabel, 0, 4, 2, 1);
+        gridPane.add(stockLabel, 0, 5, 2, 1);
         gridPane.add(priceLabel, 0, 6, 2, 1);
 
     }
@@ -84,13 +88,13 @@ public class EmployeeUpdateBookView {
         HBox updateButtonHBox = new HBox(10);
         updateButtonHBox.setAlignment(Pos.BOTTOM_CENTER);
         updateButtonHBox.getChildren().add(updateButton);
-        gridPane.add(updateButtonHBox, 0, 6, 3, 1);
+        gridPane.add(updateButtonHBox, 0, 7, 5, 1);
     }
 
     public void setUserLabels(String author, String title, LocalDate publishedDate, Long stock, Long price){
         bookAuthorLabel.setText("Author: " + author);
         bookTitleLabel.setText("Title: " + title);
-        bookPublishedDateLabel.setText("Published Date: " + publishedDate);
+        bookPublishedDateLabel.setText("Published Date: " + Date.valueOf(publishedDate));
         bookStockLabel.setText("Stock: " + stock);
         bookPriceLabel.setText("Price: " + price);
     }
@@ -101,14 +105,14 @@ public class EmployeeUpdateBookView {
     public String getTitleTextField(){
         return titleTextField.getText() == null || titleTextField.getText().isEmpty() ? null : titleTextField.getText();
     }
-    public LocalDate getPublishedDateDatePicker() {
-        return publishedDateDatePicker.getValue();
+    public Date getPublishedDateDatePicker() {
+        return publishedDateDatePicker.getValue() == null ? null : Date.valueOf(publishedDateDatePicker.getValue());
     }
     public Long getStockTextField(){
-        return Long.valueOf(stockTextField.getText());
+        return stockTextField.getText() == null || stockTextField.getText().isEmpty() ? null : Long.parseLong(stockTextField.getText());
     }
     public Long getPriceTextField(){
-        return Long.valueOf(priceTextField.getText());
+        return priceTextField.getText() == null || priceTextField.getText().isEmpty() ? null : Long.parseLong(priceTextField.getText());
     }
     public void addUpdateButtonListener(EventHandler<ActionEvent> updateButtonListener) {
         updateButton.setOnAction(updateButtonListener);

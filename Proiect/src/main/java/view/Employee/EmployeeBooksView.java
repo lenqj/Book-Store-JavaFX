@@ -22,6 +22,8 @@ public class EmployeeBooksView {
     private final TableView<BookInterface> table;
     private Button sellBookButton;
     private Button createBookButton;
+    private Button updateBookButton;
+    private Button deleteBookButton;
     private Text usernameText;
     private Text textSellBook;
     private Text moneyText;
@@ -100,18 +102,29 @@ public class EmployeeBooksView {
     }
 
     private void initializeButtons(){
-        sellBookButton = new Button("Sell Book");
+        sellBookButton = new Button("SELL");
         HBox sellBookButtonHBox = new HBox();
-        sellBookButtonHBox.setAlignment(Pos.BASELINE_LEFT);
+        sellBookButtonHBox.setAlignment(Pos.BOTTOM_LEFT);
         sellBookButtonHBox.getChildren().add(sellBookButton);
-        gridPane.add(sellBookButtonHBox, 0, 7);
+        gridPane.add(sellBookButtonHBox, 0, 7, 2, 1);
 
         createBookButton = new Button("CREATE");
         HBox createBookButtonHBox = new HBox();
-        createBookButtonHBox.setAlignment(Pos.BASELINE_RIGHT);
+        createBookButtonHBox.setAlignment(Pos.BOTTOM_CENTER);
         createBookButtonHBox.getChildren().add(createBookButton);
-        gridPane.add(createBookButtonHBox, 6, 7);
+        gridPane.add(createBookButtonHBox, 2, 7);
 
+        updateBookButton = new Button("UPDATE");
+        HBox updateBookButtonHBox = new HBox();
+        updateBookButtonHBox.setAlignment(Pos.BOTTOM_CENTER);
+        updateBookButtonHBox.getChildren().add(updateBookButton);
+        gridPane.add(updateBookButtonHBox, 3, 7);
+
+        deleteBookButton = new Button("DELETE");
+        HBox deleteBookButtonHBox = new HBox();
+        deleteBookButtonHBox.setAlignment(Pos.BOTTOM_RIGHT);
+        deleteBookButtonHBox.getChildren().add(deleteBookButton);
+        gridPane.add(deleteBookButtonHBox, 4, 7,2,1);
     }
 
     public BookInterface getSelectedBook(){
@@ -122,7 +135,6 @@ public class EmployeeBooksView {
         HBox textSellBookHBox = new HBox();
         textSellBookHBox.setAlignment(Pos.BASELINE_LEFT);
         textSellBookHBox.getChildren().add(textSellBook);
-
         gridPane.add(textSellBook, 0, 6, 6, 1);
     }
     public void setTextSellBook (String text){
@@ -137,15 +149,19 @@ public class EmployeeBooksView {
     public void clearTexts(){
         textSellBook.setText("");
     }
-
-    public void addSellBookButtonButtonListener(EventHandler<ActionEvent> sellBookButtonButtonListener) {
-        sellBookButton.setOnAction(sellBookButtonButtonListener);
+    public void addSellBookButtonListener(EventHandler<ActionEvent> sellBookButtonListener) {
+        sellBookButton.setOnAction(sellBookButtonListener);
     }
-    public void addCreateBookButtonButtonListener(EventHandler<ActionEvent> createBookButtonButtonListener) {
-        createBookButton.setOnAction(createBookButtonButtonListener);
+    public void addCreateBookButtonListener(EventHandler<ActionEvent> createBookButtonListener) {
+        createBookButton.setOnAction(createBookButtonListener);
+    }
+    public void addUpdateBookButtonListener(EventHandler<ActionEvent> updateBookButtonListener) {
+        updateBookButton.setOnAction(updateBookButtonListener);
+    }
+    public void addDeleteBookButtonListener(EventHandler<ActionEvent> deleteBookButtonListener) {
+        deleteBookButton.setOnAction(deleteBookButtonListener);
     }
     public Pane getPane() {
         return gridPane;
     }
-
 }
