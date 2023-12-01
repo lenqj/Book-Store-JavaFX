@@ -5,6 +5,8 @@ import model.validator.Notification;
 import repository.Cache;
 import repository.book.BookRepository;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +35,7 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
         return decoratedRepository.findById(id);
     }
 
-    public boolean save(T book) {
+    public Notification<Boolean> save(T book) {
         cache.invalidateCache();
         return decoratedRepository.save(book);
     }
@@ -57,6 +59,16 @@ public class BookRepositoryCacheDecorator<T> extends BookRepositoryDecorator<T> 
 
     @Override
     public Notification<Boolean> sell(BookInterface book) {
+        return null;
+    }
+
+    @Override
+    public Notification<Boolean> delete(BookInterface book) {
+        return null;
+    }
+
+    @Override
+    public Notification<BookInterface> update(BookInterface book, String author, String title, Date publishedDate, Long stock, Long price) {
         return null;
     }
 }

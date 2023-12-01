@@ -1,5 +1,6 @@
 package repository.book.sql;
 
+import model.Role;
 import model.User;
 import model.validator.Notification;
 import repository.book.BookRepository;
@@ -8,10 +9,12 @@ import model.book.BookInterface;
 import model.builder.BookBuilder;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static database.Constants.Tables.BOOK;
+import static database.Constants.Tables.USER;
 
 public class BookRepositoryMySQL implements BookRepository<BookInterface> {
     private final Connection connection;
@@ -73,26 +76,30 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
         return bookInterfaceNotification;
     }
 
-    @Override
-    public boolean save(BookInterface book) {
+    public Notification<Boolean> save(BookInterface book) {
+        Notification<Boolean> saveNotification = new Notification<>();
         String sql = "INSERT INTO " + BOOK + " VALUES(null, ?, ?, ?, ?, ?, ?);";
 
         try{
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, book.getAuthor());
             preparedStatement.setString(2, book.getTitle());
-            preparedStatement.setDate(3, Date.valueOf(book.getPublishedDate()));
-            preparedStatement.setLong(4, book.getStock());
-            preparedStatement.setLong(5, book.getPrice());
-            preparedStatement.setBoolean(6, book.getToSell());
+            preparedStatement.setObject(3, book.getPublishedDate());
+            preparedStatement.setObject(4, book.getStock());
+            preparedStatement.setObject(5, book.getPrice());
+            preparedStatement.setObject(6, book.getToSell());
 
-            int rowsInserted = preparedStatement.executeUpdate();
-
-            return rowsInserted == 1;
+            if(preparedStatement.executeUpdate() == 1){
+                saveNotification.setResult(Boolean.TRUE);
+            }else{
+                saveNotification.addError("Something went wrong.");
+                return saveNotification;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            saveNotification.addError("Something is wrong with the Database!");
         }
+        return saveNotification;
     }
 
     public boolean badSave(BookInterface book) {
@@ -160,6 +167,56 @@ public class BookRepositoryMySQL implements BookRepository<BookInterface> {
             e.printStackTrace();
         }
         return sellNotification;
+    }
+
+    @Override
+    public Notification<Boolean> delete(BookInterface book) {
+        String sql = "DELETE FROM " + BOOK + " WHERE id = ?;";
+        Notification<Boolean> deleteNotification = new Notification<>();
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, book.getId());
+            if(preparedStatement.executeUpdate() == 1) {
+                deleteNotification.setResult(Boolean.TRUE);
+            }else{
+                deleteNotification.addError("Something went wrong!");
+                return deleteNotification;
+            }
+        } catch (SQLException e) {
+            deleteNotification.addError("Something is wrong with the Database!");
+            e.printStackTrace();
+        }
+        return deleteNotification;
+    }
+
+    public Notification<BookInterface> update(BookInterface book, String author, String title, Date publishedDate, Long stock, Long price) {
+        Notification<BookInterface> updateBookNotification = new Notification<>();
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("UPDATE " + BOOK + " SET `author` = COALESCE(?, `author`), `title` = COALESCE(?, `title`), `publishedDate` = COALESCE(?, `publishedDate`), `stock` = COALESCE(?, `stock`), `price` = COALESCE(?, `price`) WHERE id = ?;");
+            preparedStatement.setString(1, author);
+            preparedStatement.setString(2, title);
+            preparedStatement.setDate(3, publishedDate);
+            preparedStatement.setObject(4, stock);
+            preparedStatement.setObject(5, price);
+            preparedStatement.setLong(6, book.getId());
+            if(preparedStatement.executeUpdate() == 1){
+                Notification<BookInterface> findBookNotification = findById(book.getId());
+                if(findBookNotification.hasErrors()){
+                    findBookNotification.getErrors().forEach(updateBookNotification::addError);
+                    return updateBookNotification;
+                }else {
+                    updateBookNotification.setResult(findBookNotification.getResult());
+                }
+            }else{
+                updateBookNotification.addError("User can't be updated.");
+                return updateBookNotification;
+            }
+        } catch (SQLException e) {
+            updateBookNotification.addError("Something is wrong with the Database!");
+            e.printStackTrace();
+        }
+        return updateBookNotification;
     }
 
     private BookInterface getBookFromResultSet(ResultSet resultSet) throws SQLException {
