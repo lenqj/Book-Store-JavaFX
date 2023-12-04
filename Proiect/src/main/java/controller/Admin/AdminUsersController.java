@@ -63,13 +63,13 @@ public class AdminUsersController {
                         ComponentFactory.getMainView().showScene(ComponentFactory.getLoginView().getScene());
                         ComponentFactory.getLoginView().clearTexts();
                         ComponentFactory.getMainView().setStageTitle("Welcome to our Book Store");
-                        ComponentFactory.getAdminUsersView().clearErrorsText();
+                        ComponentFactory.getAdminUsersView().clearTexts();
                     } else {
                         ComponentFactory.getMainView().setStageTitle("[ADMINISTRATOR] - Logged as " + ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                         ComponentFactory.getAdminUsersView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                         ComponentFactory.getAdminUsersView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
                         ComponentFactory.getAdminUsersView().setTableUserList(ComponentFactory.getUserService().findAll());
-                        ComponentFactory.getAdminUsersView().clearErrorsText();
+                        ComponentFactory.getAdminUsersView().clearTexts();
                     }
                 }
             if(adminUsersNotification.hasErrors()) {

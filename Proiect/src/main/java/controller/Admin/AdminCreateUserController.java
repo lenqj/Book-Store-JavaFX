@@ -31,6 +31,8 @@ public class AdminCreateUserController {
                 ComponentFactory.getAdminUsersView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                 ComponentFactory.getAdminUsersView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
                 ComponentFactory.getAdminUsersView().setTableUserList(ComponentFactory.getUserService().findAll());
+                ComponentFactory.getAdminUsersView().clearTexts();
+                ComponentFactory.getAdminCreateUserView().clearTexts();
             }
             if(adminCreateUserNotification.hasErrors()) {
                 ComponentFactory.getMainView().getAlert().setContentText(adminCreateUserNotification.getFormattedErrors());

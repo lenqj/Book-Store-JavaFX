@@ -34,6 +34,8 @@ public class AdminUpdateUserController {
                 ComponentFactory.getAdminUsersView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                 ComponentFactory.getAdminUsersView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
                 ComponentFactory.getAdminUsersView().setTableUserList(ComponentFactory.getUserService().findAll());
+                ComponentFactory.getAdminUsersView().clearTexts();
+                ComponentFactory.getAdminUpdateUserView().clearTexts();
             }
             if(adminUpdateUserNotification.hasErrors()) {
                 ComponentFactory.getMainView().getAlert().setContentText(adminUpdateUserNotification.getFormattedErrors());

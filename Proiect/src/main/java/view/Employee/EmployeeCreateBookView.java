@@ -88,6 +88,12 @@ public class EmployeeCreateBookView {
     public void addCreateButtonListener(EventHandler<ActionEvent> createButtonListener) {
         createButton.setOnAction(createButtonListener);
     }
+    public void clearTexts(){
+        authorTextField.setText("");
+        titleTextField.setText("");
+        stockTextField.setText("");
+        priceTextField.setText("");
+    }
     public Pane getPane() {
         return gridPane;
     }

@@ -105,6 +105,10 @@ public class AdminUpdateUserView {
     public void addUpdateButtonListener(EventHandler<ActionEvent> updateButtonListener) {
         updateButton.setOnAction(updateButtonListener);
     }
+    public void clearTexts(){
+        usernameTextField.setText("");
+        passwordTextField.setText("");
+    }
     public Pane getPane() {
         return gridPane;
     }

@@ -82,6 +82,10 @@ public class AdminCreateUserView {
     public void addCreateButtonListener(EventHandler<ActionEvent> createButtonListener) {
         createButton.setOnAction(createButtonListener);
     }
+    public void clearTexts(){
+        usernameTextField.setText("");
+        passwordTextField.setText("");
+    }
     public Pane getPane() {
         return gridPane;
     }

@@ -5,8 +5,6 @@ import javafx.event.EventHandler;
 import launcher.ComponentFactory;
 import model.book.BookInterface;
 import model.validator.Notification;
-import view.Admin.AdminCreateUserView;
-import view.Employee.EmployeeCreateBookView;
 import view.Employee.EmployeeUpdateBookView;
 
 
@@ -20,6 +18,7 @@ public class EmployeeUpdateBookController {
     }
     private static class UpdateButtonListener implements EventHandler<ActionEvent> {
         public void handle(ActionEvent event) {
+            employeeUpdateBookNotification = new Notification<>();
             BookInterface book = ComponentFactory.getEmployeeBooksView().getSelectedBook();
             Notification<BookInterface> updateBookNotification = ComponentFactory.getBookService().update(book,
                     ComponentFactory.getEmployeeUpdateBookView().getAuthorTextField(),
@@ -34,6 +33,7 @@ public class EmployeeUpdateBookController {
                 ComponentFactory.getEmployeeBooksView().setUsernameText(ComponentFactory.getLoginController().getLoginNotification().getResult().getUsername());
                 ComponentFactory.getEmployeeBooksView().setMoneyText("Money: " + ComponentFactory.getLoginController().getLoginNotification().getResult().getMoney());
                 ComponentFactory.getEmployeeBooksView().setTableBookList(ComponentFactory.getBookService().findAllSellableBooks(Boolean.TRUE));
+                ComponentFactory.getEmployeeUpdateBookView().clearTexts();
                 ComponentFactory.getEmployeeBooksView().clearTexts();
             }
             if(employeeUpdateBookNotification.hasErrors()) {

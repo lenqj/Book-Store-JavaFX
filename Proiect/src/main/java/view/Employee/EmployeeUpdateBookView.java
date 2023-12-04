@@ -117,6 +117,12 @@ public class EmployeeUpdateBookView {
     public void addUpdateButtonListener(EventHandler<ActionEvent> updateButtonListener) {
         updateButton.setOnAction(updateButtonListener);
     }
+    public void clearTexts(){
+        authorTextField.setText("");
+        titleTextField.setText("");
+        stockTextField.setText("");
+        priceTextField.setText("");
+    }
     public Pane getPane() {
         return gridPane;
     }

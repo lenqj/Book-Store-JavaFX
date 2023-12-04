@@ -130,7 +130,7 @@ public class AdminUsersView {
     public void setErrorsText(String text) {
         errorsText.setText(text);
     }
-    public void clearErrorsText(){
+    public void clearTexts(){
         setErrorsText("");
     }
 
